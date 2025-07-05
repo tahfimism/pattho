@@ -1,0 +1,67 @@
+{
+  "subject": "Physics",
+  "chapters": [
+    {
+      "title": "Physical World and Measurement",
+      "chapter_number": 1,
+      "recommended_time": 8.0,
+      "importance": {
+        "hsc": 85,
+        "engineering": 90,
+        "medical": 70,
+        "varsity": 60
+      },
+      "topics": [
+        {
+          "title": "Physics: Scope and excitement",
+          "order": 1,
+          "description": "Nature of physical laws, Physics, technology and society",
+          "importance": {
+            "hsc": 80,
+            "engineering": 85,
+            "medical": 65,
+            "varsity": 55
+          },
+          "time_percent": 20
+        },
+        {
+          "title": "Units and Measurements",
+          "order": 2,
+          "description": "SI units, Fundamental and derived units",
+          "importance": {
+            "hsc": 90,
+            "engineering": 95,
+            "medical": 75,
+            "varsity": 65
+          },
+          "time_percent": 80
+        }
+      ]
+    },
+    {
+      "title": "Kinematics",
+      "chapter_number": 2,
+      "recommended_time": 12.0,
+      "importance": {
+        "hsc": 95,
+        "engineering": 100,
+        "medical": 80,
+        "varsity": 70
+      },
+      "topics": [
+        {
+          "title": "Motion in a Straight Line",
+          "order": 1,
+          "description": "Position, path length and displacement, average velocity and speed",
+          "time_percent": 40
+        },
+        {
+          "title": "Motion in a Plane",
+          "order": 2,
+          "description": "Scalars and vectors, position and displacement vectors",
+          "time_percent": 60
+        }
+      ]
+    }
+  ]
+}

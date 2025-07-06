@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.auth.models import AbstractUser
 
 from syllabus.models import Topic, Chapter, Subject
 
 # Create your models here.
-class UserProfile(models.Model):
+class UserProfile(AbstractUser):
     
     STREAMS = [
         ('hsc', 'HSC'), 
@@ -14,8 +14,7 @@ class UserProfile(models.Model):
         ('varsity', 'Varsity')
     ]
     
-    
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Extend the default User model with additional fields
     stream = models.CharField(max_length=20, choices=STREAMS, default='hsc')
     show_on_leaderboard = models.BooleanField(default=True)
     avatar = models.URLField(blank=True, null=True)
@@ -27,7 +26,7 @@ class UserProfile(models.Model):
     overall_progress_cache = models.FloatField(default=0.0)
     
     def __str__(self):
-        return self.user.username
+        return self.username
 
 
 
@@ -57,4 +56,4 @@ class UserProgress(models.Model):
         ]
     
     def __str__(self):
-        return f"{self.user.user.username} - {self.topic}"
+        return f"{self.user.username} - {self.topic}"

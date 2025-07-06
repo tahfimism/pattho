@@ -31,7 +31,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'syllebus',
+    'syllabus',
+    'users',
+    'planner',
+    'leaderboard',
+    'activities',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

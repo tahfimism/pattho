@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'syllabus',
+    'core',
     'users',
     'planner',
     'leaderboard',
@@ -134,3 +135,4 @@ USE_THOUSAND_SEPARATOR = True
 DATE_FORMAT = 'd M Y'
 DATETIME_FORMAT = 'd M Y H:i'
 
+AUTH_USER_MODEL = 'users.UserProfile'

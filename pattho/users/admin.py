@@ -6,12 +6,11 @@ from django.utils.html import format_html
 # Register your models here.
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'stream', 'xp', 'streak', 'show_on_leaderboard', 'progress_bar')
+    list_display = ('username', 'email', 'stream', 'xp', 'streak', 'show_on_leaderboard', 'progress_bar')
     list_filter = ('stream', 'show_on_leaderboard')
-    search_fields = ('user__username', 'user__email')
-    raw_id_fields = ('user',)
+    search_fields = ('username', 'email')
     list_per_page = 20
-    
+
     def progress_bar(self, obj):
         return format_html(
             '<progress value="{}" max="100"></progress> {}%',
@@ -26,9 +25,8 @@ class UserProfileAdmin(admin.ModelAdmin):
 class UserProgressAdmin(admin.ModelAdmin):
     list_display = ('user', 'topic', 'status', 'skip', 'time_given',)
     list_filter = ('status', 'skip', 'topic__chapter__subject')
-    search_fields = ('user__user__username', 'topic__title')
-    raw_id_fields = ('user', 'topic')
-    list_select_related = ('user__user', 'topic__chapter__subject')
+    search_fields = ('user__username', 'topic__title')
+    list_select_related = ('user', 'topic__chapter__subject')
     list_per_page = 30
     
     # Add custom action to reset progress

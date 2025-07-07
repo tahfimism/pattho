@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-
+from users import views # Import users views for the API endpoint
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('leaderboard/', include('leaderboard.urls')),
     path('activities/', include('activities.urls')),
     path('', include('core.urls')),
+    path('api/subject_progress/', views.get_subject_progress, name='api_subject_progress'),
 ]

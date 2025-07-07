@@ -1,0 +1,35 @@
+🎨 Color & Theme Analysis (for Study Pathshala Dashboard)
+🌈 Theme:
+
+Overall Look: Clean, modern, and minimalistic with soft tones and gentle contrast.
+
+Vibe: Motivational, student-friendly, calm—ideal for academic productivity.
+
+Design Language: Neumorphism-inspired elements with subtle shadows and soft cards.
+
+🎨 Color Palette:
+Element	Color Description
+
+primary: 
+secondary: #a6c7b8
+acent color: #89afb6 
+
+Success/Completed	Soft Green for task completion highlights.
+Text	Dark Gray to Black for primary text; muted gray for secondary text.
+Highlight Badges	Yellow, Red, Blue—used for XP, streaks, and reminders.
+
+Brand colors: deep teal, sunrise orange,
+
+
+Darkmode:
+body background: #121212
+sidebars: #191919
+card background: #191919
+progress bar: #47B984
+small buttons or else
+
+
+white mode:
+body background - #F9F7F1
+card background, sidebars: #FFFFFF
+card hover #F9FAFB

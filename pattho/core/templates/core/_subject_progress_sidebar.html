@@ -1,20 +1,20 @@
-<h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Syllabus Progress
-    <button id="refresh-progress-btn" class="ml-2 p-1 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+<h3 class="text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4
+    <button id="refresh-progress-btn" class="ml-2 p-1 rounded-full text-[var(--color-gray-text-light)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
         <i data-lucide="refresh-cw" class="w-4 h-4"></i>
     </button>
 </h3>
 <ul class="space-y-3 mb-6" id="subject-progress-list">
     {% for subject in subjects_progress %}
     <li data-subject-name="{{ subject.name }}">
-        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+        <div class="flex justify-between items-center text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
             <span>{{ subject.name }}</span>
             <span class="subject-progress-percentage">{{ subject.overall_progress|default:0 }}%</span>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-            <div class="bg-blue-500 h-2 rounded-full subject-progress-bar" style="width: {{ subject.overall_progress|default:0 }}%"></div>
+        <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2 mt-1 dark:bg-[var(--color-gray-bg-dark)]">
+            <div class="bg-[var(--color-primary-light)] h-2 rounded-full subject-progress-bar" style="width: {{ subject.overall_progress|default:0 }}%"></div>
         </div>
     </li>
     {% empty %}
-    <li><p class="text-gray-500 dark:text-gray-400">No subjects found or no progress yet.</p></li>
+    <li><p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">No subjects found or no progress yet.</p></li>
     {% endfor %}
 </ul>

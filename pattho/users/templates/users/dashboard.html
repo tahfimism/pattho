@@ -2,6 +2,22 @@
 
 {% block body %}
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden p-6">
+        <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">
+            Welcome back, {{ request.user.username }}!
+        </h1>
+        <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
+            Ready to conquer your HSC preparation today?
+        </p>
+        <div class="flex items-center text-md font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+            <i data-lucide="flame" class="w-5 h-5 mr-2 text-[var(--color-accent-light)]"></i>
+            <span>{{ request.user.profile.streak }} days streak</span>
+            <span class="mx-3 text-[var(--color-border-light)] dark:text-[var(--color-border-dark)]">|</span>
+            <i data-lucide="star" class="w-5 h-5 mr-2 text-[var(--color-accent-light)]"></i>
+            <span>{{ request.user.profile.xp }} XP</span>
+        </div>
+    </div>
+
     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
 
     {% for subject in subjects %}
@@ -112,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveProgress() {
         if (Object.keys(pendingChanges).length === 0) {
             console.log("No pending changes to save.");
-            return;
+            return Promise.resolve(); // Return a resolved Promise if nothing to save
         }
 
         console.log("Saving progress to server...", pendingChanges);
@@ -121,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const changesToSave = pendingChanges;
         pendingChanges = {};
 
-        fetch(`{% url 'update_progress' %}`, {
+        return fetch(`{% url 'update_progress' %}`, { // Explicitly return the fetch Promise
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,9 +171,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Note: In a real-world app, you might want to add logic here to restore the pending changes
                 // and alert the user that saving failed.
             }
+            return data; // Return data for further chaining if needed
         })
         .catch(error => {
             console.error('Error saving progress:', error);
+            throw error; // Re-throw to propagate the error to the caller
         });
     }
 

@@ -23,16 +23,43 @@ class UserProfileAdmin(admin.ModelAdmin):
     # UserProgress Admin
 @admin.register(UserProgress)
 class UserProgressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'topic', 'status', 'skip', 'time_given',)
-    list_filter = ('status', 'skip', 'topic__chapter__subject')
-    search_fields = ('user__username', 'topic__title')
-    list_select_related = ('user', 'topic__chapter__subject')
+    list_display = (
+        'user',
+        'chapter',
+        'overall_progress',
+        'p_book',
+        'p_note',
+        'p_mcq',
+        'p_cq',
+        'p_theory',
+        'skip',
+        'time_given',
+    )
+    list_filter = (
+        'skip',
+        'chapter__subject',
+        'p_book',
+        'p_note',
+        'p_mcq',
+        'p_cq',
+        'p_theory',
+    )
+    search_fields = ('user__username', 'chapter__title')
+    list_select_related = ('user', 'chapter__subject')
     list_per_page = 30
-    
-    # Add custom action to reset progress
+
     actions = ['reset_progress']
-    
+
     def reset_progress(self, request, queryset):
-        updated = queryset.update(status='NS', time_given=0.0)
-        self.message_user(request, f"{updated} progress records reset")
+        updated = queryset.update(
+            p_book=False,
+            p_note=False,
+            p_mcq=False,
+            p_cq=False,
+            p_theory=False,
+            overall_progress=0.0,
+            time_given=0.0,
+            skip=False,
+        )
+        self.message_user(request, f"{updated} progress records reset.")
     reset_progress.short_description = "Reset selected progress"

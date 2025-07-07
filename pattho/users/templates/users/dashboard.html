@@ -1,0 +1,115 @@
+{% extends 'users/layout.html' %}
+{% load dict_filters %}
+
+{% block body %}
+ 
+Dashboard
+Welcome {{ user.username }}
+<br>
+<br>
+
+<div id="app"></div>
+
+{% for subject in syll %}
+
+<div id="{{subject.name}}">
+    <h2> {{ subject.name }}  </h2>
+
+    {% for chapter in subject.chapters.all %}
+    {% with progress=prog|dict_get:chapter.id %}
+        <h4>
+            {{ chapter.title }} -
+            {% if progress %}
+                {{ progress.overall_progress }}%
+            {% else %}
+                0%
+            {% endif %}
+        </h4>
+    
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="bar-{{ chapter.id }}" class="progress-bar" style="width:{{ progress.overall_progress }}%;" ></div>
+    </div>
+    {% endwith %}
+        <form>
+            {% with progress=prog|dict_get:chapter.id %}
+
+                <input 
+                    type="checkbox"
+                    id="theory-{{ chapter.id }}"
+                    name="theory"
+                    {% if progress.p_theory %}
+                        checked
+                    {% endif %}
+                    title="Mark theory as done"
+                >
+                <label for="theory-{{ chapter.id }}">theory</label>
+
+                <input 
+                    type="checkbox"
+                    id="book-{{ chapter.id }}"
+                    name="book"
+                    {% if progress.p_book %}
+                        checked
+                    {% endif %}
+                    title="Mark Book as done"
+                >
+                <label for="book-{{ chapter.id }}">Book</label>
+
+                <input 
+                    type="checkbox"
+                    id="note-{{ chapter.id }}"
+                    name="note"
+                    {% if progress.p_note %}
+                        checked
+                    {% endif %}
+                    title="Mark Note as done"
+                >
+                <label for="note-{{ chapter.id }}">Note</label>
+
+                <input 
+                    type="checkbox"
+                    id="cq-{{ chapter.id }}"
+                    name="cq"
+                    {% if progress.p_cq %}
+                        checked
+                    {% endif %}
+                    title="Mark CQ as done"
+                >
+                <label for="cq-{{ chapter.id }}">CQ</label>
+
+
+                <input 
+                    type="checkbox"
+                    id="mcq-{{ chapter.id }}"
+                    name="mcq"
+                    {% if progress.p_mcq %}
+                        checked
+                    {% endif %}
+                    title="Mark MCQ as done"
+                >
+                <label for="mcq-{{ chapter.id }}">MCQ</label>
+            {% endwith %}
+        </form>
+
+    {% endfor %}
+
+</div>
+
+{% endfor %}
+
+
+<script type="text/babel">
+    
+    function App(props) {
+
+    }
+
+    
+</script>
+
+
+
+
+
+{% endblock %}

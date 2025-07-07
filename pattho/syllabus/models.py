@@ -16,7 +16,7 @@ class Subject(models.Model):
     
         
     def __str__(self):
-        return f"{self.grade} - {self.name}"
+        return self.name
 
 
 class Chapter(models.Model):

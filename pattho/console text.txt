@@ -1,0 +1,31 @@
+(index):64  cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation
+(anonymous) @ (index):64
+(anonymous) @ (index):64
+dash.js:2 Dashboard script initialized.
+dash.js:126 Lucide icons initialized.
+injected.js:1 Script was injected!
+content.js:202 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+:8000/favicon.ico:1   GET http://127.0.0.1:8000/favicon.ico 404 (Not Found)
+general.js:205 [LaunchDarkly] LaunchDarkly client initialized
+dash.js:20 Change detected: Chapter 1, Field p_mcq, Status false
+dash.js:45 Updating UI instantly for Chapter 1. New calculated progress: 80%
+dash.js:35 Debounce timer reset. Will save in 5 seconds.
+dash.js:60 Saving progress to server... {1: {…}}
+dash.js:66   POST http://127.0.0.1:8000/user/dashboard/%7B%%20url%20'update_progress'%20%%7D 404 (Not Found)
+saveProgress @ dash.js:66
+setTimeout
+(anonymous) @ dash.js:33
+dash.js:103  Error saving progress: Error: Network response was not ok (404)
+    at dash.js:76:23
+(anonymous) @ dash.js:103
+Promise.catch
+saveProgress @ dash.js:102
+setTimeout
+(anonymous) @ dash.js:33
+dash.js:76  Uncaught (in promise) Error: Network response was not ok (404)
+    at dash.js:76:23
+(anonymous) @ dash.js:76
+Promise.then
+saveProgress @ dash.js:74
+setTimeout
+(anonymous) @ dash.js:33

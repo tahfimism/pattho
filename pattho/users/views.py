@@ -49,6 +49,7 @@ def update_progress(request):
                     print(f"Invalid field '{field}' for chapter {chapter_id}")
 
             user_progress.save()
+            print(f"UserProgress saved for chapter {chapter_id}. New overall_progress: {user_progress.overall_progress}")
             new_progress[chapter_id] = user_progress.overall_progress
 
         return JsonResponse({'success': True, 'new_progress': new_progress})

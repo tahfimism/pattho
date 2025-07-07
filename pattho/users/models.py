@@ -67,6 +67,7 @@ class UserProgress(models.Model):
 
     def save(self, *args, **kwargs):
         self.overall_progress = self.calculate_overall_progress()
+        print(f"Saving UserProgress for {self.user.username} - {self.chapter.title}: overall_progress={self.overall_progress}")
         super().save(*args, **kwargs)
 
 

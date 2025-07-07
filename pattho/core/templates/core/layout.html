@@ -33,7 +33,7 @@
 <body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen">
 
     <!-- Left Sidebar -->
-    <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-50">
+    <aside id="left-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-50 md:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out">
         <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
             <!-- App Logo/Name -->
             <div class="mb-8 text-left">
@@ -109,9 +109,14 @@
     </aside>
 
     <!-- Main Content and Right Sidebar Wrapper -->
-    <div class="flex-1 flex flex-col ml-64"> <!-- Added ml-64 here -->
+    <div class="flex-1 flex flex-col md:ml-64"> <!-- Added ml-64 here -->
         <!-- Top Navbar -->
         <header class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg p-5 flex items-center justify-between sticky top-0 z-40 rounded-b-xl">
+            <!-- Hamburger Menu Button for Mobile -->
+            <button id="hamburger-menu-btn" class="md:hidden p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] flex-grow text-center md:text-left">{% block view_title %}Default Title{% endblock %}</h2>
 
             <div class="flex items-center space-x-4">
@@ -217,6 +222,19 @@
                         icon.classList.remove('animate-spin'); // Remove spinning animation
                         lucide.createIcons(); // Re-initialize icons in case new ones were added or changed
                     }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+            const leftSidebar = document.getElementById('left-sidebar');
+
+            if (hamburgerBtn && leftSidebar) {
+                hamburgerBtn.addEventListener('click', function() {
+                    leftSidebar.classList.toggle('-translate-x-full');
                 });
             }
         });

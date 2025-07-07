@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Avg, Q # Import Avg and Q for aggregation
 
 from .models import UserProfile, UserProgress
 from syllabus.models import Subject, Chapter
@@ -56,3 +57,32 @@ def update_progress(request):
         return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+@login_required
+def get_subject_progress(request):
+    """
+    API endpoint to get the overall progress for each subject for the logged-in user.
+    """
+    user = request.user
+
+    # This is an efficient query that calculates the average progress for each subject
+    # by looking at the progress of its chapters for the current user.
+    subjects_progress = Subject.objects.annotate(
+        overall_progress=Avg(
+            'chapters__progress__overall_progress',
+            filter=Q(chapters__progress__user=user)
+        )
+    ).values('name', 'overall_progress')
+
+    # The result of the query will have overall_progress as None for subjects
+    # where the user has made no progress. We'll default this to 0.
+    # Also, round the progress to 2 decimal places.
+    formatted_progress = []
+    for subject in subjects_progress:
+        progress_value = subject['overall_progress'] if subject['overall_progress'] is not None else 0
+        formatted_progress.append({
+            'name': subject['name'],
+            'overall_progress': round(progress_value, 2)
+        })
+
+    return JsonResponse({'success': True, 'subjects_progress': formatted_progress})

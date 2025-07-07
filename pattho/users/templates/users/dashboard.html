@@ -172,6 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Expose pendingChanges and saveProgress to a global object for use in other scripts (e.g., layout.html)
+    window.app = window.app || {};
+    window.app.pendingChanges = pendingChanges;
+    window.app.saveProgress = saveProgress;
+
     // Initialize Lucide icons
     lucide.createIcons();
     console.log("Lucide icons initialized.");

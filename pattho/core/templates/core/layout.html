@@ -1,4 +1,5 @@
 {% load static %}
+{% load sidebar_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +61,7 @@
 <body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 flex min-h-screen">
 
     <!-- Left Sidebar -->
-    <aside class="bg-white dark:bg-gray-800 shadow-lg flex flex-col justify-between w-64 flex-shrink-0 h-full">
+    <aside class="bg-white dark:bg-gray-800 shadow-lg flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-50">
         <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
             <!-- App Logo/Name -->
             <div class="mb-8 text-center">
@@ -136,9 +137,9 @@
     </aside>
 
     <!-- Main Content and Right Sidebar Wrapper -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col ml-64"> <!-- Added ml-64 here -->
         <!-- Top Navbar -->
-        <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex items-center justify-between sticky top-0 z-40 rounded-b-xl">
+        <header class="bg-white dark:bg-gray-800 shadow-md p-5 flex items-center justify-between sticky top-0 z-40 rounded-b-xl border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex-grow text-center md:text-left">Current View Title</h2>
 
             <div class="flex items-center space-x-4">
@@ -174,64 +175,7 @@
 
             <!-- Right Sidebar -->
             <aside class="bg-white dark:bg-gray-800 shadow-lg w-72 flex-shrink-0 p-6 border-l border-gray-200 dark:border-gray-700 overflow-y-auto sidebar-scroll hidden md:block">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Syllabus Progress</h3>
-                <ul class="space-y-3 mb-6">
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Physics</span>
-                            <span>72%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: 72%"></div>
-                        </div>
-                        
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Chemistry</span>
-                            <span>63%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 63%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Mathematics</span>
-                            <span>48%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-red-500 h-2 rounded-full" style="width: 48%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Biology</span>
-                            <span>34%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-purple-500 h-2 rounded-full" style="width: 34%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>English</span>
-                            <span>89%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 89%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Bangla</span>
-                            <span>76%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-orange-500 h-2 rounded-full" style="width: 76%"></div>
-                        </div>
-                    </li>
-                </ul>
+                {% subject_progress_sidebar %}
 
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Today's Study Goal</h3>
                 <div class="mb-4">
@@ -251,6 +195,55 @@
     <!-- Initialize Lucide icons (needed for icons to display) -->
     <script>
         lucide.createIcons();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshButton = document.getElementById('refresh-progress-btn');
+            const subjectList = document.getElementById('subject-progress-list');
+
+            if (refreshButton && subjectList) {
+                refreshButton.addEventListener('click', async function() { // Added 'async'
+                    console.log("Refresh button clicked.");
+                    const icon = refreshButton.querySelector('svg'); // Lucide replaces <i> with <svg>
+                    icon.classList.add('animate-spin'); // Add spinning animation
+
+                    try {
+                        // Check if there are pending changes from the dashboard script
+                        if (window.app && window.app.pendingChanges && Object.keys(window.app.pendingChanges).length > 0) {
+                            console.log("Pending chapter changes detected. Forcing save before refreshing subject progress.");
+                            await window.app.saveProgress(); // Wait for the save to complete
+                            console.log("Pending chapter changes saved.");
+                        } else {
+                            console.log("No pending chapter changes. Proceeding with subject progress refresh.");
+                        }
+
+                        const response = await fetch('{% url 'api_subject_progress' %}');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        const data = await response.json();
+
+                        console.log("Received subject progress data:", data);
+                        if (data.success && data.subjects_progress) {
+                            data.subjects_progress.forEach(subject => {
+                                const listItem = subjectList.querySelector(`li[data-subject-name="${subject.name}"]`);
+                                if (listItem) {
+                                    const percentageSpan = listItem.querySelector('.subject-progress-percentage');
+                                    const progressBar = listItem.querySelector('.subject-progress-bar');
+
+                                    if (percentageSpan) percentageSpan.textContent = `${subject.overall_progress}%`;
+                                    if (progressBar) progressBar.style.width = `${subject.overall_progress}%`;
+                                }
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error during subject progress refresh:', error);
+                    } finally {
+                        icon.classList.remove('animate-spin'); // Remove spinning animation
+                        lucide.createIcons(); // Re-initialize icons in case new ones were added or changed
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

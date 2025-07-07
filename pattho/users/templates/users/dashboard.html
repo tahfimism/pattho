@@ -5,7 +5,7 @@
     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
 
     {% for subject in subjects %}
-    <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-xl shadow-lg mb-6 overflow-hidden border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+    <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
         <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ subject.name }}</h2>
         </div>
@@ -18,23 +18,23 @@
                     </div>
                     <div class="flex items-center space-x-4 checkbox-group">
                         <label class="flex items-center space-x-2 cursor-pointer" title="Book Read">
-                            <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]">
+                            <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
                             <i data-lucide="book-open" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer" title="Note Taken">
-                            <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]">
+                            <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
                             <i data-lucide="file-text" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer" title="MCQ Practice">
-                            <input type="checkbox" data-field="p_mcq" {% if chapter.user_progress.p_mcq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]">
+                            <input type="checkbox" data-field="p_mcq" {% if chapter.user_progress.p_mcq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
                             <i data-lucide="list-checks" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer" title="CQ Practice">
-                            <input type="checkbox" data-field="p_cq" {% if chapter.user_progress.p_cq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]">
+                            <input type="checkbox" data-field="p_cq" {% if chapter.user_progress.p_cq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
                             <i data-lucide="pencil" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer" title="Theory Complete">
-                            <input type="checkbox" data-field="p_theory" {% if chapter.user_progress.p_theory %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-primary-light)] focus:ring-[var(--color-primary-light)]">
+                            <input type="checkbox" data-field="p_theory" {% if chapter.user_progress.p_theory %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
                             <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
                         </label>
                     </div>

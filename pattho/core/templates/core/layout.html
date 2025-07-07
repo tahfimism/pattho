@@ -23,26 +23,59 @@
 
     <style>
         :root {
-            --color-bg-light: #f8fafc; /* slate-50 */
-            --color-bg-dark: #1e293b; /* slate-800 */
-            --color-text-light: #1e293b; /* slate-800 */
-            --color-text-dark: #f1f5f9; /* slate-100 */
-            --color-card-bg-light: #ffffff;
-            --color-card-bg-dark: #334155; /* slate-700 */
-            --color-border-light: #e2e8f0; /* slate-200 */
-            --color-border-dark: #475569; /* slate-600 */
-            --color-primary-light: #4f46e5; /* indigo-600 */
-            --color-primary-dark: #818cf8; /* indigo-400 */
-            --color-primary-hover-light: #6366f1; /* indigo-500 */
-            --color-primary-hover-dark: #a5b4fc; /* indigo-300 */
-            --color-accent-light: #059669; /* emerald-600 */
-            --color-accent-dark: #34d399; /* emerald-400 */
-            --color-accent-hover-light: #047857; /* emerald-700 */
-            --color-accent-hover-dark: #6ee7b7; /* emerald-300 */
-            --color-gray-text-light: #64748b; /* slate-500 */
-            --color-gray-text-dark: #94a3b8; /* slate-400 */
-            --color-gray-bg-light: #f1f5f9; /* slate-100 */
-            --color-gray-bg-dark: #475569; /* slate-600 */
+            /* Backgrounds */
+            --color-bg-light: #F9F7F1; /* Light mode body background */
+            --color-bg-dark: #121212; /* Dark mode body background */
+
+            /* Text Colors */
+            --color-text-light: #1e293b; /* Dark gray for light mode primary text */
+            --color-text-dark: #f1f5f9; /* Light gray for dark mode primary text */
+            --color-gray-text-light: #64748b; /* Muted gray for light mode secondary text */
+            --color-gray-text-dark: #94a3b8; /* Muted gray for dark mode secondary text */
+
+            /* Card/Sidebar Backgrounds */
+            --color-card-bg-light: #FFFFFF; /* Light mode card/sidebar background */
+            --color-card-bg-dark: #191919; /* Dark mode card/sidebar background */
+
+            /* Borders */
+            --color-border-light: #e2e8f0; /* Light mode border */
+            --color-border-dark: #2d3748; /* Dark mode border (darker for subtle separation) */
+
+            /* Primary Color (Deep Teal - for main accents, buttons, active states) */
+            --color-primary-light: #008080; /* Deep Teal for light mode primary */
+            --color-primary-dark: #6EE7B7; /* Brighter Green/Teal for dark mode primary */
+            --color-primary-hover-light: #006666; /* Darker teal for light mode hover */
+            --color-primary-hover-dark: #A7F3D0; /* Lighter green/teal for dark mode hover */
+
+            /* Secondary Color (from req.txt) */
+            --color-secondary-light: #a6c7b8; /* Light mode secondary */
+            --color-secondary-dark: #89afb6; /* Dark mode secondary (using acent color from req.txt) */
+
+            /* Accent Color (Sunrise Orange - for highlights, XP, streaks) */
+            --color-accent-light: #FF8C00; /* Sunrise Orange for light mode accent */
+            --color-accent-dark: #FFC14D; /* Brighter Orange for dark mode accent */
+            --color-accent-hover-light: #CC7000; /* Darker orange for light mode hover */
+            --color-accent-hover-dark: #FFD700; /* Lighter orange for dark mode hover */
+
+            /* Status Colors */
+            --color-success-light: #3CB371; /* Soft Green for success */
+            --color-success-dark: #A7F3D0; /* Brighter green for dark mode success */
+            --color-warning-light: #FFD700; /* Yellow for warning */
+            --color-warning-dark: #FFEA00; /* Brighter yellow for dark mode warning */
+            --color-error-light: #DC143C; /* Crimson for error */
+            --color-error-dark: #FF6347; /* Tomato for dark mode error */
+            --color-info-light: #4169E1; /* Royal Blue for info */
+            --color-info-dark: #6495ED; /* Cornflower Blue for dark mode info */
+
+            /* Gray Backgrounds (for progress bar tracks, search inputs etc.) */
+            --color-gray-bg-light: #f1f5f9; /* Light gray background */
+            --color-gray-bg-dark: #2d3748; /* Dark gray background (darker for contrast) */
+
+            /* Custom Shadows for Dark Mode */
+            --shadow-dark-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-dark-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-dark-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-dark-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         body {
@@ -86,16 +119,23 @@
             background-color: var(--color-gray-text-dark);
             border: 2px solid var(--color-gray-bg-dark);
         }
+
+        /* Override Tailwind shadows for dark mode to be visible */
+        .dark .shadow-sm { box-shadow: var(--shadow-dark-sm); }
+        .dark .shadow-md { box-shadow: var(--shadow-dark-md); }
+        .dark .shadow-lg { box-shadow: var(--shadow-dark-lg); }
+        .dark .shadow-xl { box-shadow: var(--shadow-dark-xl); }
+        .dark .shadow-2xl { box-shadow: var(--shadow-dark-2xl); }
     </style>
 </head>
 <body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen">
 
     <!-- Left Sidebar -->
-    <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-50">
+    <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-50">
         <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
             <!-- App Logo/Name -->
-            <div class="mb-8 text-center">
-                <h1 class="text-3xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]">StudyFlow</h1>
+            <div class="mb-8 text-left">
+                <h1 class="text-3xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]">পাঠ্য</h1>
             </div>
 
             <!-- Navigation Links -->
@@ -153,7 +193,7 @@
                 </div>
             </div>
             <div class="flex items-center mb-4 text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
-                <i data-lucide="flame" class="w-4 h-4 mr-2 text-orange-500"></i>
+                <i data-lucide="flame" class="w-4 h-4 mr-2 text-[var(--color-accent-light)]"></i>
                 <span>Streak: 15 Days</span>
             </div>
             <div class="flex items-center">
@@ -169,7 +209,7 @@
     <!-- Main Content and Right Sidebar Wrapper -->
     <div class="flex-1 flex flex-col ml-64"> <!-- Added ml-64 here -->
         <!-- Top Navbar -->
-        <header class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-md p-5 flex items-center justify-between sticky top-0 z-40 rounded-b-xl border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+        <header class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg p-5 flex items-center justify-between sticky top-0 z-40 rounded-b-xl">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] flex-grow text-center md:text-left">{% block view_title %}Default Title{% endblock %}</h2>
 
             <div class="flex items-center space-x-4">
@@ -182,7 +222,7 @@
                 <!-- Notification Icon -->
                 <button class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200 relative">
                     <i data-lucide="bell" class="w-6 h-6"></i>
-                    <span class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500 border-2 border-white dark:border-[var(--color-card-bg-dark)]"></span>
+                    <span class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-[var(--color-error-light)] border-2 border-white dark:border-[var(--color-card-bg-dark)]"></span>
                 </button>
 
                 <!-- Dark/Light Mode Toggle (Static icon, no JS functionality) -->
@@ -195,14 +235,14 @@
         <!-- Content Area: Main Content + Right Sidebar -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Main Content Area - This is where your Django content will be injected -->
-            <main class="p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-xl shadow-md border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] min-h-[300px]">
+            <main class="p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-bg-dark)] shadow-lg min-h-[300px]">
                 {% block body %}
                 This is the main content area. Your Django views will render content here.
                 {% endblock %}
             </main>
 
             <!-- Right Sidebar -->
-            <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg w-72 flex-shrink-0 p-6 border-l border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] overflow-y-auto sidebar-scroll hidden md:block">
+            <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll hidden md:block">
                 {% subject_progress_sidebar %}
 
                 <h3 class="text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Today's Study Goal</h3>

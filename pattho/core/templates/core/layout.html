@@ -28,7 +28,6 @@
 
 
     <link rel="stylesheet" href="{% static 'core/main.css' %}">
-    <script src="{% static 'core/dash.js' %}"></script>
 
 </head>
 <body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen">
@@ -166,7 +165,13 @@
     <!-- Initialize Lucide icons (needed for icons to display) -->
     <script>
         lucide.createIcons();
+    </script>
 
+    {% block extra_js_vars %}{% endblock %}
+
+    <script src="{% static 'core/dash.js' %}"></script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const refreshButton = document.getElementById('refresh-progress-btn');
             const subjectList = document.getElementById('subject-progress-list');

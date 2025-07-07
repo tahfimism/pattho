@@ -28,40 +28,40 @@
         <div class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)]">
             {% for chapter in subject.chapters.all %}
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
-                <div class="flex items-center justify-between">
-                    <div class="flex-grow">
-                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ chapter.title }}</p>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <div class="flex-grow mb-4 md:mb-0 md:w-1/2">
+                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">{{ chapter.title }}</p>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Progress</span>
+                                <span class="text-sm font-medium text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] progress-text">{{ chapter.user_progress.overall_progress|default:0 }}%</span>
+                            </div>
+                            <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-1.5 dark:bg-[var(--color-gray-bg-dark)]">
+                                <div class="bg-[var(--color-primary-light)] h-1.5 rounded-full progress-bar" style="width: {{ chapter.user_progress.overall_progress|default:0 }}%;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-4 checkbox-group">
-                        <label class="flex items-center space-x-2 cursor-pointer" title="Book Read">
+                    <div class="flex flex-wrap items-center justify-end space-x-4 md:w-1/2">
+                        <label class="flex items-center space-x-1 cursor-pointer" title="Book Read">
                             <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="book-open" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                            <i data-lucide="book-open" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Book</span>
                         </label>
-                        <label class="flex items-center space-x-2 cursor-pointer" title="Note Taken">
+                        <label class="flex items-center space-x-1 cursor-pointer" title="Note Taken">
                             <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="file-text" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                            <i data-lucide="file-text" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Note</span>
                         </label>
-                        <label class="flex items-center space-x-2 cursor-pointer" title="MCQ Practice">
+                        <label class="flex items-center space-x-1 cursor-pointer" title="MCQ Practice">
                             <input type="checkbox" data-field="p_mcq" {% if chapter.user_progress.p_mcq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="list-checks" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                            <i data-lucide="list-checks" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">MCQ</span>
                         </label>
-                        <label class="flex items-center space-x-2 cursor-pointer" title="CQ Practice">
+                        <label class="flex items-center space-x-1 cursor-pointer" title="CQ Practice">
                             <input type="checkbox" data-field="p_cq" {% if chapter.user_progress.p_cq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="pencil" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                            <i data-lucide="pencil" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">CQ</span>
                         </label>
-                        <label class="flex items-center space-x-2 cursor-pointer" title="Theory Complete">
+                        <label class="flex items-center space-x-1 cursor-pointer" title="Theory Complete">
                             <input type="checkbox" data-field="p_theory" {% if chapter.user_progress.p_theory %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                            <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Theory</span>
                         </label>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Progress</span>
-                        <span class="text-sm font-medium text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] progress-text">{{ chapter.user_progress.overall_progress|default:0 }}%</span>
-                    </div>
-                    <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2.5 dark:bg-[var(--color-gray-bg-dark)]">
-                        <div class="bg-[var(--color-primary-light)] h-2.5 rounded-full progress-bar" style="width: {{ chapter.user_progress.overall_progress|default:0 }}%;"></div>
                     </div>
                 </div>
             </div>

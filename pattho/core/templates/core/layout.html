@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker Template</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Custom scrollbar for sidebars */
+        .sidebar-scroll {
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: #cbd5e1 #f1f5f9; /* Firefox */
+        }
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
+        }
+
+        /* Dark mode scrollbar styles */
+        .dark .sidebar-scroll {
+            scrollbar-color: #4a5568 #2d3748;
+        }
+        .dark .sidebar-scroll::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        .dark .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+            border: 2px solid #2d3748;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 flex min-h-screen">
+
+    <!-- Left Sidebar -->
+    <aside class="bg-white dark:bg-gray-800 shadow-lg flex flex-col justify-between w-64 flex-shrink-0 h-full">
+        <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
+            <!-- App Logo/Name -->
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl font-bold text-blue-600 dark:text-blue-400">StudyFlow</h1>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav>
+                <ul>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
+                            Study Planner
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
+                            To-do List
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="timer" class="w-5 h-5 mr-3"></i>
+                            Pomodoro Timer
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="trophy" class="w-5 h-5 mr-3"></i>
+                            Leaderboard / Badges
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                            <i data-lucide="user" class="w-5 h-5 mr-3"></i>
+                            Profile / Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- User XP, Streak, Avatar (Static for template) -->
+        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="mb-4">
+                <div class="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                    <span>XP Progress</span>
+                    <span>750/1000 XP</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                    <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 75%"></div>
+                </div>
+            </div>
+            <div class="flex items-center mb-4 text-sm font-medium text-gray-600 dark:text-gray-300">
+                <i data-lucide="flame" class="w-4 h-4 mr-2 text-orange-500"></i>
+                <span>Streak: 15 Days</span>
+            </div>
+            <div class="flex items-center">
+                <img src="https://placehold.co/40x40/a78bfa/ffffff?text=U" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-blue-400 dark:border-blue-300">
+                <div>
+                    <p class="font-semibold text-gray-800 dark:text-gray-100">Student Name</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">HSC 2025</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content and Right Sidebar Wrapper -->
+    <div class="flex-1 flex flex-col">
+        <!-- Top Navbar -->
+        <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex items-center justify-between sticky top-0 z-40 rounded-b-xl">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex-grow text-center md:text-left">Current View Title</h2>
+
+            <div class="flex items-center space-x-4">
+                <!-- Search Bar -->
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-48 md:w-64">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5"></i>
+                </div>
+
+                <!-- Notification Icon -->
+                <button class="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 relative">
+                    <i data-lucide="bell" class="w-6 h-6"></i>
+                    <span class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500 border-2 border-white dark:border-gray-800"></span>
+                </button>
+
+                <!-- Dark/Light Mode Toggle (Static icon, no JS functionality) -->
+                <button class="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                    <i data-lucide="sun" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Area: Main Content + Right Sidebar -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- Main Content Area - This is where your Django content will be injected -->
+            <main class="p-6 flex-1 overflow-y-auto">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 min-h-[300px] flex items-center justify-center">
+                    {% block body %}
+                    This is the main content area. Your Django views will render content here.
+                    {% endblock %}
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="bg-white dark:bg-gray-800 shadow-lg w-72 flex-shrink-0 p-6 border-l border-gray-200 dark:border-gray-700 overflow-y-auto sidebar-scroll hidden md:block">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Syllabus Progress</h3>
+                <ul class="space-y-3 mb-6">
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>Physics</span>
+                            <span>72%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                        <ul class="ml-4 mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                            <li>Mechanics: 100%</li>
+                            <li>Thermodynamics: 85%</li>
+                            <li>Electromagnetism: 45%</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>Chemistry</span>
+                            <span>63%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 63%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>Mathematics</span>
+                            <span>48%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-red-500 h-2 rounded-full" style="width: 48%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>Biology</span>
+                            <span>34%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 34%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>English</span>
+                            <span>89%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 89%"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
+                            <span>Bangla</span>
+                            <span>76%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
+                            <div class="bg-orange-500 h-2 rounded-full" style="width: 76%"></div>
+                        </div>
+                    </li>
+                </ul>
+
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Today's Study Goal</h3>
+                <div class="mb-4">
+                    <div class="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                        <span>3h 21m / 4h</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                        <div class="bg-blue-500 h-2.5 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">35 minutes left to reach your daily goal!</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Initialize Lucide icons (needed for icons to display) -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

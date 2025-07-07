@@ -9,9 +9,9 @@ class UserProfile(AbstractUser):
     
     STREAMS = [
         ('hsc', 'HSC'), 
-        ('engineering', 'Engineering'), 
-        ('medical', 'Medical'), 
-        ('varsity', 'Varsity')
+        ('eng', 'Engineering'), 
+        ('med', 'Medical'), 
+        ('var', 'Varsity')
     ]
     
     # Extend the default User model with additional fields
@@ -31,29 +31,46 @@ class UserProfile(AbstractUser):
 
 
 class UserProgress(models.Model):
-
-    STATUS_CHOICES = [
-        ('NS', 'Not Started'),
-        ('C', 'Completed'),
-        ('R', 'Needs Revision'),
-    ]
-    
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='progress')
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='progress')
+    chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='progress', default=None)
 
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='NS')
+    p_book = models.BooleanField(default=False, help_text="Is book read?")
+    p_note = models.BooleanField(default=False, help_text="Has note?")
+    p_mcq = models.BooleanField(default=False, help_text="Did MCQ practice?")
+    p_cq = models.BooleanField(default=False, help_text="Did CQ practice?")
+    p_theory = models.BooleanField(default=False, help_text="Theory completed?")
+
+    overall_progress = models.FloatField(default=0.0, help_text="Overall progress in percentage")
+    
     skip = models.BooleanField(default=False)
-
     personal_note = models.TextField(blank=True, null=True)
 
-    # calculate time with js and just sum here, no need to store each session
-    time_given = models.FloatField(help_text="Time given in hours")
+    time_given = models.FloatField(default=0.0, help_text="Time given in hours")
     
     class Meta:
-        unique_together = ('user', 'topic')
-        indexes = [
-            models.Index(fields=['status']),
-        ]
-    
+        unique_together = ('user', 'chapter')
+
     def __str__(self):
-        return f"{self.user.username} - {self.topic}"
+        return f"{self.user.username} - {self.chapter}"
+
+    def calculate_overall_progress(self):
+        flags = [
+            self.p_book,
+            self.p_note,
+            self.p_mcq,
+            self.p_cq,
+            self.p_theory
+        ]
+        total = len(flags)
+        completed = sum(1 for f in flags if f)
+        return round((completed / total) * 100, 2)
+
+    def save(self, *args, **kwargs):
+        self.overall_progress = self.calculate_overall_progress()
+        super().save(*args, **kwargs)
+
+
+
+
+
+

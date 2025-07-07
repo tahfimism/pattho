@@ -1,0 +1,34 @@
+This is a Django project named `pattho`, designed as a study tracker application.
+
+**Core Components:**
+- **`pattho/` (Project Root):** Contains the main Django project settings (`settings.py`), URL configurations (`urls.py`), and WSGI/ASGI entry points.
+- **`core/`:** Handles core functionalities like user authentication (login, logout, register), basic views (index), and static assets (CSS, JS) and templates for the main layout. It includes `main.css` for styling and `dash.js` for dashboard interactivity.
+- **`users/`:** Manages user profiles (`UserProfile` model extending `AbstractUser`), user progress tracking (`UserProgress` model), and related views (dashboard, update progress API).
+- **`syllabus/`:** Defines the academic structure with `Subject`, `Chapter`, and `Topic` models. It also includes a management command to load syllabus data from JSON.
+- **`activities/`:** Manages a simple To-Do list feature with `ToDoItem` model.
+- **`leaderboard/`:** Implements gamification features with `Badge` and `UserBadge` models.
+- **`planner/`:** Manages study routines and planned tasks with `StudyRoutine` and `PlannedTask` models.
+
+**Key Features & Relationships:**
+- **User Authentication:** Standard Django authentication handled in `core/views.py`.
+- **Dashboard:** `users/views.py` renders the `users/dashboard.html` template, displaying subjects and chapters with user-specific progress.
+- **Progress Tracking:** `UserProgress` model in `users/models.py` tracks completion status for various aspects (book, note, MCQ, CQ, theory) for each chapter. The `overall_progress` is calculated automatically on save.
+- **API Endpoints:**
+    - `/api/subject_progress/`: Provides overall subject progress for the logged-in user (`users/views.py`).
+    - `/user/update_progress/`: Updates user progress for chapters via AJAX requests (`users/views.py`).
+- **Frontend (HTML/CSS/JS):**
+    - `core/layout.html`: Base template for the application, including Tailwind CSS, Google Fonts, Lucide Icons, and custom CSS (`main.css`). It also loads `dash.js`.
+    - `core/main.css`: Defines custom CSS variables for theming (light/dark mode) and general styling.
+    - `core/static/core/dash.js`: Contains JavaScript logic for the dashboard, including handling checkbox changes, debounced saving of progress, and updating UI elements. It uses `fetch` API for AJAX calls.
+    - `users/dashboard.html`: Extends `core/layout.html` and displays the subject/chapter progress. It includes a script block to define `window.ProgressUrl` and `window.apiSubjectProgressUrl` for JavaScript.
+- **Admin Interface:** Custom admin configurations for all models, including a custom dashboard view in `syllabus/admin.py`.
+- **Templatetags:** `core/templatetags/sidebar_tags.py` provides an inclusion tag to display subject progress in the sidebar. `users/templatetags/dict_filters.py` provides a filter for dictionary access.
+
+**Dependencies (from `pattho/settings.py` and `core/layout.html`):**
+- Django
+- `django_json_widget`
+- Tailwind CSS (CDN)
+- Google Fonts (Inter, Noto Serif Bengali, etc.)
+- Lucide Icons (CDN)
+- React (CDN - though not explicitly used in the provided JS, it's included)
+- Babel (CDN - likely for JSX transformation if React was used)

@@ -22,8 +22,30 @@
 
     {% for subject in subjects %}
     <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
-        <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+        <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ subject.name }}</h2>
+            <div class="flex items-center justify-end gap-x-10 text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+                <div class="flex items-center space-x-1 w-10 justify-center">
+                    <i data-lucide="book-open" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                    <span>Book</span>
+                </div>
+                <div class="flex items-center space-x-1 w-10 justify-center">
+                    <i data-lucide="file-text" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                    <span>Note</span>
+                </div>
+                <div class="flex items-center space-x-1 w-10 justify-center">
+                    <i data-lucide="list-checks" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                    <span>MCQ</span>
+                </div>
+                <div class="flex items-center space-x-1 w-10 justify-center">
+                    <i data-lucide="pencil" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                    <span>CQ</span>
+                </div>
+                <div class="flex items-center space-x-1 w-10 justify-center">
+                    <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i>
+                    <span>Theory</span>
+                </div>
+            </div>
         </div>
         <div class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)]">
             {% for chapter in subject.chapters.all %}
@@ -41,26 +63,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-end space-x-4 md:w-1/2">
-                        <label class="flex items-center space-x-1 cursor-pointer" title="Book Read">
+                    <div class="flex flex-wrap items-center justify-end gap-x-10 md:w-1/2">
+                        <label class="flex items-center space-x-1 cursor-pointer w-10 justify-center" title="Book Read">
                             <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="book-open" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Book</span>
                         </label>
-                        <label class="flex items-center space-x-1 cursor-pointer" title="Note Taken">
+                        <label class="flex items-center space-x-1 cursor-pointer w-10 justify-center" title="Note Taken">
                             <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="file-text" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Note</span>
                         </label>
-                        <label class="flex items-center space-x-1 cursor-pointer" title="MCQ Practice">
+                        <label class="flex items-center space-x-1 cursor-pointer w-10 justify-center" title="MCQ Practice">
                             <input type="checkbox" data-field="p_mcq" {% if chapter.user_progress.p_mcq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="list-checks" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">MCQ</span>
                         </label>
-                        <label class="flex items-center space-x-1 cursor-pointer" title="CQ Practice">
+                        <label class="flex items-center space-x-1 cursor-pointer w-10 justify-center" title="CQ Practice">
                             <input type="checkbox" data-field="p_cq" {% if chapter.user_progress.p_cq %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="pencil" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">CQ</span>
                         </label>
-                        <label class="flex items-center space-x-1 cursor-pointer" title="Theory Complete">
+                        <label class="flex items-center space-x-1 cursor-pointer w-10 justify-center" title="Theory Complete">
                             <input type="checkbox" data-field="p_theory" {% if chapter.user_progress.p_theory %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)]">
-                            <i data-lucide="brain-circuit" class="w-5 h-5 text-[var(--color-gray-text-light)]"></i><span class="text-base text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Theory</span>
                         </label>
                     </div>
                 </div>
@@ -71,9 +88,11 @@
     {% endfor %}
 </div>
 
+{% block extra_js_vars %}
 <script>
-    window.ProgressUrl = "{% url 'update_progress' %}";
+    window.updateProgressUrl = "{% url 'update_progress' %}";
     window.apiSubjectProgressUrl = "{% url 'api_subject_progress' %}";
 </script>
+{% endblock %}
 
 {% endblock %}

@@ -30,22 +30,27 @@ def dashboard(request):
 def update_progress(request):
     try:
         data = json.loads(request.body)
-        chapter_id = data.get('chapter_id')
-        field = data.get('field')
-        status = data.get('status')
+        changes = data.get('changes')
 
-        if chapter_id is None or field is None or status is None:
-            return JsonResponse({'success': False, 'error': 'Missing data'}, status=400)
+        if not changes:
+            return JsonResponse({'success': False, 'error': 'No changes provided'}, status=400)
 
-        chapter = get_object_or_404(Chapter, id=chapter_id)
-        user_progress, created = UserProgress.objects.get_or_create(user=request.user, chapter=chapter)
+        new_progress = {}
+        for chapter_id, fields in changes.items():
+            chapter = get_object_or_404(Chapter, id=chapter_id)
+            user_progress, created = UserProgress.objects.get_or_create(user=request.user, chapter=chapter)
 
-        if hasattr(user_progress, field):
-            setattr(user_progress, field, status)
+            for field, status in fields.items():
+                if hasattr(user_progress, field):
+                    setattr(user_progress, field, status)
+                else:
+                    # Log this error, but continue processing other fields
+                    print(f"Invalid field '{field}' for chapter {chapter_id}")
+
             user_progress.save()
-            return JsonResponse({'success': True, 'new_progress': user_progress.overall_progress})
-        else:
-            return JsonResponse({'success': False, 'error': 'Invalid field'}, status=400)
+            new_progress[chapter_id] = user_progress.overall_progress
+
+        return JsonResponse({'success': True, 'new_progress': new_progress})
 
     except json.JSONDecodeError:
         return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)

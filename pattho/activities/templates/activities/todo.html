@@ -49,15 +49,16 @@
         </div>
         <!-- To-Do List Section -->
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:gap-x-9">
-                <div class="mb-4 md:mb-0 flex-shrink-0">
+            <div class="flex flex-col md:flex-row flex-wrap justify-between items-start md:items-center mb-4 md:gap-x-4">
+                <div class="mb-4 flex-shrink-0">
                     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">My To-Do List</h1>
                     
                 </div>
-                <form action="{% url 'add_todo' %}" method="post" class="flex items-center w-full md:flex-grow">
+                <form action="{% url 'add_todo' %}" method="post" class="flex items-center w-full">
                     {% csrf_token %}
                     <input type="text" name="title" placeholder="Add a new to-do item" class="p-3 rounded-l-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent flex-grow">
                     <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-r-lg transition-colors duration-200 shadow-md">
+                        
                         Add Task
                     </button>
                 </form>

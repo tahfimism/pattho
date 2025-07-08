@@ -6,12 +6,11 @@ Pomodoro Timer Section (Centered Block): Large Pomodoro timer ring in the center
 
 
 
-Task Summary Metrics Row (Four Horizontal Boxes)
-Four equally spaced stat boxes just under the timer block:
 
-Total Tasks – shows number (e.g., 12)
 
-Completed – shows number (e.g., 8)
+ – shows number (e.g., 12)
+
+ – shows number (e.g., 8)
 
 In Progress – shows number (e.g., 3)
 

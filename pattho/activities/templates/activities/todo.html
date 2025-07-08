@@ -15,9 +15,9 @@
                 </div>
             </div>
 
-            <div class="relative w-80 h-80 flex items-center justify-center rounded-full border-8 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)] mb-8">
+            <div class="relative flex flex-col items-center justify-center mb-8">
                 <div class="text-7xl font-normal font-['Courier_Prime'] text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
-                <p class="absolute bottom-16 text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]" id="timer-label">Focus Time</p>
+                <p class="text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]" id="timer-label">Focus Time</p>
             </div>
             <div class="flex space-x-4 mb-4">
                 <button id="start-timer" class="bg-[var(--color-success-light)] hover:bg-[var(--color-success-dark)] text-white py-2 px-4 rounded-lg transition-colors duration-200 shadow-md flex items-center">
@@ -26,19 +26,38 @@
                 <button id="pause-timer" class="bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] py-2 px-4 rounded-lg transition-colors duration-200 shadow-md hover:bg-[var(--color-gray-bg-light)] hover:bg-opacity-80 dark:hover:bg-[var(--color-gray-bg-dark)] dark:hover:bg-opacity-80">Pause</button>
                 <button id="reset-timer" class="bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] py-2 px-4 rounded-lg transition-colors duration-200 shadow-md hover:bg-[var(--color-gray-bg-light)] hover:bg-opacity-80 dark:hover:bg-[var(--color-gray-bg-dark)] dark:hover:bg-opacity-80">Reset</button>
             </div>
-            
+        </div>
+
+        <!-- Task Summary Metrics Row -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center">
+                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Total Tasks</p>
+                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="total-tasks">0</p>
+            </div>
+            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center">
+                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Completed</p>
+                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="completed-tasks">0</p>
+            </div>
+            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center">
+                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Due Today</p>
+                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="due-today-tasks">0</p>
+            </div>
+            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center">
+                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Overdue</p>
+                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="overdue-tasks">0</p>
+            </div>
         </div>
         <!-- To-Do List Section -->
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6">
-            <div class="flex justify-between items-center mb-4">
-                <div>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 md:gap-x-9">
+                <div class="mb-4 md:mb-0 flex-shrink-0">
                     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">My To-Do List</h1>
-                    <p class="text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Manage your tasks and boost productivity</p>
+                    
                 </div>
-                <form action="{% url 'add_todo' %}" method="post" class="flex items-center">
+                <form action="{% url 'add_todo' %}" method="post" class="flex items-center w-full md:flex-grow">
                     {% csrf_token %}
-                    <input type="text" name="title" placeholder="Add a new to-do item" class="hidden md:block p-3 rounded-l-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent">
-                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">
+                    <input type="text" name="title" placeholder="Add a new to-do item" class="p-3 rounded-l-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent flex-grow">
+                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-r-lg transition-colors duration-200 shadow-md">
                         Add Task
                     </button>
                 </form>
@@ -181,5 +200,27 @@
 
     // Initial display update
     updateDisplay();
+
+    // Function to fetch and update task summary
+    async function fetchTaskSummary() {
+        try {
+            const response = await fetch('{% url 'api_task_summary' %}');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+
+            document.getElementById('total-tasks').textContent = data.total_tasks;
+            document.getElementById('completed-tasks').textContent = data.completed_tasks;
+            document.getElementById('due-today-tasks').textContent = data.due_today_tasks;
+            document.getElementById('overdue-tasks').textContent = data.overdue_tasks;
+
+        } catch (error) {
+            console.error('Error fetching task summary:', error);
+        }
+    }
+
+    // Fetch task summary on page load
+    fetchTaskSummary();
 </script>
 {% endblock %}

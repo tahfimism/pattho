@@ -38,7 +38,9 @@
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
         <h1 class="text-2xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] flex-grow text-center" id="logo-name-mobile">পাঠ্য</h1>
-        <div class="w-10"></div> <!-- Placeholder to balance the hamburger button -->
+        <button id="mobile-right-sidebar-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+            <i data-lucide="align-right" class="w-6 h-6"></i>
+        </button>
     </div>
 
     <!-- Left Sidebar (fixed on desktop, slides in/out on mobile) -->
@@ -123,7 +125,7 @@
             </main>
 
             <!-- Right Sidebar -->
-            <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll hidden md:block">
+            <aside id="right-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:relative md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40">
                 {% subject_progress_sidebar %}
 
                 <div class="border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] pb-6 mb-6"></div>
@@ -151,6 +153,9 @@
         </div>
     </div>
 
+    <!-- Overlay for mobile right sidebar -->
+    <div id="right-sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+
     <!-- Initialize Lucide icons (needed for icons to display) -->
     <script>
         lucide.createIcons();
@@ -165,6 +170,9 @@
             const refreshButton = document.getElementById('refresh-progress-btn');
             const subjectList = document.getElementById('subject-progress-list');
             const incompleteTasksList = document.getElementById('incomplete-tasks-list');
+            const mobileRightSidebarBtn = document.getElementById('mobile-right-sidebar-btn');
+            const rightSidebar = document.getElementById('right-sidebar');
+            const rightSidebarOverlay = document.getElementById('right-sidebar-overlay');
 
             // Function to fetch and display incomplete tasks
             async function fetchIncompleteTasks() {
@@ -248,6 +256,19 @@
                         icon.classList.remove('animate-spin'); // Remove spinning animation
                         lucide.createIcons(); // Re-initialize icons in case new ones were added or changed
                     }
+                });
+            }
+
+            // Mobile right sidebar toggle
+            if (mobileRightSidebarBtn && rightSidebar && rightSidebarOverlay) {
+                mobileRightSidebarBtn.addEventListener('click', function() {
+                    rightSidebar.classList.toggle('translate-x-full');
+                    rightSidebarOverlay.classList.toggle('hidden');
+                });
+
+                rightSidebarOverlay.addEventListener('click', function() {
+                    rightSidebar.classList.add('translate-x-full');
+                    rightSidebarOverlay.classList.add('hidden');
                 });
             }
         });

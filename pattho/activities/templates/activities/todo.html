@@ -7,7 +7,16 @@
         <!-- Pomodoro Timer Section -->
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
             <div class="flex justify-between items-center w-full mb-6">
-                <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Pomodoro</h2>
+                                <div class="flex items-center gap-2">
+                    <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Pomodoro</h2>
+                    <div class="relative group">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] cursor-pointer"></i>
+                        <div class="absolute top-full mt-2 w-64 bg-[var(--color-card-bg-dark)] text-white text-sm rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                            The Pomodoro Technique is a time management method. Work for 25 minutes, then take a short 5-minute break. After four work intervals, take a longer 15-minute break.
+                            <div class="absolute left-1/2 -translate-x-1/2 bottom-full w-0 h-0 border-x-8 border-x-transparent border-b-8 border-b-[var(--color-card-bg-dark)]"></div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Tabs for Work/Break -->
                 <div class="flex bg-[var(--color-card-bg-dark)] rounded-full p-1 shadow-inner">
                     <button id="work-tab" class="flex-1 px-4 py-1 text-lg transition-colors duration-200 rounded-full text-white bg-[var(--color-gray-bg-dark)]">Work</button>

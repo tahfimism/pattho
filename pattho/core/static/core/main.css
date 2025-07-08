@@ -118,3 +118,15 @@
         background-color: var(--color-primary-dark);
         color: var(--color-text-dark);
     }
+
+/* Tooltip styles */
+.group .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.group:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

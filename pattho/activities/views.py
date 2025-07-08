@@ -51,16 +51,14 @@ def get_task_summary(request):
     return JsonResponse(data)
 
 @login_required
-def get_today_tasks(request):
-    today = timezone.localdate()
-    today_tasks = ToDoItem.objects.filter(
+def get_incomplete_tasks(request):
+    incomplete_tasks = ToDoItem.objects.filter(
         user=request.user,
         completed=False,
-        date__date=today
     ).order_by('date').values('id', 'title')
     
-    tasks_list = list(today_tasks)
-    return JsonResponse({'today_tasks': tasks_list})
+    tasks_list = list(incomplete_tasks)
+    return JsonResponse({'incomplete_tasks': tasks_list})
 
 @login_required
 @require_POST

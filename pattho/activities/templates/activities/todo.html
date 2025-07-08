@@ -58,7 +58,7 @@
                     {% csrf_token %}
                     <input type="text" name="title" placeholder="Add a new to-do item" class="p-3 rounded-l-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent flex-grow">
                     <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-r-lg transition-colors duration-200 shadow-md">
-                        
+            
                         Add Task
                     </button>
                 </form>
@@ -84,6 +84,9 @@
                         <button class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-primary-dark)] transition-colors duration-200 edit-todo-btn" data-todo-id="{{ todo.id }}">
                             <i data-lucide="edit" class="w-4 h-4 edit-icon"></i>
                             <i data-lucide="save" class="w-4 h-4 save-icon hidden"></i>
+                        </button>
+                        <button class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:text-[var(--color-error-light)] dark:hover:text-[var(--color-error-dark)] transition-colors duration-200 delete-todo-btn" data-todo-id="{{ todo.id }}">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
@@ -353,6 +356,57 @@
                 } catch (error) {
                     console.error('Error editing task:', error);
                     alert('Error saving task. Please try again.');
+                }
+            }
+        });
+    });
+
+    // Handle Enter key press for saving task title
+    document.querySelectorAll('.todo-title-input').forEach(input => {
+        input.addEventListener('keydown', async function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission
+                const listItem = this.closest('div.flex.items-center.justify-between');
+                const editButton = listItem.querySelector('.edit-todo-btn');
+                editButton.click(); // Simulate a click on the save button
+            }
+        });
+    });
+
+    // Handle task deletion via AJAX
+    document.querySelectorAll('.delete-todo-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+            const todoId = this.dataset.todoId;
+            const listItem = this.closest('div.flex.items-center.justify-between');
+            const csrfToken = listItem.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+            if (confirm('Are you sure you want to delete this task?')) {
+                try {
+                    const response = await fetch(`/activities/api/todo/delete/${todoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({})
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        listItem.remove(); // Remove the task from the DOM
+                        fetchTaskSummary(); // Update task summary metrics
+                    } else {
+                        console.error('Failed to delete task:', data.error);
+                        alert('Failed to delete task: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                    alert('Error deleting task. Please try again.');
                 }
             }
         });

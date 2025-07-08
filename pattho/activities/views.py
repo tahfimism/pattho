@@ -76,3 +76,13 @@ def edit_todo_title(request, todo_id):
         return JsonResponse({'success': False, 'error': 'Task not found'}, status=404)
     except json.JSONDecodeError:
         return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+
+@login_required
+@require_POST
+def delete_todo(request, todo_id):
+    try:
+        todo = ToDoItem.objects.get(id=todo_id, user=request.user)
+        todo.delete()
+        return JsonResponse({'success': True})
+    except ToDoItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Task not found'}, status=404)

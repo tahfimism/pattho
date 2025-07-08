@@ -11,7 +11,7 @@ from django.core.validators import MaxValueValidator
 
 class Subject(models.Model):
     
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
     chapter_count = models.PositiveIntegerField(default=1)
     
         
@@ -21,7 +21,7 @@ class Subject(models.Model):
 
 class Chapter(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='chapters')
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     chapter_number = models.PositiveIntegerField()
 
     topic_count = models.PositiveIntegerField(default=1)

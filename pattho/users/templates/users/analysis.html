@@ -1,0 +1,73 @@
+{% extends "core/layout.html" %}
+{% block body %}
+<div class="p-6">
+    <h1 class="text-2xl font-bold mb-6">Analysis</h1>
+
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4">Overall Progress</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <canvas id="subjectProgressChart"></canvas>
+            </div>
+            <div>
+                <canvas id="overallProgressChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js_vars %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const subjectsProgress = JSON.parse('{{ subjects_progress|escapejs }}');
+        const overallAverageProgress = {{ overall_average_progress }};
+
+        // Bar Chart for Subject Progress
+        const subjectCtx = document.getElementById('subjectProgressChart').getContext('2d');
+        new Chart(subjectCtx, {
+            type: 'bar',
+            data: {
+                labels: subjectsProgress.map(s => s.name),
+                datasets: [{
+                    label: 'Subject Progress',
+                    data: subjectsProgress.map(s => s.overall_progress),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Donut Chart for Overall Progress
+        const overallCtx = document.getElementById('overallProgressChart').getContext('2d');
+        new Chart(overallCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Remaining'],
+                datasets: [{
+                    data: [overallAverageProgress, 100 - overallAverageProgress],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,3 +1,5 @@
+{% load static %}
+{% load sidebar_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,90 +10,74 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400..800&family=Bytesized&family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Doto:wght@100..900&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@100..900&family=Noto+Serif+Bengali:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        /* Custom scrollbar for sidebars */
-        .sidebar-scroll {
-            scrollbar-width: thin; /* Firefox */
-            scrollbar-color: #cbd5e1 #f1f5f9; /* Firefox */
-        }
-        .sidebar-scroll::-webkit-scrollbar {
-            width: 8px;
-        }
-        .sidebar-scroll::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
-        }
-        .sidebar-scroll::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
-            border-radius: 10px;
-            border: 2px solid #f1f5f9;
-        }
 
-        /* Dark mode scrollbar styles */
-        .dark .sidebar-scroll {
-            scrollbar-color: #4a5568 #2d3748;
-        }
-        .dark .sidebar-scroll::-webkit-scrollbar-track {
-            background: #2d3748;
-        }
-        .dark .sidebar-scroll::-webkit-scrollbar-thumb {
-            background-color: #4a5568;
-            border: 2px solid #2d3748;
-        }
-    </style>
+
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+
+
+
+    <link rel="stylesheet" href="{% static 'core/main.css' %}">
+
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 flex min-h-screen">
+<body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen">
 
-    <!-- Left Sidebar -->
-    <aside class="bg-white dark:bg-gray-800 shadow-lg flex flex-col justify-between w-64 flex-shrink-0 h-full">
+    <!-- Mobile Header (always visible on mobile, hidden on desktop) -->
+    <div id="mobile-header" class="md:hidden bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
+        <button id="hamburger-menu-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <h1 class="text-2xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] flex-grow text-center" id="logo-name-mobile">পাঠ্য</h1>
+        <div class="w-10"></div> <!-- Placeholder to balance the hamburger button -->
+    </div>
+
+    <!-- Left Sidebar (fixed on desktop, slides in/out on mobile) -->
+    <aside id="left-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-40 md:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out md:pt-0 pt-16">
+        <!-- Logo/Name for Desktop (always visible when sidebar is open) -->
+        <div class="pl-14 mb-3 hidden md:block pt-8">
+            <h1 class="text-3xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="logo-name-desktop">পাঠ্য</h1>
+        </div>
         <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
-            <!-- App Logo/Name -->
-            <div class="mb-8 text-center">
-                <h1 class="text-3xl font-bold text-blue-600 dark:text-blue-400">StudyFlow</h1>
-            </div>
-
             <!-- Navigation Links -->
             <nav>
                 <ul>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
                             Dashboard
                         </a>
                     </li>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
                             Study Planner
                         </a>
                     </li>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
-                            To-do List
+                            To-do & Pomodoro
                         </a>
                     </li>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
-                            <i data-lucide="timer" class="w-5 h-5 mr-3"></i>
-                            Pomodoro Timer
-                        </a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                    
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="trophy" class="w-5 h-5 mr-3"></i>
-                            Leaderboard / Badges
+                            Leaderboardanother 
                         </a>
                     </li>
-                    <li class="mb-3">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-blue-100 dark:hover:bg-blue-700 hover:text-blue-700 dark:hover:text-white transition-colors duration-200 font-medium">
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="user" class="w-5 h-5 mr-3"></i>
                             Profile / Settings
                         </a>
@@ -101,142 +87,55 @@
         </div>
 
         <!-- User XP, Streak, Avatar (Static for template) -->
-        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="p-6 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
             <div class="mb-4">
-                <div class="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                <div class="flex justify-between items-center text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">
                     <span>XP Progress</span>
                     <span>750/1000 XP</span>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                    <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 75%"></div>
+                <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2.5 dark:bg-[var(--color-gray-bg-dark)]">
+                    <div class="bg-[var(--color-accent-light)] h-2.5 rounded-full" style="width: 75%"></div>
                 </div>
             </div>
-            <div class="flex items-center mb-4 text-sm font-medium text-gray-600 dark:text-gray-300">
-                <i data-lucide="flame" class="w-4 h-4 mr-2 text-orange-500"></i>
+            <div class="flex items-center mb-4 text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+                <i data-lucide="flame" class="w-4 h-4 mr-2 text-[var(--color-accent-light)]"></i>
                 <span>Streak: 15 Days</span>
             </div>
             <div class="flex items-center">
-                <img src="https://placehold.co/40x40/a78bfa/ffffff?text=U" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-blue-400 dark:border-blue-300">
+                <img src="https://placehold.co/40x40/a78bfa/ffffff?text=U" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
                 <div>
-                    <p class="font-semibold text-gray-800 dark:text-gray-100">Student Name</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">HSC 2025</p>
+                    <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Student Name</p>
+                    <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">HSC 2025</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <!-- Main Content and Right Sidebar Wrapper -->
-    <div class="flex-1 flex flex-col">
-        <!-- Top Navbar -->
-        <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex items-center justify-between sticky top-0 z-40 rounded-b-xl">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 flex-grow text-center md:text-left">Current View Title</h2>
-
-            <div class="flex items-center space-x-4">
-                <!-- Search Bar -->
-                <div class="relative hidden sm:block">
-                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-48 md:w-64">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5"></i>
-                </div>
-
-                <!-- Notification Icon -->
-                <button class="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 relative">
-                    <i data-lucide="bell" class="w-6 h-6"></i>
-                    <span class="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-500 border-2 border-white dark:border-gray-800"></span>
-                </button>
-
-                <!-- Dark/Light Mode Toggle (Static icon, no JS functionality) -->
-                <button class="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                    <i data-lucide="sun" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </header>
-
+    <div class="flex-1 flex flex-col md:ml-64 pt-16 md:pt-0"> <!-- Added pt-16 for mobile header offset -->
         <!-- Content Area: Main Content + Right Sidebar -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Main Content Area - This is where your Django content will be injected -->
-            <main class="p-6 flex-1 overflow-y-auto">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 border border-gray-200 dark:border-gray-700 min-h-[300px] flex items-center justify-center">
-                    {% block body %}
-                    This is the main content area. Your Django views will render content here.
-                    {% endblock %}
-                </div>
+            <main class="p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-bg-dark)] shadow-lg min-h-[300px]">
+                {% block body %}
+                This is the main content area. Your Django views will render content here.
+                {% endblock %}
             </main>
 
             <!-- Right Sidebar -->
-            <aside class="bg-white dark:bg-gray-800 shadow-lg w-72 flex-shrink-0 p-6 border-l border-gray-200 dark:border-gray-700 overflow-y-auto sidebar-scroll hidden md:block">
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Syllabus Progress</h3>
-                <ul class="space-y-3 mb-6">
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Physics</span>
-                            <span>72%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: 72%"></div>
-                        </div>
-                        <ul class="ml-4 mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                            <li>Mechanics: 100%</li>
-                            <li>Thermodynamics: 85%</li>
-                            <li>Electromagnetism: 45%</li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Chemistry</span>
-                            <span>63%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 63%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Mathematics</span>
-                            <span>48%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-red-500 h-2 rounded-full" style="width: 48%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Biology</span>
-                            <span>34%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-purple-500 h-2 rounded-full" style="width: 34%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>English</span>
-                            <span>89%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 89%"></div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="flex justify-between items-center text-gray-700 dark:text-gray-200">
-                            <span>Bangla</span>
-                            <span>76%</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2 mt-1 dark:bg-gray-700">
-                            <div class="bg-orange-500 h-2 rounded-full" style="width: 76%"></div>
-                        </div>
-                    </li>
-                </ul>
+            <aside class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll hidden md:block">
+                {% subject_progress_sidebar %}
 
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Today's Study Goal</h3>
+                <h3 class="text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Today's Study Goal</h3>
                 <div class="mb-4">
-                    <div class="flex justify-between items-center text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">
+                    <div class="flex justify-between items-center text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">
                         <span>3h 21m / 4h</span>
                         <span>85%</span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div class="bg-blue-500 h-2.5 rounded-full" style="width: 85%"></div>
+                    <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2.5 dark:bg-[var(--color-gray-bg-dark)]">
+                        <div class="bg-[var(--color-primary-light)] h-2.5 rounded-full" style="width: 85%"></div>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">35 minutes left to reach your daily goal!</p>
+                    <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-2">35 minutes left to reach your daily goal!</p>
                 </div>
             </aside>
         </div>
@@ -245,6 +144,74 @@
     <!-- Initialize Lucide icons (needed for icons to display) -->
     <script>
         lucide.createIcons();
+    </script>
+
+    {% block extra_js_vars %}{% endblock %}
+
+    <script src="{% static 'core/dash.js' %}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshButton = document.getElementById('refresh-progress-btn');
+            const subjectList = document.getElementById('subject-progress-list');
+
+            if (refreshButton && subjectList) {
+                refreshButton.addEventListener('click', async function() { // Added 'async'
+                    console.log("Refresh button clicked.");
+                    const icon = refreshButton.querySelector('svg'); // Lucide replaces <i> with <svg>
+                    icon.classList.add('animate-spin'); // Add spinning animation
+
+                    try {
+                        // Check if there are pending changes from the dashboard script
+                        if (window.app && window.app.pendingChanges && Object.keys(window.app.pendingChanges).length > 0) {
+                            console.log("Pending chapter changes detected. Forcing save before refreshing subject progress.");
+                            await window.app.saveProgress(); // Wait for the save to complete
+                            console.log("Pending chapter changes saved.");
+                        } else {
+                            console.log("No pending chapter changes. Proceeding with subject progress refresh.");
+                        }
+
+                        const response = await fetch('{% url 'api_subject_progress' %}');
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        const data = await response.json();
+
+                        console.log("Received subject progress data:", data);
+                        if (data.success && data.subjects_progress) {
+                            data.subjects_progress.forEach(subject => {
+                                const listItem = subjectList.querySelector(`li[data-subject-name="${subject.name}"]`);
+                                if (listItem) {
+                                    const percentageSpan = listItem.querySelector('.subject-progress-percentage');
+                                    const progressBar = listItem.querySelector('.subject-progress-bar');
+
+                                    if (percentageSpan) percentageSpan.textContent = `${subject.overall_progress}%`;
+                                    if (progressBar) progressBar.style.width = `${subject.overall_progress}%`;
+                                }
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error during subject progress refresh:', error);
+                    } finally {
+                        icon.classList.remove('animate-spin'); // Remove spinning animation
+                        lucide.createIcons(); // Re-initialize icons in case new ones were added or changed
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerBtn = document.getElementById('hamburger-menu-btn');
+            const leftSidebar = document.getElementById('left-sidebar');
+
+            if (hamburgerBtn && leftSidebar) {
+                hamburgerBtn.addEventListener('click', function() {
+                    leftSidebar.classList.toggle('-translate-x-full');
+                });
+            }
+        });
     </script>
 </body>
 </html>

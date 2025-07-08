@@ -6,18 +6,25 @@
     <div class="flex flex-col gap-6">
         <!-- Pomodoro Timer Section -->
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
-            <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Pomodoro</h2>
-            
-            <div class="relative w-64 h-64 flex items-center justify-center rounded-full border-8 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)] mb-8">
-                <div class="text-7xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
+            <div class="flex justify-between items-center w-full mb-6">
+                <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Pomodoro</h2>
+                <!-- Tabs for Work/Break -->
+                <div class="flex bg-[var(--color-card-bg-dark)] rounded-full p-1 shadow-inner">
+                    <button id="work-tab" class="flex-1 px-4 py-1 text-lg transition-colors duration-200 rounded-full text-white bg-[var(--color-gray-bg-dark)]">Work</button>
+                    <button id="break-tab" class="flex-1 px-4 py-1 text-lg transition-colors duration-200 rounded-full text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-opacity-80">Break</button>
+                </div>
+            </div>
+
+            <div class="relative w-80 h-80 flex items-center justify-center rounded-full border-8 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)] mb-8">
+                <div class="text-7xl font-normal font-['Courier_Prime'] text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
                 <p class="absolute bottom-16 text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]" id="timer-label">Focus Time</p>
             </div>
             <div class="flex space-x-4 mb-4">
-                <button id="start-timer" class="bg-[var(--color-success-light)] hover:bg-[var(--color-success-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md flex items-center">
-                    <i data-lucide="play" class="w-5 h-5 mr-2"></i> Start
+                <button id="start-timer" class="bg-[var(--color-success-light)] hover:bg-[var(--color-success-dark)] text-white py-2 px-4 rounded-lg transition-colors duration-200 shadow-md flex items-center">
+                    <i data-lucide="play" class="w-4 h-4 mr-2"></i> Start
                 </button>
-                <button id="pause-timer" class="bg-[var(--color-warning-light)] hover:bg-[var(--color-warning-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">Pause</button>
-                <button id="reset-timer" class="bg-[var(--color-error-light)] hover:bg-[var(--color-error-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">Reset</button>
+                <button id="pause-timer" class="bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] py-2 px-4 rounded-lg transition-colors duration-200 shadow-md hover:bg-[var(--color-gray-bg-light)] hover:bg-opacity-80 dark:hover:bg-[var(--color-gray-bg-dark)] dark:hover:bg-opacity-80">Pause</button>
+                <button id="reset-timer" class="bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] py-2 px-4 rounded-lg transition-colors duration-200 shadow-md hover:bg-[var(--color-gray-bg-light)] hover:bg-opacity-80 dark:hover:bg-[var(--color-gray-bg-dark)] dark:hover:bg-opacity-80">Reset</button>
             </div>
             
         </div>
@@ -69,6 +76,8 @@
     const startButton = document.getElementById('start-timer');
     const pauseButton = document.getElementById('pause-timer');
     const resetButton = document.getElementById('reset-timer');
+    const workTab = document.getElementById('work-tab');
+    const breakTab = document.getElementById('break-tab');
 
     const FOCUS_TIME = 25 * 60; // 25 minutes
     const SHORT_BREAK = 5 * 60; // 5 minutes
@@ -83,6 +92,42 @@
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        clearInterval(timerId);
+        timerId = null;
+
+        workTab.classList.remove('bg-[var(--color-gray-bg-dark)]', 'text-white');
+        breakTab.classList.remove('bg-[var(--color-gray-bg-dark)]', 'text-white');
+        workTab.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+        breakTab.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+
+        // Manage hover effects for toggle buttons
+        workTab.classList.remove('hover:bg-opacity-80');
+        breakTab.classList.remove('hover:bg-opacity-80');
+
+        if (mode === 'focus') {
+            timeLeft = FOCUS_TIME;
+            timerLabel.textContent = 'Focus Time';
+            workTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
+            workTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            breakTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive break tab
+        } else if (mode === 'short-break') {
+            timeLeft = SHORT_BREAK;
+            timerLabel.textContent = 'Short Break';
+            breakTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
+            breakTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            workTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive work tab
+        } else if (mode === 'long-break') {
+            timeLeft = LONG_BREAK;
+            timerLabel.textContent = 'Long Break';
+            breakTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
+            breakTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            workTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive work tab
+        }
+        updateDisplay();
     }
 
     function startTimer() {
@@ -106,34 +151,20 @@
 
     function resetTimer() {
         pauseTimer();
-        if (currentMode === 'focus') {
-            timeLeft = FOCUS_TIME;
-        } else if (currentMode === 'short-break') {
-            timeLeft = SHORT_BREAK;
-        } else {
-            timeLeft = LONG_BREAK;
-        }
-        updateDisplay();
+        setMode(currentMode); // Reset to the current mode's initial time
     }
 
     function switchMode() {
         if (currentMode === 'focus') {
             pomodoroCount++;
             if (pomodoroCount % 4 === 0) {
-                currentMode = 'long-break';
-                timeLeft = LONG_BREAK;
-                timerLabel.textContent = 'Long Break';
+                setMode('long-break');
             } else {
-                currentMode = 'short-break';
-                timeLeft = SHORT_BREAK;
-                timerLabel.textContent = 'Short Break';
+                setMode('short-break');
             }
         } else {
-            currentMode = 'focus';
-            timeLeft = FOCUS_TIME;
-            timerLabel.textContent = 'Focus Time';
+            setMode('focus');
         }
-        updateDisplay();
         startTimer(); // Automatically start the next timer
     }
 
@@ -145,6 +176,8 @@
     startButton.addEventListener('click', startTimer);
     pauseButton.addEventListener('click', pauseTimer);
     resetButton.addEventListener('click', resetTimer);
+    workTab.addEventListener('click', () => setMode('focus'));
+    breakTab.addEventListener('click', () => setMode('short-break')); // Default break to short break
 
     // Initial display update
     updateDisplay();

@@ -7,7 +7,7 @@ from django.utils import timezone
 
 @login_required
 def todo_list(request):
-    todos = ToDoItem.objects.filter(user=request.user).order_by('-date')
+    todos = ToDoItem.objects.filter(user=request.user).order_by('completed', '-date')
     return render(request, 'activities/todo.html', {'todos': todos})
 
 @login_required
@@ -21,10 +21,13 @@ def add_todo(request):
 @login_required
 @require_POST
 def toggle_todo(request, todo_id):
-    todo = ToDoItem.objects.get(id=todo_id, user=request.user)
-    todo.completed = not todo.completed
-    todo.save()
-    return redirect('todo_list')
+    try:
+        todo = ToDoItem.objects.get(id=todo_id, user=request.user)
+        todo.completed = not todo.completed
+        todo.save()
+        return JsonResponse({'success': True, 'completed': todo.completed})
+    except ToDoItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Task not found'}, status=404)
 
 @login_required
 def get_task_summary(request):
@@ -45,3 +48,15 @@ def get_task_summary(request):
         'overdue_tasks': overdue_tasks,
     }
     return JsonResponse(data)
+
+@login_required
+def get_today_tasks(request):
+    today = timezone.localdate()
+    today_tasks = ToDoItem.objects.filter(
+        user=request.user,
+        completed=False,
+        date__date=today
+    ).order_by('date').values('id', 'title')
+    
+    tasks_list = list(today_tasks)
+    return JsonResponse({'today_tasks': tasks_list})

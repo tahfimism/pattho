@@ -68,9 +68,9 @@
                 {% for todo in todos %}
                 <div class="flex items-center justify-between p-4 {% if todo.completed %}opacity-60{% endif %}">
                     <div class="flex items-center">
-                        <form action="{% url 'toggle_todo' todo.id %}" method="post" class="flex items-center">
+                        <form action="{% url 'toggle_todo' todo.id %}" method="post" class="flex items-center toggle-todo-form" data-todo-id="{{ todo.id }}">
                             {% csrf_token %}
-                            <input type="checkbox" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] cursor-pointer">
+                            <input type="checkbox" {% if todo.completed %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] cursor-pointer todo-checkbox">
                             <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]{% endif %}">
                                 {{ todo.title }}
                             </span>
@@ -223,5 +223,66 @@
 
     // Fetch task summary on page load
     fetchTaskSummary();
+
+    // Handle checkbox toggling via AJAX
+    document.querySelectorAll('.todo-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = this.closest('.toggle-todo-form');
+            const todoId = form.dataset.todoId;
+            const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
+            const listItem = this.closest('div.flex.items-center.justify-between'); // The parent div of the task item
+            const span = listItem.querySelector('span');
+
+            try {
+                const response = await fetch(`/activities/api/todo/toggle/${todoId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update UI based on completion status
+                    if (data.completed) {
+                        span.classList.add('line-through', 'text-[var(--color-gray-text-light)]', 'dark:text-[var(--color-gray-text-dark)]');
+                        span.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+                        listItem.classList.add('opacity-60');
+                        // Move to bottom
+                        const parentDiv = listItem.parentNode;
+                        parentDiv.appendChild(listItem);
+                    } else {
+                        span.classList.remove('line-through', 'text-[var(--color-gray-text-light)]', 'dark:text-[var(--color-gray-text-dark)]');
+                        span.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+                        listItem.classList.remove('opacity-60');
+                        // Move back to sorted position (simple re-append for now, full sort is complex client-side)
+                        const parentDiv = listItem.parentNode;
+                        const incompleteTasks = Array.from(parentDiv.children).filter(item => !item.querySelector('.todo-checkbox').checked);
+                        if (incompleteTasks.length > 0) {
+                            parentDiv.insertBefore(listItem, incompleteTasks[incompleteTasks.length - 1].nextSibling);
+                        } else {
+                            parentDiv.prepend(listItem); // If no incomplete tasks, put at top
+                        }
+                    }
+                    fetchTaskSummary(); // Update task summary metrics
+                } else {
+                    console.error('Failed to toggle task:', data.error);
+                    this.checked = !this.checked; // Revert checkbox state on error
+                }
+            } catch (error) {
+                console.error('Error toggling task:', error);
+                this.checked = !this.checked; // Revert checkbox state on error
+            }
+        });
+    });
 </script>
 {% endblock %}

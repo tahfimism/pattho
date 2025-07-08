@@ -137,6 +137,12 @@
                     </div>
                     <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-2">35 minutes left to reach your daily goal!</p>
                 </div>
+
+                <h3 class="text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4 mt-6">Today's Tasks</h3>
+                <ul id="today-tasks-list" class="space-y-2">
+                    <!-- Tasks will be loaded here by JavaScript -->
+                    <li class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Loading tasks...</li>
+                </ul>
             </aside>
         </div>
     </div>
@@ -154,6 +160,43 @@
         document.addEventListener('DOMContentLoaded', function() {
             const refreshButton = document.getElementById('refresh-progress-btn');
             const subjectList = document.getElementById('subject-progress-list');
+            const todayTasksList = document.getElementById('today-tasks-list');
+
+            // Function to fetch and display today's tasks
+            async function fetchTodayTasks() {
+                try {
+                    const response = await fetch('{% url 'api_today_tasks' %}');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+
+                    if (todayTasksList) {
+                        todayTasksList.innerHTML = ''; // Clear loading message
+                        if (data.today_tasks && data.today_tasks.length > 0) {
+                            data.today_tasks.forEach(task => {
+                                const listItem = document.createElement('li');
+                                listItem.className = 'text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]';
+                                listItem.textContent = task.title;
+                                todayTasksList.appendChild(listItem);
+                            });
+                        } else {
+                            const listItem = document.createElement('li');
+                            listItem.className = 'text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]';
+                            listItem.textContent = 'No tasks due today!';
+                            todayTasksList.appendChild(listItem);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error fetching today's tasks:', error);
+                    if (todayTasksList) {
+                        todayTasksList.innerHTML = '<li class="text-red-500">Failed to load tasks.</li>';
+                    }
+                }
+            }
+
+            // Call fetchTodayTasks on page load
+            fetchTodayTasks();
 
             if (refreshButton && subjectList) {
                 refreshButton.addEventListener('click', async function() { // Added 'async'

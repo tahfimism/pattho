@@ -11,4 +11,3 @@ class ToDoItem(models.Model):
     title = models.CharField(max_length=255)
     completed = models.BooleanField(default=False)
     date = models.DateTimeField(default=timezone.now)
-

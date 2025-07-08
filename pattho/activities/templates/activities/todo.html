@@ -1,0 +1,152 @@
+{% extends "core/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col gap-6">
+        <!-- Pomodoro Timer Section -->
+        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
+            <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Pomodoro</h2>
+            
+            <div class="relative w-64 h-64 flex items-center justify-center rounded-full border-8 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)] mb-8">
+                <div class="text-7xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
+                <p class="absolute bottom-16 text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]" id="timer-label">Focus Time</p>
+            </div>
+            <div class="flex space-x-4 mb-4">
+                <button id="start-timer" class="bg-[var(--color-success-light)] hover:bg-[var(--color-success-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md flex items-center">
+                    <i data-lucide="play" class="w-5 h-5 mr-2"></i> Start
+                </button>
+                <button id="pause-timer" class="bg-[var(--color-warning-light)] hover:bg-[var(--color-warning-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">Pause</button>
+                <button id="reset-timer" class="bg-[var(--color-error-light)] hover:bg-[var(--color-error-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">Reset</button>
+            </div>
+            
+        </div>
+        <!-- To-Do List Section -->
+        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">My To-Do List</h1>
+                    <p class="text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Manage your tasks and boost productivity</p>
+                </div>
+                <form action="{% url 'add_todo' %}" method="post" class="flex items-center">
+                    {% csrf_token %}
+                    <input type="text" name="title" placeholder="Add a new to-do item" class="hidden md:block p-3 rounded-l-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent">
+                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md">
+                        Add Task
+                    </button>
+                </form>
+            </div>
+
+            <div class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)]">
+                {% for todo in todos %}
+                <div class="flex items-center justify-between p-4 {% if todo.completed %}opacity-60{% endif %}">
+                    <div class="flex items-center">
+                        <form action="{% url 'toggle_todo' todo.id %}" method="post" class="flex items-center">
+                            {% csrf_token %}
+                            <input type="checkbox" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] cursor-pointer">
+                            <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]{% endif %}">
+                                {{ todo.title }}
+                            </span>
+                        </form>
+                    </div>
+                    <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+                        {{ todo.date|date:"M d, Y" }}
+                    </span>
+                </div>
+                {% empty %}
+                <p class="p-4 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">No to-do items yet. Add one above!</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    console.log("Pomodoro script loaded!");
+    const timerDisplay = document.getElementById('timer-display');
+    const timerLabel = document.getElementById('timer-label');
+    const startButton = document.getElementById('start-timer');
+    const pauseButton = document.getElementById('pause-timer');
+    const resetButton = document.getElementById('reset-timer');
+
+    const FOCUS_TIME = 25 * 60; // 25 minutes
+    const SHORT_BREAK = 5 * 60; // 5 minutes
+    const LONG_BREAK = 15 * 60; // 15 minutes
+
+    let timeLeft = FOCUS_TIME;
+    let timerId = null;
+    let currentMode = 'focus'; // 'focus', 'short-break', 'long-break'
+    let pomodoroCount = 0;
+
+    function updateDisplay() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function startTimer() {
+        if (timerId) return; // Prevent multiple timers
+        timerId = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerId);
+                timerId = null;
+                playAlarmSound();
+                switchMode();
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        clearInterval(timerId);
+        timerId = null;
+    }
+
+    function resetTimer() {
+        pauseTimer();
+        if (currentMode === 'focus') {
+            timeLeft = FOCUS_TIME;
+        } else if (currentMode === 'short-break') {
+            timeLeft = SHORT_BREAK;
+        } else {
+            timeLeft = LONG_BREAK;
+        }
+        updateDisplay();
+    }
+
+    function switchMode() {
+        if (currentMode === 'focus') {
+            pomodoroCount++;
+            if (pomodoroCount % 4 === 0) {
+                currentMode = 'long-break';
+                timeLeft = LONG_BREAK;
+                timerLabel.textContent = 'Long Break';
+            } else {
+                currentMode = 'short-break';
+                timeLeft = SHORT_BREAK;
+                timerLabel.textContent = 'Short Break';
+            }
+        } else {
+            currentMode = 'focus';
+            timeLeft = FOCUS_TIME;
+            timerLabel.textContent = 'Focus Time';
+        }
+        updateDisplay();
+        startTimer(); // Automatically start the next timer
+    }
+
+    function playAlarmSound() {
+        const audio = new Audio('https://www.soundjay.com/buttons/beep-07.wav'); // Using a public domain sound for demonstration
+        audio.play();
+    }
+
+    startButton.addEventListener('click', startTimer);
+    pauseButton.addEventListener('click', pauseTimer);
+    resetButton.addEventListener('click', resetTimer);
+
+    // Initial display update
+    updateDisplay();
+</script>
+{% endblock %}

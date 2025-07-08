@@ -108,3 +108,13 @@
         font-weight: 800;
         font-size: 40px;
     }
+
+    /* Pomodoro Timer Button Active State */
+    .pomodoro-mode-button.active {
+        background-color: var(--color-primary-light);
+        color: white;
+    }
+    .dark .pomodoro-mode-button.active {
+        background-color: var(--color-primary-dark);
+        color: var(--color-text-dark);
+    }

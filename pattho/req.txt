@@ -33,3 +33,49 @@ white mode:
 body background - #F9F7F1
 card background, sidebars: #FFFFFF
 card hover #F9FAFB
+
+?Todo page:
+
+
+
+
+Header Row : Title: To-do List (left-aligned), Subtitle: “Manage your tasks and boost productivity” (just below the title),  Add Task button  (Right-Aligned). Pomodoro Timer Section (Centered Block): Large Pomodoro timer ring in the center with: Time (25:00) in the middle, Text label: Focus Time, Two tabs above the ring: Work / Break (toggle style) - soft. Control Buttons Below Timer: Start (with play icon), Pause (soft button with a shadow, same background), Reset ( butsoft button with a shadow, same backgroundton), Session progress line beneath buttons:, “Session 2 of 4 • Next: 5 min break”
+
+
+
+Task Summary Metrics Row (Four Horizontal Boxes)
+Four equally spaced stat boxes just under the timer block:
+
+Total Tasks – shows number (e.g., 12)
+
+Completed – shows number (e.g., 8)
+
+In Progress – shows number (e.g., 3)
+
+Overdue – shows number (e.g., 1)
+
+4. Tasks Section (Split Two Columns)
+A. Left Column: Today’s Tasks
+Section title: Today's Tasks (left allined).   task count badge (5 tasks) (right aligned in the same line with a soft background)
+
+Each task appears in a card box with:
+Checkbox (completion) at the very left of the card. beside that
+Task title (e.g., "Complete Physics Assignment"), below it 
+Due time tag (e.g., Due: 6:00 PM if today for future show date)
+Edit icon on the right
+
+B. Right Column: Upcoming Tasks
+Section title: Upcoming Tasks with task count badge (7 tasks)
+
+Same layout as left tasks: checkbox, title, due info, and edit icon
+
+5. Right-Aligned Panel: Syllabus Progress
+import the already built right side bar for subject progresses with its functionality
+
+
+
+after each minute the timer should store the time in brower or local data so it dont get loss after reload or else. No need to save anything of timer in server.
+
+
+Backend:
+add, edit and delete task views, ncessary api etc. the timer

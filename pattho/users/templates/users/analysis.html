@@ -14,35 +14,30 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             <div class="flex flex-col items-center">
                 <h3 class="text-lg font-medium mb-2">Theory</h3>
-                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_theory_avg }}% done</p>
                 <div class="relative w-48 h-48">
                     <canvas id="pTheoryChart"></canvas>
                 </div>
             </div>
             <div class="flex flex-col items-center">
                 <h3 class="text-lg font-medium mb-2">Book</h3>
-                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_book_avg }}% done</p>
                 <div class="relative w-48 h-48">
                     <canvas id="pBookChart"></canvas>
                 </div>
             </div>
             <div class="flex flex-col items-center">
                 <h3 class="text-lg font-medium mb-2">Note</h3>
-                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_note_avg }}% done</p>
                 <div class="relative w-48 h-48">
                     <canvas id="pNoteChart"></canvas>
                 </div>
             </div>
             <div class="flex flex-col items-center">
                 <h3 class="text-lg font-medium mb-2">CQ</h3>
-                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_cq_avg }}% done</p>
                 <div class="relative w-48 h-48">
                     <canvas id="pCqChart"></canvas>
                 </div>
             </div>
             <div class="flex flex-col items-center">
                 <h3 class="text-lg font-medium mb-2">MCQ</h3>
-                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_mcq_avg }}% done</p>
                 <div class="relative w-48 h-48">
                     <canvas id="pMcqChart"></canvas>
                 </div>
@@ -81,15 +76,34 @@
         }
     };
 
-    function createDonutChart(canvasId, completedPercentage, labels, backgroundColors, borderColors, plugins = []) {
+    const fieldWiseCenterTextPlugin = {
+        id: 'fieldWiseCenterText',
+        afterDraw: (chart) => {
+            const ctx = chart.ctx;
+            const text = `${chart.config.data.datasets[0].data[0]}%`;
+
+            ctx.save();
+            const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            
+            ctx.font = '20px sans-serif'; // Smaller font for smaller charts
+            ctx.fillStyle = 'rgba(75, 192, 192, 1)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, centerX, centerY);
+            ctx.restore();
+        }
+    };
+
+    function createOverallProgressChart(canvasId, completedPercentage) {
         new Chart(document.getElementById(canvasId).getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: labels,
+                labels: ['Completed', 'Remaining'],
                 datasets: [{
                     data: [completedPercentage, 100 - completedPercentage],
-                    backgroundColor: backgroundColors,
-                    borderColor: borderColors,
+                    backgroundColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
                     borderWidth: 1,
                     hoverBackgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
@@ -116,7 +130,43 @@
                     }
                 }
             },
-            plugins: plugins
+            plugins: [overallProgressCenterTextPlugin]
+        });
+    }
+
+    function createFieldWiseChart(canvasId, completedPercentage, title) {
+        new Chart(document.getElementById(canvasId).getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Remaining'],
+                datasets: [{
+                    data: [completedPercentage, 100 - completedPercentage],
+                    backgroundColor: ['#35b56c', '#b5354e'],
+                    borderColor: ['#35b56c', '#b5354e'],
+                    borderWidth: 1,
+                    hoverBackgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                layout: {
+                    padding: 20 // Add padding to prevent clipping
+                },
+                plugins: {
+                    legend: {
+                        display: false // Hide legend for smaller charts
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            },
+            plugins: [fieldWiseCenterTextPlugin]
         });
     }
 
@@ -128,53 +178,39 @@
         const pCqAvg = {{ p_cq_avg }};
         const pMcqAvg = {{ p_mcq_avg }};
 
-        createDonutChart(
+        createOverallProgressChart(
             'overallProgressChart',
-            overallAverageProgress,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            [overallProgressCenterTextPlugin]
+            overallAverageProgress
         );
 
-        createDonutChart(
+        createFieldWiseChart(
             'pTheoryChart',
             pTheoryAvg,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+            'Theory'
         );
 
-        createDonutChart(
+        createFieldWiseChart(
             'pBookChart',
             pBookAvg,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+            'Book'
         );
 
-        createDonutChart(
+        createFieldWiseChart(
             'pNoteChart',
             pNoteAvg,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+            'Note'
         );
 
-        createDonutChart(
+        createFieldWiseChart(
             'pCqChart',
             pCqAvg,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+            'CQ'
         );
 
-        createDonutChart(
+        createFieldWiseChart(
             'pMcqChart',
             pMcqAvg,
-            ['Completed', 'Remaining'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+            'MCQ'
         );
     });
 </script>

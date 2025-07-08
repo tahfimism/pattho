@@ -71,14 +71,21 @@
                         <form action="{% url 'toggle_todo' todo.id %}" method="post" class="flex items-center toggle-todo-form" data-todo-id="{{ todo.id }}">
                             {% csrf_token %}
                             <input type="checkbox" {% if todo.completed %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] cursor-pointer todo-checkbox">
-                            <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]{% endif %}">
+                            <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]{% endif %} todo-title-display">
                                 {{ todo.title }}
                             </span>
+                            <input type="text" value="{{ todo.title }}" class="hidden ml-3 p-1 rounded border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-light)] todo-title-input">
                         </form>
                     </div>
-                    <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
-                        {{ todo.date|date:"M d, Y" }}
-                    </span>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+                            {{ todo.date|date:"M d, Y" }}
+                        </span>
+                        <button class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-primary-dark)] transition-colors duration-200 edit-todo-btn" data-todo-id="{{ todo.id }}">
+                            <i data-lucide="edit" class="w-4 h-4 edit-icon"></i>
+                            <i data-lucide="save" class="w-4 h-4 save-icon hidden"></i>
+                        </button>
+                    </div>
                 </div>
                 {% empty %}
                 <p class="p-4 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">No to-do items yet. Add one above!</p>
@@ -233,7 +240,8 @@
             const todoId = form.dataset.todoId;
             const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
             const listItem = this.closest('div.flex.items-center.justify-between'); // The parent div of the task item
-            const span = listItem.querySelector('span');
+            const span = listItem.querySelector('span.todo-title-display');
+            const input = listItem.querySelector('input.todo-title-input');
 
             try {
                 const response = await fetch(`/activities/api/todo/toggle/${todoId}/`, {
@@ -284,5 +292,74 @@
             }
         });
     });
+
+    // Handle task editing via AJAX
+    document.querySelectorAll('.edit-todo-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+            const todoId = this.dataset.todoId;
+            const listItem = this.closest('div.flex.items-center.justify-between');
+            const titleDisplay = listItem.querySelector('.todo-title-display');
+            const titleInput = listItem.querySelector('.todo-title-input');
+            const editIcon = this.querySelector('.edit-icon');
+            const saveIcon = this.querySelector('.save-icon');
+            const csrfToken = listItem.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+            if (titleInput.classList.contains('hidden')) {
+                // Currently in display mode, switch to edit mode
+                titleDisplay.classList.add('hidden');
+                titleInput.classList.remove('hidden');
+                editIcon.classList.add('hidden');
+                saveIcon.classList.remove('hidden');
+                titleInput.focus();
+            } else {
+                // Currently in edit mode, switch to display mode and save
+                const newTitle = titleInput.value.trim();
+                if (newTitle === titleDisplay.textContent.trim()) {
+                    // No change, just switch back
+                    titleInput.classList.add('hidden');
+                    titleDisplay.classList.remove('hidden');
+                    editIcon.classList.remove('hidden');
+                    saveIcon.classList.add('hidden');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/activities/api/todo/edit/${todoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ title: newTitle })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        titleDisplay.textContent = data.title;
+                        titleInput.value = data.title; // Update input value in case of future edits
+                        titleInput.classList.add('hidden');
+                        titleDisplay.classList.remove('hidden');
+                        editIcon.classList.remove('hidden');
+                        saveIcon.classList.add('hidden');
+                    } else {
+                        console.error('Failed to edit task:', data.error);
+                        alert('Failed to save task: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('Error editing task:', error);
+                    alert('Error saving task. Please try again.');
+                }
+            }
+        });
+    });
+
+    // Re-initialize Lucide icons after any DOM manipulation that adds new icons
+    // This is important for dynamically added elements like new todo items if you implement that
+    lucide.createIcons();
 </script>
 {% endblock %}

@@ -4,6 +4,7 @@ from .models import ToDoItem
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.utils import timezone
+import json
 
 @login_required
 def todo_list(request):
@@ -60,3 +61,20 @@ def get_today_tasks(request):
     
     tasks_list = list(today_tasks)
     return JsonResponse({'today_tasks': tasks_list})
+
+@login_required
+@require_POST
+def edit_todo_title(request, todo_id):
+    try:
+        todo = ToDoItem.objects.get(id=todo_id, user=request.user)
+        data = json.loads(request.body)
+        new_title = data.get('title')
+        if new_title:
+            todo.title = new_title
+            todo.save()
+            return JsonResponse({'success': True, 'title': todo.title})
+        return JsonResponse({'success': False, 'error': 'No title provided'}, status=400)
+    except ToDoItem.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Task not found'}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)

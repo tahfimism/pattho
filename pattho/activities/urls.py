@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/todo/toggle/<int:todo_id>/', views.toggle_todo, name='toggle_todo'),
     path('api/task-summary/', views.get_task_summary, name='api_task_summary'),
     path('api/today-tasks/', views.get_today_tasks, name='api_today_tasks'),
+    path('api/todo/edit/<int:todo_id>/', views.edit_todo_title, name='api_edit_todo_title'),
 ]

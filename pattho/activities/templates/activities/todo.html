@@ -98,6 +98,10 @@
     </div>
 </div>
 
+<audio id="alarm-sound" preload="auto">
+    <source src="/static/activities/complete.wav" type="audio/wav">
+    Your browser does not support the audio element.
+</audio>
 
 <script>
     console.log("Pomodoro script loaded!");
@@ -108,6 +112,8 @@
     const resetButton = document.getElementById('reset-timer');
     const workTab = document.getElementById('work-tab');
     const breakTab = document.getElementById('break-tab');
+    const alarmSound = document.getElementById('alarm-sound');
+
 
     const FOCUS_TIME = 25 * 60; // 25 minutes
     const SHORT_BREAK = 5 * 60; // 5 minutes
@@ -162,6 +168,7 @@
 
     function startTimer() {
         if (timerId) return; // Prevent multiple timers
+        alarmSound.load(); // Prepare the audio for playback on user interaction
         timerId = setInterval(() => {
             timeLeft--;
             updateDisplay();
@@ -195,12 +202,14 @@
         } else {
             setMode('focus');
         }
-        startTimer(); // Automatically start the next timer
+        updateDisplay(); // Ensure display is updated for the new mode
     }
 
     function playAlarmSound() {
-        const audio = new Audio('https://www.soundjay.com/buttons/beep-07.wav'); // Using a public domain sound for demonstration
-        audio.play();
+        alarmSound.currentTime = 0;
+        alarmSound.play().catch(error => {
+            console.error("Failed to play alarm sound:", error);
+        });
     }
 
     startButton.addEventListener('click', startTimer);

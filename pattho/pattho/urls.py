@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from users import views # Import users views for the API endpoint
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +31,6 @@ urlpatterns = [
     path('', include('core.urls')),
     path('api/subject_progress/', views.get_subject_progress, name='api_subject_progress'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

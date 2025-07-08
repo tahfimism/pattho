@@ -3,14 +3,49 @@
 <div class="p-6">
     <h1 class="text-2xl font-bold mb-6">Analysis</h1>
 
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full">
         <h2 class="text-xl font-semibold mb-4">Overall Progress</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <canvas id="subjectProgressChart"></canvas>
+        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto">
+            <canvas id="overallProgressChart"></canvas>
+        </div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full mt-6">
+        <h2 class="text-xl font-semibold mb-4">Field-wise Progress</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-medium mb-2">Theory</h3>
+                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_theory_avg }}% done</p>
+                <div class="relative w-48 h-48">
+                    <canvas id="pTheoryChart"></canvas>
+                </div>
             </div>
-            <div>
-                <canvas id="overallProgressChart"></canvas>
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-medium mb-2">Book</h3>
+                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_book_avg }}% done</p>
+                <div class="relative w-48 h-48">
+                    <canvas id="pBookChart"></canvas>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-medium mb-2">Note</h3>
+                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_note_avg }}% done</p>
+                <div class="relative w-48 h-48">
+                    <canvas id="pNoteChart"></canvas>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-medium mb-2">CQ</h3>
+                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_cq_avg }}% done</p>
+                <div class="relative w-48 h-48">
+                    <canvas id="pCqChart"></canvas>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-medium mb-2">MCQ</h3>
+                <p class="text-lg font-bold text-teal-500 mb-2">{{ p_mcq_avg }}% done</p>
+                <div class="relative w-48 h-48">
+                    <canvas id="pMcqChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -20,54 +55,127 @@
 {% block extra_js_vars %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const subjectsProgress = JSON.parse('{{ subjects_progress|escapejs }}');
-        const overallAverageProgress = {{ overall_average_progress }};
+    // Plugin to draw text in the middle of the donut chart
+    
 
-        // Bar Chart for Subject Progress
-        const subjectCtx = document.getElementById('subjectProgressChart').getContext('2d');
-        new Chart(subjectCtx, {
-            type: 'bar',
+    const overallProgressCenterTextPlugin = {
+        id: 'overallProgressCenterText',
+        afterDraw: (chart) => {
+            const ctx = chart.ctx;
+            const text = `${chart.config.data.datasets[0].data[0]}%`;
+
+            ctx.save();
+            const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+            const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+            
+            ctx.font = '30px sans-serif'; // Normal font weight
+            ctx.fillStyle = 'rgba(75, 192, 192, 1)'; // Normal color
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, centerX, centerY - 10);
+
+            ctx.font = '16px sans-serif'; // Normal font weight
+            ctx.fillStyle = 'rgba(100, 100, 100, 1)'; // Normal color
+            ctx.fillText('done', centerX, centerY + 20);
+            ctx.restore();
+        }
+    };
+
+    function createDonutChart(canvasId, completedPercentage, labels, backgroundColors, borderColors, plugins = []) {
+        new Chart(document.getElementById(canvasId).getContext('2d'), {
+            type: 'doughnut',
             data: {
-                labels: subjectsProgress.map(s => s.name),
+                labels: labels,
                 datasets: [{
-                    label: 'Subject Progress',
-                    data: subjectsProgress.map(s => s.overall_progress),
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    data: [completedPercentage, 100 - completedPercentage],
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1,
+                    hoverBackgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ]
                 }]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                layout: {
+                    padding: 20 // Add padding to prevent clipping
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 30
+                        }
+                    },
+                    tooltip: {
+                        enabled: true
                     }
                 }
-            }
+            },
+            plugins: plugins
         });
+    }
 
-        // Donut Chart for Overall Progress
-        const overallCtx = document.getElementById('overallProgressChart').getContext('2d');
-        new Chart(overallCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completed', 'Remaining'],
-                datasets: [{
-                    data: [overallAverageProgress, 100 - overallAverageProgress],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const overallAverageProgress = {{ overall_average_progress }};
+        const pTheoryAvg = {{ p_theory_avg }};
+        const pBookAvg = {{ p_book_avg }};
+        const pNoteAvg = {{ p_note_avg }};
+        const pCqAvg = {{ p_cq_avg }};
+        const pMcqAvg = {{ p_mcq_avg }};
+
+        createDonutChart(
+            'overallProgressChart',
+            overallAverageProgress,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            [overallProgressCenterTextPlugin]
+        );
+
+        createDonutChart(
+            'pTheoryChart',
+            pTheoryAvg,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+        );
+
+        createDonutChart(
+            'pBookChart',
+            pBookAvg,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+        );
+
+        createDonutChart(
+            'pNoteChart',
+            pNoteAvg,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+        );
+
+        createDonutChart(
+            'pCqChart',
+            pCqAvg,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+        );
+
+        createDonutChart(
+            'pMcqChart',
+            pMcqAvg,
+            ['Completed', 'Remaining'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
+            ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)']
+        );
     });
 </script>
 {% endblock %}

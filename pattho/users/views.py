@@ -98,7 +98,28 @@ def analysis(request):
     
     overall_average_progress = (total_progress / subject_count) if subject_count > 0 else 0
 
+    # Calculate average progress for p_theory, p_book, p_note, p_cq, p_mcq
+    user_progress_averages = UserProgress.objects.filter(user=request.user).aggregate(
+        avg_p_theory=Avg('p_theory'),
+        avg_p_book=Avg('p_book'),
+        avg_p_note=Avg('p_note'),
+        avg_p_cq=Avg('p_cq'),
+        avg_p_mcq=Avg('p_mcq'),
+    )
+
+    # Convert averages to percentages and handle None if no progress entries exist
+    p_theory_avg = round(user_progress_averages['avg_p_theory'] * 100, 2) if user_progress_averages['avg_p_theory'] is not None else 0
+    p_book_avg = round(user_progress_averages['avg_p_book'] * 100, 2) if user_progress_averages['avg_p_book'] is not None else 0
+    p_note_avg = round(user_progress_averages['avg_p_note'] * 100, 2) if user_progress_averages['avg_p_note'] is not None else 0
+    p_cq_avg = round(user_progress_averages['avg_p_cq'] * 100, 2) if user_progress_averages['avg_p_cq'] is not None else 0
+    p_mcq_avg = round(user_progress_averages['avg_p_mcq'] * 100, 2) if user_progress_averages['avg_p_mcq'] is not None else 0
+
     return render(request, 'users/analysis.html', {
         'subjects_progress': json.dumps(subjects_progress_data),
-        'overall_average_progress': round(overall_average_progress, 2)
+        'overall_average_progress': round(overall_average_progress, 2),
+        'p_theory_avg': p_theory_avg,
+        'p_book_avg': p_book_avg,
+        'p_note_avg': p_note_avg,
+        'p_cq_avg': p_cq_avg,
+        'p_mcq_avg': p_mcq_avg,
     })

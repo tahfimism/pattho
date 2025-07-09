@@ -3,15 +3,15 @@
 <div class="p-6">
     <h1 class="text-2xl font-bold mb-6">Analysis</h1>
 
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full">
+    <div class="bg-[#191919] border border-gray-800 rounded-lg p-6 w-full">
         <h2 class="text-xl font-semibold mb-4">Overall Progress</h2>
-        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto">
+        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto ">
             <canvas id="overallProgressChart"></canvas>
         </div>
     </div>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6 mt-6">
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-            <p class="text-sm text-[#6EE7B7] mb-1">Top Performed</p>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#6EE7B7] mb-1">Top Subject</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if top_subject %}{{ top_subject.name }}{% else %}N/A{% endif %}
             </p>
@@ -19,7 +19,7 @@
                 {% if top_subject %}{{ top_subject.overall_progress }}%{% endif %}
             </p>
         </div>
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#eb8686] mb-1">Least Covered</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if least_covered_subject %}{{ least_covered_subject.name }}{% else %}N/A{% endif %}
@@ -28,7 +28,7 @@
                 {% if least_covered_subject %}{{ least_covered_subject.overall_progress }}%{% endif %}
             </p>
         </div>
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#6EE7B7] mb-1">Strongest Study Type</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if strongest_study_type %}{{ strongest_study_type.0 }}{% else %}N/A{% endif %}
@@ -37,7 +37,7 @@
                 {% if strongest_study_type %}{{ strongest_study_type.1 }}%{% endif %}
             </p>
         </div>
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#eb8686] mb-1">Needs Focus In</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if needs_focus_study_type %}{{ needs_focus_study_type.0 }}{% else %}N/A{% endif %}
@@ -47,7 +47,13 @@
             </p>
         </div>
     </div>
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full mt-6">
+    <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
+        <h2 class="text-xl font-semibold mb-4">Field-wise Progress (Radar Chart)</h2>
+        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto">
+            <canvas id="fieldRadarChart"></canvas>
+        </div>
+    </div>
+    <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-semibold">Field-wise Progress</h2>
             <div class="flex items-center space-x-4">
@@ -90,12 +96,6 @@
                 </div>
                 <h3 class="text-lg font-medium mt-0">MCQ</h3>
             </div>
-        </div>
-    </div>
-        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full mt-6">
-        <h2 class="text-xl font-semibold mb-4">Field-wise Progress (Radar Chart)</h2>
-        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto">
-            <canvas id="fieldRadarChart"></canvas>
         </div>
     </div>
 </div>

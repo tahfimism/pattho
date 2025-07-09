@@ -9,9 +9,9 @@
             <canvas id="overallProgressChart"></canvas>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 mt-6">
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6 mt-6">
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-            <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">Top Subject</p>
+            <p class="text-sm text-[#6EE7B7] mb-1">Top Performed</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if top_subject %}{{ top_subject.name }}{% else %}N/A{% endif %}
             </p>
@@ -20,7 +20,7 @@
             </p>
         </div>
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-            <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">Least Covered</p>
+            <p class="text-sm text-[#eb8686] mb-1">Least Covered</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if least_covered_subject %}{{ least_covered_subject.name }}{% else %}N/A{% endif %}
             </p>
@@ -29,7 +29,7 @@
             </p>
         </div>
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-            <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">Strongest Study Type</p>
+            <p class="text-sm text-[#6EE7B7] mb-1">Strongest Study Type</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if strongest_study_type %}{{ strongest_study_type.0 }}{% else %}N/A{% endif %}
             </p>
@@ -38,7 +38,7 @@
             </p>
         </div>
         <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-            <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">Needs Focus</p>
+            <p class="text-sm text-[#eb8686] mb-1">Needs Focus In</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {% if needs_focus_study_type %}{{ needs_focus_study_type.0 }}{% else %}N/A{% endif %}
             </p>

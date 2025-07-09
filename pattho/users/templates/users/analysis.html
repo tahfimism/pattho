@@ -53,6 +53,24 @@
             <canvas id="fieldRadarChart"></canvas>
         </div>
     </div>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6 mt-6">
+        <div class="border border-gray-800 col-span-full md:col-span-2 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center flex flex-col items-center justify-center">
+            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-1">Note Analysis</p>
+            <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Notes are your saviour in the last moment</p>
+        </div>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#6EE7B7] mb-1">Noted Chapters</p>
+            <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ noted_chapters_count }}
+            </p>
+        </div>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#eb8686] mb-1">Pending</p>
+            <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ pending_chapters_count }}
+            </p>
+        </div>
+    </div>
     <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-xl font-semibold">Field-wise Progress</h2>

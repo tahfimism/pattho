@@ -20,8 +20,35 @@
 
     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
 
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#d6ffdf] mb-1">Total Chapters</p>
+            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ total_chapters }}
+            </p>
+        </div>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#6EE7B7] mb-1">Completed Chapters</p>
+            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ completed_chapters }}
+            </p>
+        </div>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#eb8686] mb-1">In Progress</p>
+            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ in_progress_chapters }}
+            </p>
+        </div>
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+            <p class="text-sm text-[#eb8686] mb-1">Not Started</p>
+            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+                {{ not_started_chapters }}
+            </p>
+        </div>
+    </div>
+
     {% for subject in subjects %}
-    <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
+    <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
         <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ subject.name }}</h2>
         </div>

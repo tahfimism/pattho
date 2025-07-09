@@ -37,12 +37,36 @@ def dashboard(request):
 
     progress_dict = {item['chapter_id']: item for item in user_progress}
 
+    total_chapters = Chapter.objects.count()
+    completed_chapters = UserProgress.objects.filter(user=user, overall_progress=100).count()
+    in_progress_chapters = UserProgress.objects.filter(user=user, overall_progress__gt=0, overall_progress__lt=100).count()
+    
+    # Chapters that have no progress entry or have 0 overall_progress
+    # Get all chapter IDs that have any progress entry (even 0%)
+    chapters_with_progress_ids = UserProgress.objects.filter(user=user).values_list('chapter_id', flat=True)
+    
+    # Get all chapter IDs
+    all_chapter_ids = Chapter.objects.values_list('id', flat=True)
+    
+    # Chapters that are truly not started (no entry in UserProgress)
+    not_started_no_entry_count = len(set(all_chapter_ids) - set(chapters_with_progress_ids))
+    
+    # Chapters that have an entry but overall_progress is 0
+    not_started_zero_progress_count = UserProgress.objects.filter(user=user, overall_progress=0).count()
+    
+    not_started_chapters = not_started_no_entry_count + not_started_zero_progress_count
+
+
     for subject in subjects:
         for chapter in subject.chapters.all():
             chapter.user_progress = progress_dict.get(chapter.id, {})
 
     return render(request, 'users/dashboard.html', {
         'subjects': subjects,
+        'total_chapters': total_chapters,
+        'completed_chapters': completed_chapters,
+        'in_progress_chapters': in_progress_chapters,
+        'not_started_chapters': not_started_chapters,
     })
 
 @login_required
@@ -144,6 +168,17 @@ def analysis(request):
             strongest_study_type = max(valid_study_types.items(), key=lambda item: item[1])
             needs_focus_study_type = min(valid_study_types.items(), key=lambda item: item[1])
 
+    # --- New calculations for "Noted Chapter" and "Pending" ---
+    noted_chapters_count = UserProgress.objects.filter(user=request.user, p_note=True).count()
+    pending_chapters_count = UserProgress.objects.filter(user=request.user, p_note=False).count()
+    # If a chapter has no UserProgress entry, it's also "pending" in terms of notes.
+    # We need to get all chapters and subtract the ones that have a UserProgress entry.
+    all_chapters_count = Chapter.objects.count()
+    chapters_with_progress_entries = UserProgress.objects.filter(user=request.user).count()
+    
+    # Chapters that don't have a UserProgress entry yet are also considered pending for notes
+    pending_chapters_count += (all_chapters_count - chapters_with_progress_entries)
+
 
     return render(request, 'users/analysis.html', {
         'subjects_progress': json.dumps(subjects_progress_data),
@@ -157,4 +192,6 @@ def analysis(request):
         'least_covered_subject': least_covered_subject,
         'strongest_study_type': strongest_study_type,
         'needs_focus_study_type': needs_focus_study_type,
+        'noted_chapters_count': noted_chapters_count,
+        'pending_chapters_count': pending_chapters_count,
     })

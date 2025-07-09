@@ -17,7 +17,7 @@ def add_todo(request):
     title = request.POST.get('title')
     if title:
         ToDoItem.objects.create(user=request.user, title=title)
-    return redirect('todo_list')
+    return redirect('activities')
 
 @login_required
 @require_POST

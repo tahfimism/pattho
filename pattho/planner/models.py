@@ -13,6 +13,10 @@ class StudyRoutine(models.Model):
     start_date = models.DateField(default=timezone.now)
     end_date = models.DateField()
 
+    # This field stores all topic/chapter assignments per day
+    plan_data = models.JSONField(default=dict)
+
+
     def __str__(self):
         return f"{self.user.username}'s Study Plan"
 

@@ -1,0 +1,155 @@
+{% extends "core/layout.html" %}
+
+{% block title %}Planner{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {% if user_routine %}
+        <form action="{% url 'update_planner' %}" method="post">
+            {% csrf_token %}
+            <div class="shadow-lg rounded-lg p-6">
+                <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
+                <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
+                    Here is your personalized study plan.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-6">
+                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4">
+                        <p class="text-sm text-gray-400 mb-1">Daily Study Goal</p>
+                        <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes }} minutes</p>
+                    </div>
+                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4">
+                        <p class="text-sm text-gray-400 mb-1">Start Date</p>
+                        <p class="text-xl font-bold text-white">{{ user_routine.start_date }}</p>
+                    </div>
+                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4">
+                        <p class="text-sm text-gray-400 mb-1">End Date</p>
+                        <p class="text-xl font-bold text-white">{{ user_routine.end_date }}</p>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Daily Breakdown</h2>
+                <div class="space-y-4">
+                    {% for date, chapters in user_routine.plan_data.items %}
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg">
+                            <div class="p-4 border-b border-gray-700 bg-[#2E3338]">
+                                <h3 class="font-semibold text-white">{{ date }}</h3>
+                            </div>
+                            <div class="divide-y divide-gray-700">
+                                {% for chapter in chapters %}
+                                    <div class="p-4 bg-[#191919]">
+                                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleTopics(this)">
+                                            <h4 class="text-base text-white">{{ chapter.chapter_title }}</h4>
+                                            <div class="flex items-center">
+                                                <input type="checkbox" name="completed_chapters" value="{{ chapter.chapter_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 chapter-checkbox" {% if chapter.completed %}checked{% endif %}>
+                                                <svg class="w-6 h-6 text-white transform transition-transform ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                            </div>
+                                        </div>
+                                        <ul class="hidden mt-2 space-y-1">
+                                            {% for topic in chapter.topics %}
+                                                <li class="flex justify-between items-center text-sm">
+                                                    <span class="text-gray-300">{{ topic.topic_title }}</span>
+                                                    <span class="text-gray-400">{{ topic.allocated_minutes }} mins</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6">
+                    <button type="submit" id="update-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hidden">
+                        Update Planner
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="mt-6">
+            <form action="{% url 'delete_planner' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Delete Planner
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <div class="shadow-lg rounded-lg p-6">
+            <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Create Your Study Plan</h1>
+            <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
+                Tell us your goals and we will generate a personalized plan for you.
+            </p>
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="daily_minutes" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many minutes do you want to study each day?</label>
+                    <input type="number" id="daily_minutes" name="daily_minutes" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="start_date" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">When do you want to start?</label>
+                        <input type="date" id="start_date" name="start_date" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="end_date" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">When do you want to finish?</label>
+                        <input type="date" id="end_date" name="end_date" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Select Chapters to Study</label>
+                    <div class="mt-2 space-y-2">
+                        {% for subject in subjects %}
+                            <div class="border border-gray-700 rounded-md">
+                                <div class="flex items-center justify-between p-3 cursor-pointer" onclick="toggleChapters(this)">
+                                    <h3 class="text-base text-white">{{ subject.name }}</h3>
+                                    <svg class="w-6 h-6 text-white transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                                <div class="hidden p-3 space-y-2">
+                                    {% for chapter in subject.chapters.all %}
+                                        <label class="flex items-center text-white">
+                                            <input type="checkbox" name="chapters" value="{{ chapter.id }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500">
+                                            <span class="ml-2">{{ chapter.title }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Create Plan
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function toggleTopics(element) {
+        const content = element.nextElementSibling;
+        const icon = element.querySelector('svg');
+        content.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+    }
+
+    function toggleChapters(element) {
+        const content = element.nextElementSibling;
+        const icon = element.querySelector('svg');
+        content.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.chapter-checkbox');
+        const updateButton = document.getElementById('update-button');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateButton.classList.remove('hidden');
+            });
+        });
+    });
+</script>
+{% endblock %}

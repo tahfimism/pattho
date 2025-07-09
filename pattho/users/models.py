@@ -54,16 +54,27 @@ class UserProgress(models.Model):
         return f"{self.user.username} - {self.chapter}"
 
     def calculate_overall_progress(self):
-        flags = [
-            self.p_book,
-            self.p_note,
-            self.p_mcq,
-            self.p_cq,
-            self.p_theory
-        ]
-        total = len(flags)
-        completed = sum(1 for f in flags if f)
-        return round((completed / total) * 100, 2)
+        # Define weights for each field
+        WEIGHT_THEORY = 0.10
+        WEIGHT_NOTE = 0.20
+        WEIGHT_MCQ = 0.20
+        WEIGHT_CQ = 0.35
+        WEIGHT_BOOK = 0.15 # Renamed to Class/Concept in display
+
+        # Calculate weighted progress
+        weighted_sum = 0
+        if self.p_theory:
+            weighted_sum += WEIGHT_THEORY
+        if self.p_note:
+            weighted_sum += WEIGHT_NOTE
+        if self.p_mcq:
+            weighted_sum += WEIGHT_MCQ
+        if self.p_cq:
+            weighted_sum += WEIGHT_CQ
+        if self.p_book:
+            weighted_sum += WEIGHT_BOOK
+
+        return round(weighted_sum * 100, 2)
 
     def save(self, *args, **kwargs):
         self.overall_progress = self.calculate_overall_progress()

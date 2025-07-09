@@ -33,7 +33,7 @@
                         <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">{{ chapter.title }}</p>
                         <div class="mt-2">
                             <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Progress</span>
+                                <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Exam Readiness</span>
                                 <span class="text-sm font-medium text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] progress-text">{{ chapter.user_progress.overall_progress|default:0 }}%</span>
                             </div>
                             <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-1.5 dark:bg-[var(--color-gray-bg-dark)]">
@@ -42,9 +42,9 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 w-full md:w-1/2 checkbox-group">
-                        <label class="flex items-center cursor-pointer mr-4 mb-2" title="Book Read">
+                        <label class="flex items-center cursor-pointer mr-4 mb-2" title="Class/Concept Read">
                             <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Book</span>
+                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Class/Concept</span>
                         </label>
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="Note Taken">
                             <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">

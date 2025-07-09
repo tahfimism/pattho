@@ -114,6 +114,37 @@ def analysis(request):
     p_cq_avg = round(user_progress_averages['avg_p_cq'] * 100, 2) if user_progress_averages['avg_p_cq'] is not None else 0
     p_mcq_avg = round(user_progress_averages['avg_p_mcq'] * 100, 2) if user_progress_averages['avg_p_mcq'] is not None else 0
 
+    # --- New calculations for the 4 cards ---
+
+    # Top Subject & Least Covered
+    top_subject = None
+    least_covered_subject = None
+    if subjects_progress_data:
+        # Filter out subjects with None progress before finding min/max
+        valid_subjects = [s for s in subjects_progress_data if s['overall_progress'] is not None]
+        if valid_subjects:
+            top_subject = max(valid_subjects, key=lambda x: x['overall_progress'])
+            least_covered_subject = min(valid_subjects, key=lambda x: x['overall_progress'])
+
+    # Strongest Study Type & Needs Focus
+    study_types = {
+        'Theory': p_theory_avg,
+        'Class/Concept': p_book_avg, # Use the display name here
+        'Note': p_note_avg,
+        'CQ': p_cq_avg,
+        'MCQ': p_mcq_avg,
+    }
+
+    strongest_study_type = None
+    needs_focus_study_type = None
+    if study_types:
+        # Filter out study types with None progress before finding min/max
+        valid_study_types = {k: v for k, v in study_types.items() if v is not None}
+        if valid_study_types:
+            strongest_study_type = max(valid_study_types.items(), key=lambda item: item[1])
+            needs_focus_study_type = min(valid_study_types.items(), key=lambda item: item[1])
+
+
     return render(request, 'users/analysis.html', {
         'subjects_progress': json.dumps(subjects_progress_data),
         'overall_average_progress': round(overall_average_progress, 2),
@@ -122,4 +153,8 @@ def analysis(request):
         'p_note_avg': p_note_avg,
         'p_cq_avg': p_cq_avg,
         'p_mcq_avg': p_mcq_avg,
+        'top_subject': top_subject,
+        'least_covered_subject': least_covered_subject,
+        'strongest_study_type': strongest_study_type,
+        'needs_focus_study_type': needs_focus_study_type,
     })

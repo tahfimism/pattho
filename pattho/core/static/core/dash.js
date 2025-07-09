@@ -37,10 +37,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateChapterProgressUI(chapterRow) {
+        // Define weights for each field (must match Python backend)
+        const WEIGHTS = {
+            'p_theory': 0.10,
+            'p_note': 0.20,
+            'p_mcq': 0.20,
+            'p_cq': 0.35,
+            'p_book': 0.15 // Corresponds to Class/Concept
+        };
+
         const chapterCheckboxes = chapterRow.querySelectorAll('.checkbox-group input[type="checkbox"]');
-        const totalCheckboxes = chapterCheckboxes.length;
-        const checkedCount = Array.from(chapterCheckboxes).filter(cb => cb.checked).length;
-        const newProgress = totalCheckboxes > 0 ? Math.round((checkedCount / totalCheckboxes) * 100) : 0;
+        let weightedSum = 0;
+
+        chapterCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                const field = checkbox.dataset.field;
+                if (WEIGHTS[field]) {
+                    weightedSum += WEIGHTS[field];
+                }
+            }
+        });
+
+        const newProgress = Math.round(weightedSum * 100);
 
         console.log(`Updating UI instantly for Chapter ${chapterRow.dataset.chapterId}. New calculated progress: ${newProgress}%`);
 

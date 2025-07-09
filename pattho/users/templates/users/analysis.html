@@ -80,7 +80,7 @@
             const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
             
             ctx.font = '30px sans-serif'; // Normal font weight
-            ctx.fillStyle = 'rgba(75, 192, 192, 1)'; // Normal color
+            ctx.fillStyle = '#5e5959'; // Normal color
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, centerX, centerY - 10);
@@ -103,7 +103,7 @@
             const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
             
             ctx.font = '20px sans-serif'; // Smaller font for smaller charts
-            ctx.fillStyle = 'rgba(75, 192, 192, 1)';
+            ctx.fillStyle = '#5e5959';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, centerX, centerY);
@@ -213,7 +213,8 @@
                             color: '#5e5959'
                         },
                         pointLabels: {
-                            backdropColor: 'transparent'
+                            backdropColor: 'transparent',
+                            color: 'white'
                         }
                     }
                 }

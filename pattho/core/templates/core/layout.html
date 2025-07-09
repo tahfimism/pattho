@@ -114,7 +114,7 @@
     </aside>
 
     <!-- Main Content and Right Sidebar Wrapper -->
-    <div class="flex-1 flex flex-col md:ml-64 pt-16 md:pt-0"> <!-- Added pt-16 for mobile header offset -->
+    <div class="flex-1 flex flex-col md:ml-64 md:mr-72 pt-16 md:pt-0"> <!-- Added pt-16 for mobile header offset -->
         <!-- Content Area: Main Content + Right Sidebar -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Main Content Area - This is where your Django content will be injected -->
@@ -125,7 +125,7 @@
             </main>
 
             <!-- Right Sidebar -->
-            <aside id="right-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:relative md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40">
+            <aside id="right-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40">
                 {% subject_progress_sidebar %}
 
                 <div class="border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] pb-6 mb-6"></div>

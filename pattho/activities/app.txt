@@ -41,3 +41,4 @@ after each minute the timer should store the time in brower or local data so it 
 
 Backend:
 add, edit and delete task views, ncessary api etc. the timer
+

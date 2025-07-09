@@ -54,6 +54,12 @@
             </div>
         </div>
     </div>
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full mt-6">
+        <h2 class="text-xl font-semibold mb-4">Field-wise Progress (Radar Chart)</h2>
+        <div class="relative flex justify-center items-center mt-8 w-96 h-96 mx-auto">
+            <canvas id="fieldRadarChart"></canvas>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -180,6 +186,41 @@
         });
     }
 
+    function createRadarChart(canvasId, labels, data) {
+        new Chart(document.getElementById(canvasId).getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Progress',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        grid: {
+                            color: '#5e5959'
+                        },
+                        pointLabels: {
+                            backdropColor: 'transparent'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const overallAverageProgress = {{ overall_average_progress }};
         const pTheoryAvg = {{ p_theory_avg }};
@@ -221,6 +262,13 @@
             'pMcqChart',
             pMcqAvg,
             'MCQ'
+        );
+
+        // New Radar Chart
+        createRadarChart(
+            'fieldRadarChart',
+            ['Theory', 'Book', 'Note', 'CQ', 'MCQ'],
+            [pTheoryAvg, pBookAvg, pNoteAvg, pCqAvg, pMcqAvg]
         );
     });
 </script>

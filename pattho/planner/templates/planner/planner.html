@@ -46,11 +46,11 @@
                                     {% for topic in chapter.topics %}
                                         <div class="p-4 bg-[#191919]">
                                             <div class="flex items-center justify-between">
-                                                <h4 class="text-lg text-[#6EE7B7]">{{ topic.topic_title }}</h4>
                                                 <div class="flex items-center">
-                                                    <span class="text-gray-400 mr-2">{{ topic.total_allocated_minutes|minutes_to_hours_minutes }}</span>
-                                                    <input type="checkbox" name="completed_topics" value="{{ chapter.chapter_title }}|{{ topic.topic_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 topic-checkbox" {% if topic.completed %}checked{% endif %}>
+                                                    <input type="checkbox" name="completed_topics" value="{{ chapter.chapter_title }}|{{ topic.topic_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 topic-checkbox mr-2" {% if topic.completed %}checked{% endif %}>
+                                                    <h4 class="text-lg text-[#6EE7B7]">{{ topic.topic_title }}</h4>
                                                 </div>
+                                                <span class="text-gray-400">{{ topic.total_allocated_minutes|minutes_to_hours_minutes }}</span>
                                             </div>
                                             <ul class="mt-2 space-y-1 text-base text-gray-400">
                                                 {% for planned_date in topic.planned_dates %}

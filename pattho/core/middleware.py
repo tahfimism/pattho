@@ -26,3 +26,26 @@ class LoginRequiredMiddleware:
         
         response = self.get_response(request)
         return response
+
+
+
+class ProfileCompletionMiddleware:
+    """
+    Middleware to ensure that users have completed their profiles.
+
+    If a user is authenticated and their profile is not complete,
+    they are redirected to the 'complete_profile' page.
+    This check is bypassed for the complete_profile page itself and the logout page
+    to prevent a redirect loop.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        if request.user.is_authenticated and not request.user.is_profile_complete:
+            if request.path not in [reverse('complete_profile'), reverse('logout')]:
+                return redirect('complete_profile')
+
+        return response

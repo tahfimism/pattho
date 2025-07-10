@@ -88,26 +88,17 @@
             </nav>
         </div>
 
-        <!-- User XP, Streak, Avatar (Static for template) -->
-        <div class="p-6 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
-            <div class="mb-4">
-                <div class="flex justify-between items-center text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-1">
-                    <span>XP Progress</span>
-                    <span>750/1000 XP</span>
-                </div>
-                <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2.5 dark:bg-[var(--color-gray-bg-dark)]">
-                    <div class="bg-[var(--color-accent-light)] h-2.5 rounded-full" style="width: 75%"></div>
-                </div>
-            </div>
+        <!-- User Streak, Avatar -->
+        <div class="p-6">
             <div class="flex items-center mb-4 text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
                 <i data-lucide="flame" class="w-4 h-4 mr-2 text-[var(--color-accent-light)]"></i>
-                <span>Streak: 15 Days</span>
+                <span>Streak: {{ request.user.streak|default:0 }} Days</span>
             </div>
-            <div class="flex items-center">
-                <img src="https://placehold.co/40x40/a78bfa/ffffff?text=U" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
+            <div class="flex items-center pt-4 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+                <img src="{{ request.user.avatar|default:'https://placehold.co/40x40/a78bfa/ffffff?text=U' }}" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
                 <div>
-                    <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Student Name</p>
-                    <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">HSC 2025</p>
+                    <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+                    <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">{{ request.user.get_stream_display }} {{ request.user.hscyear }}</p>
                 </div>
             </div>
         </div>

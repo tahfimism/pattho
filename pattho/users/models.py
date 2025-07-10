@@ -13,6 +13,13 @@ class UserProfile(AbstractUser):
         ('med', 'Medical'), 
         ('var', 'Varsity')
     ]
+
+    HSC_YEAR_CHOICES = [
+        (2025, '2025'), 
+        (2026, '2026'), 
+        (2027, '2027'), 
+        (2028, '2028')
+    ]
     
     # Extend the default User model with additional fields
     stream = models.CharField(max_length=20, choices=STREAMS, default='hsc')
@@ -20,11 +27,23 @@ class UserProfile(AbstractUser):
     avatar = models.URLField(blank=True, null=True)
     xp = models.PositiveIntegerField(default=0)
     streak = models.PositiveIntegerField(default=0)
-    college = models.CharField(max_length=20, blank=True, null=True)
+    college = models.CharField(max_length=100, blank=True, null=True)
+    hscyear = models.PositiveIntegerField(blank=True, null=True, choices=HSC_YEAR_CHOICES)
+
 
     
     # Cached progress (updated via signals)
     overall_progress_cache = models.FloatField(default=0.0)
+
+    @property
+    def is_profile_complete(self):
+        """
+        Checks if all required profile fields are filled out.
+        Returns True if the profile is complete, False otherwise.
+        """
+        if self.hscyear is None or not self.college:
+            return False
+        return True
     
     def __str__(self):
         return self.username

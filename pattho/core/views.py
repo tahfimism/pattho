@@ -15,6 +15,25 @@ from users.models import UserProfile # Changed from User to UserProfile
 from django.contrib import messages # Import messages framework
 
 @login_required
+def complete_profile_view(request):
+    """
+    Handles the profile completion form.
+    Redirects to the dashboard if the profile is already complete.
+    """
+    if request.user.is_profile_complete:
+        return HttpResponseRedirect(reverse('dashboard'))
+
+    if request.method == 'POST':
+        user_profile = request.user
+        user_profile.hscyear = request.POST.get('hscyear')
+        user_profile.college = request.POST.get('college')
+        user_profile.save()
+        messages.success(request, 'Profile completed successfully!')
+        return HttpResponseRedirect(reverse('dashboard'))
+
+    return render(request, 'core/complete_profile.html')
+
+@login_required
 def profile_view(request):
     if request.method == 'POST':
         user_profile = request.user

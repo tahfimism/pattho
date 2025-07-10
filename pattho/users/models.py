@@ -34,7 +34,7 @@ class UserProgress(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='progress')
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='progress', default=None)
 
-    p_book = models.BooleanField(default=False, help_text="Is book read?")
+    p_book = models.BooleanField(default=False, help_text="Class/concept done?")
     p_note = models.BooleanField(default=False, help_text="Has note?")
     p_mcq = models.BooleanField(default=False, help_text="Did MCQ practice?")
     p_cq = models.BooleanField(default=False, help_text="Did CQ practice?")

@@ -156,12 +156,24 @@
         const checkboxes = document.querySelectorAll('.topic-checkbox');
         const updateButton = document.getElementById('update-button');
 
+        function toggleUpdateButtonVisibility() {
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            if (anyChecked) {
+                updateButton.classList.remove('hidden');
+            } else {
+                updateButton.classList.add('hidden');
+            }
+        }
+
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 console.log('Checkbox changed!');
-                updateButton.classList.remove('hidden');
+                toggleUpdateButtonVisibility();
             });
         });
+
+        // Initial check on page load
+        toggleUpdateButtonVisibility();
     });
 </script>
 {% endblock %}

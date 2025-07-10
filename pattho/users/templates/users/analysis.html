@@ -92,9 +92,9 @@
             </div>
             <div class="flex flex-col items-center min-w-[130px] max-w-[160px]">
                 <div class="relative w-full mb-0 h-[160px]">
-                    <canvas id="pBookChart"></canvas>
+                    <canvas id="pClassConceptChart"></canvas>
                 </div>
-                <h3 class="text-lg font-medium mt-0">Book</h3>
+                <h3 class="text-lg font-medium mt-0">Class/Concept</h3>
             </div>
             <div class="flex flex-col items-center min-w-[130px] max-w-[160px]">
                 <div class="relative w-full mb-0 h-[160px]">
@@ -287,7 +287,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const overallAverageProgress = {{ overall_average_progress }};
         const pTheoryAvg = {{ p_theory_avg }};
-        const pBookAvg = {{ p_book_avg }};
+        const pClassConceptAvg = {{ p_book_avg }};
         const pNoteAvg = {{ p_note_avg }};
         const pCqAvg = {{ p_cq_avg }};
         const pMcqAvg = {{ p_mcq_avg }};
@@ -304,8 +304,8 @@
         );
 
         createFieldWiseChart(
-            'pBookChart',
-            pBookAvg,
+            'pClassConceptChart',
+            pClassConceptAvg,
             'Book'
         );
 
@@ -330,8 +330,8 @@
         // New Radar Chart
         createRadarChart(
             'fieldRadarChart',
-            ['Theory', 'Book', 'Note', 'CQ', 'MCQ'],
-            [pTheoryAvg, pBookAvg, pNoteAvg, pCqAvg, pMcqAvg]
+            ['Theory', 'Class/Concept', 'Note', 'CQ', 'MCQ'],
+            [pTheoryAvg, pClassConceptAvg, pNoteAvg, pCqAvg, pMcqAvg]
         );
     });
 </script>

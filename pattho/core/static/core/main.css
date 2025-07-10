@@ -119,6 +119,48 @@
         color: var(--color-text-dark);
     }
 
+/* Checkbox styling */
+input[type="checkbox"] {
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none; /* For Safari/Chrome */
+    -moz-appearance: none; /* For Firefox */
+    width: 1.25em; /* Adjust size as needed */
+    height: 1.25em; /* Adjust size as needed */
+    border: 2px solid #919090; /* Increased border stroke */
+    border-radius: 4px; /* Slightly rounded edges */
+    background-color: #1f1e1e; /* Default background */
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #2d4738; /* Green when checked */
+    border-color: #407e59; /* Green border when checked */
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓'; /* Tick mark */
+    color: white;
+    font-size: 1em; /* Adjust tick size */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Dark mode adjustments for checkboxes */
+.dark input[type="checkbox"] {
+    background-color: var(--color-card-bg-dark);
+    border-color: var(--color-border-dark);
+}
+
+.dark input[type="checkbox"]:checked {
+    background-color: var(--color-success-dark);
+    border-color: var(--color-success-dark);
+}
+
 /* Tooltip styles */
 .group .tooltip-text {
     visibility: hidden;

@@ -9,17 +9,6 @@
     <div class="flex flex-col md:flex-row gap-8">
         <!-- Left Column: Settings and Info Cards -->
         <div class="flex flex-col w-full md:w-1/4 gap-8">
-            <!-- Left Navigation Sidebar -->
-            <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
-                <h2 class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Settings</h2>
-                <nav>
-                    <ul>
-                        <li><a href="#personal-info" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] active-link" data-section="personal-info">Personal Info</a></li>
-                        <li><a href="#password-change" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="password-change">Password Change</a></li>
-                    </ul>
-                </nav>
-            </div>
-
             <!-- Info Card -->
             <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
                 <h2 class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Info</h2>
@@ -28,6 +17,17 @@
                         <li><a href="#about-us" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="about-us">About Us</a></li>
                         <li><a href="#policy" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="policy">Policy</a></li>
                         <li><a href="#privacy-policy" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="privacy-policy">Privacy Policy</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Left Navigation Sidebar -->
+            <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
+                <h2 class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Settings</h2>
+                <nav>
+                    <ul>
+                        <li><a href="#personal-info" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] active-link" data-section="personal-info">Personal Info</a></li>
+                        <li><a href="#password-change" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="password-change">Password Change</a></li>
                     </ul>
                 </nav>
             </div>
@@ -135,7 +135,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = document.querySelectorAll('nav ul li a');
+        const navLinks = document.querySelectorAll('a[data-section]');
         const contentSections = document.querySelectorAll('.content-section');
 
         navLinks.forEach(link => {
@@ -143,7 +143,7 @@
                 e.preventDefault();
 
                 // Remove active class from all links and hide all sections
-                document.querySelectorAll('nav ul li a').forEach(nav => nav.classList.remove('active-link'));
+                navLinks.forEach(nav => nav.classList.remove('active-link'));
                 contentSections.forEach(section => section.classList.add('hidden'));
 
                 // Add active class to clicked link
@@ -156,7 +156,14 @@
         });
 
         // Initial active state for Personal Info
-        document.querySelector('a[data-section="personal-info"]').classList.add('active-link');
+        const initialLink = document.querySelector('a[data-section="personal-info"]');
+        if (initialLink) {
+            initialLink.classList.add('active-link');
+            const initialSection = document.getElementById(initialLink.dataset.section);
+            if (initialSection) {
+                initialSection.classList.remove('hidden');
+            }
+        }
     });
 </script>
 

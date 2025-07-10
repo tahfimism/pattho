@@ -91,7 +91,7 @@ def register(request):
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = UserProfile.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
             return render(request, "core/register.html", {

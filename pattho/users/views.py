@@ -41,20 +41,9 @@ def dashboard(request):
     completed_chapters = UserProgress.objects.filter(user=user, overall_progress=100).count()
     in_progress_chapters = UserProgress.objects.filter(user=user, overall_progress__gt=0, overall_progress__lt=100).count()
     
-    # Chapters that have no progress entry or have 0 overall_progress
-    # Get all chapter IDs that have any progress entry (even 0%)
-    chapters_with_progress_ids = UserProgress.objects.filter(user=user).values_list('chapter_id', flat=True)
-    
-    # Get all chapter IDs
-    all_chapter_ids = Chapter.objects.values_list('id', flat=True)
-    
-    # Chapters that are truly not started (no entry in UserProgress)
-    not_started_no_entry_count = len(set(all_chapter_ids) - set(chapters_with_progress_ids))
-    
-    # Chapters that have an entry but overall_progress is 0
-    not_started_zero_progress_count = UserProgress.objects.filter(user=user, overall_progress=0).count()
-    
-    not_started_chapters = not_started_no_entry_count + not_started_zero_progress_count
+    # Efficiently calculate not-started chapters
+    started_chapter_count = UserProgress.objects.filter(user=user, overall_progress__gt=0).count()
+    not_started_chapters = total_chapters - started_chapter_count
 
 
     for subject in subjects:

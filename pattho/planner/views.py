@@ -39,37 +39,27 @@ def update_planner(request):
         
         # Re-generate the plan only for incomplete topics
         if incomplete_topics:
-            # We need to fetch the actual Topic and Chapter objects for generate_study_plan
-            # This is a simplified approach; a more robust solution might involve storing IDs
-            # or fetching them more efficiently.
-            
-            # Group incomplete topics by chapter title to fetch Chapter objects
-            chapters_to_replan = {}
+            # Fetch actual Topic objects for replanning
+            topics_for_replan = []
             for topic_info in incomplete_topics:
-                chapter_title = topic_info['chapter_title']
-                if chapter_title not in chapters_to_replan:
-                    # Fetch the Chapter object
-                    try:
-                        chapter_obj = Chapter.objects.get(title=chapter_title)
-                        chapters_to_replan[chapter_title] = chapter_obj
-                    except Chapter.DoesNotExist:
-                        # Handle case where chapter might not exist (e.g., data inconsistency)
-                        continue
-            
-            # Create a list of Chapter objects for generate_study_plan
-            selected_chapters_for_replan = list(chapters_to_replan.values())
+                try:
+                    topic_obj = Topic.objects.get(
+                        title=topic_info['topic_title'],
+                        chapter__title=topic_info['chapter_title']
+                    )
+                    topics_for_replan.append(topic_obj)
+                except Topic.DoesNotExist:
+                    # Handle case where topic might not exist (e.g., data inconsistency)
+                    continue
 
-            # Use current date as start date for replanning
             start_date_for_replan = datetime.date.today()
-            # Assuming total_days and daily_minutes remain the same for replanning
             total_days_for_replan = (user_routine.end_date - start_date_for_replan).days + 1
             daily_minutes_for_replan = user_routine.daily_minutes
 
-            # Only generate if there are chapters to replan and days remaining
-            if selected_chapters_for_replan and total_days_for_replan > 0:
+            if topics_for_replan and total_days_for_replan > 0:
                 new_plan_data = generate_study_plan(
                     request.user, 
-                    selected_chapters_for_replan, 
+                    topics_for_replan, 
                     start_date_for_replan, 
                     total_days_for_replan, 
                     daily_minutes_for_replan, 
@@ -128,6 +118,7 @@ def generate_study_plan(user, topics_to_plan, start_date, total_days, daily_minu
     for day_index in range(total_days):
         current_date_str = (start_date + datetime.timedelta(days=day_index)).strftime('%Y-%m-%d')
         daily_chapters = {}
+        temp_daily_topics = {} # Use a dictionary to prevent duplicates for a given topic on the same day
         
         # Iterate through a copy of the queue to avoid issues with modification during iteration
         for t in list(topic_queue):
@@ -137,17 +128,23 @@ def generate_study_plan(user, topics_to_plan, start_date, total_days, daily_minu
 
             if time_to_assign > 0:
                 chapter_title = t['chapter'].title
+                topic_title = t['topic'].title
+
                 if chapter_title not in daily_chapters:
                     daily_chapters[chapter_title] = {
                         'chapter_title': chapter_title,
                         'completed': False,
-                        'topics': []
+                        'topics': [] # This will be populated from temp_daily_topics
+                    }
+                    temp_daily_topics[chapter_title] = {} # Initialize for this chapter
+
+                if topic_title not in temp_daily_topics[chapter_title]:
+                    temp_daily_topics[chapter_title][topic_title] = {
+                        'topic_title': topic_title,
+                        'allocated_minutes': 0
                     }
                 
-                daily_chapters[chapter_title]['topics'].append({
-                    'topic_title': t['topic'].title,
-                    'allocated_minutes': round(time_to_assign)
-                })
+                temp_daily_topics[chapter_title][topic_title]['allocated_minutes'] += round(time_to_assign)
                 
                 t['allocated_minutes'] -= time_to_assign
                 remaining_time_per_day[day_index] -= time_to_assign
@@ -155,7 +152,10 @@ def generate_study_plan(user, topics_to_plan, start_date, total_days, daily_minu
                 if t['allocated_minutes'] <= 0:
                     topic_queue.remove(t) # Remove fully allocated topic
         
-        # Convert daily_chapters dict to list for plan_data
+        # Convert temp_daily_topics dict to list for plan_data
+        for chapter_title, topics_dict in temp_daily_topics.items():
+            daily_chapters[chapter_title]['topics'] = list(topics_dict.values())
+
         plan_data[current_date_str] = list(daily_chapters.values())
 
     return plan_data

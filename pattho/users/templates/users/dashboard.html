@@ -49,10 +49,11 @@
 
     {% for subject in subjects %}
     <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
-        <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center">
+        <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center cursor-pointer collapse-toggle" data-target="#subject-{{ forloop.counter }}">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ subject.name }}</h2>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] collapse-icon"></i>
         </div>
-        <div class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)]">
+        <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)] collapse-content hidden">
             {% for chapter in subject.chapters.all %}
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:gap-x-8">
@@ -102,6 +103,44 @@
 <script>
     window.updateProgressUrl = "{% url 'update_progress' %}";
     window.apiSubjectProgressUrl = "{% url 'api_subject_progress' %}";
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.collapse-toggle').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const targetContent = document.querySelector(targetId);
+                const icon = this.querySelector('.collapse-icon');
+
+                const allContents = document.querySelectorAll('.collapse-content');
+                const allIcons = document.querySelectorAll('.collapse-icon');
+
+                allContents.forEach(content => {
+                    if (content.id !== targetContent.id && !content.classList.contains('hidden')) {
+                        content.classList.add('hidden');
+                    }
+                });
+
+                allIcons.forEach(i => {
+                    if (i !== icon && i.getAttribute('data-lucide') === 'chevron-up') {
+                        i.setAttribute('data-lucide', 'chevron-down');
+                    }
+                });
+
+                if (targetContent.classList.contains('hidden')) {
+                    targetContent.classList.remove('hidden');
+                    icon.setAttribute('data-lucide', 'chevron-up');
+                } else {
+                    targetContent.classList.add('hidden');
+                    icon.setAttribute('data-lucide', 'chevron-down');
+                }
+                lucide.createIcons();
+            });
+        });
+    });
 </script>
 {% endblock %}
 

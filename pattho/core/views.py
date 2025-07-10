@@ -11,16 +11,43 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from users.models import User
+from users.models import UserProfile # Changed from User to UserProfile
+from django.contrib import messages # Import messages framework
+
+@login_required
+def profile_view(request):
+    if request.method == 'POST':
+        user_profile = request.user
+        user_profile.username = request.POST.get('username', user_profile.username)
+        user_profile.first_name = request.POST.get('first_name', user_profile.first_name)
+        user_profile.last_name = request.POST.get('last_name', user_profile.last_name)
+        user_profile.college = request.POST.get('college', user_profile.college)
+        # Email is readonly, so no need to update from POST
+        
+        try:
+            user_profile.save()
+            messages.success(request, 'Profile updated successfully!')
+        except IntegrityError:
+            messages.error(request, 'Username already taken. Please choose a different username.')
+        except Exception as e:
+            messages.error(request, f'Error updating profile: {e}')
+        
+        return HttpResponseRedirect(reverse('profile'))
+    
+    # Clear messages on GET request
+    storage = messages.get_messages(request)
+    storage.used = True
+    
+    return render(request, 'core/profile.html')
 
 # Create your views here.
 
 
 def index(request):
-    """
-    Render the index page.
-    """
-    return render(request, 'core/index.html')
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('dashboard')) # Assuming 'dashboard' is your dashboard URL
+    else:
+        return render(request, 'core/index.html')
 
 
 def login_view(request):

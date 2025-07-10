@@ -1,30 +1,57 @@
-{% extends "csrfmiddlewaretoken/layout.html" %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for consistency, if needed */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-[#121212] flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h2 class="text-xl font-bold text-white mb-6 text-center">Register</h2>
 
-{% block body %}
+        {% if message %}
+            <div class="bg-red-500 text-white p-3 rounded mb-4 text-center">{{ message }}</div>
+        {% endif %}
 
-    <h2>Register</h2>
+        <form action="{% url 'register' %}" method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <input autofocus class="w-full p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" type="text" name="username" placeholder="Username">
+            </div>
+            <div>
+                <input class="w-full p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" type="email" name="email" placeholder="Email Address">
+            </div>
+            <div>
+                <input class="w-full p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" type="password" name="password" placeholder="Password">
+            </div>
+            <div>
+                <input class="w-full p-3 rounded-xl bg-gray-700 text-white border border-gray-600 focus:outline-none focus:border-blue-500" type="password" name="confirmation" placeholder="Confirm Password">
+            </div>
+            <button type="submit" class="w-full bg-[#4d4d4e9a] text-white p-3 rounded-xl font-semibold hover:bg-gray-800 transition duration-200">Register</button>
+        </form>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+        <p class="text-center text-gray-400 mt-6">
+            Already have an account? <a href="{% url 'login' %}" class="text-blue-400 hover:underline">Log In here.</a>
+        </p>
 
-    <form action="{% url 'register' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        <div class="mt-6 text-center">
+            <p class="text-gray-400 mb-4">Or register with</p>
+            <a href="{% provider_login_url 'google' %}" class="inline-flex items-center justify-center px-4 py-2 border border-gray-600 rounded-xl shadow-sm text-sm font-medium text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                <img src="https://www.google.com/favicon.ico" alt="Google logo" class="w-5 h-5 mr-2">
+                Register with Google
+            </a>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Register">
-    </form>
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
-{% endblock %}
+    </div>
+</body>
+</html>

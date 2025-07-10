@@ -54,19 +54,19 @@
             <nav>
                 <ul>
                     <li class="mb-2">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                        <a href="{% url 'dashboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                        <a href="{% url 'planner' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
                             Study Planner
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                        <a href="{% url 'activities' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
                             To-do & Pomodoro
                         </a>
@@ -79,7 +79,7 @@
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                        <a href="{% url 'profile' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="user" class="w-5 h-5 mr-3"></i>
                             Profile / Settings
                         </a>
@@ -125,6 +125,7 @@
             </main>
 
             <!-- Right Sidebar -->
+            {% block right_sidebar %}
             <aside id="right-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40 pt-20 md:pt-11">
                 {% subject_progress_sidebar %}
 
@@ -136,6 +137,7 @@
                     <li class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Loading tasks...</li>
                 </ul>
             </aside>
+            {% endblock right_sidebar %}
         </div>
     </div>
 

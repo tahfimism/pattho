@@ -1,103 +1,173 @@
-{% extends "network/layout.html" %}
-{% load static %}
+{% extends "core/layout.html" %}
+
+{% block title %}Profile Settings{% endblock %}
+
+{% block right_sidebar %}{% endblock right_sidebar %}
+
 {% block body %}
-    <div class="profile-head">
-    <h1 class="profile-title"> {{ user.username|capfirst }} </h1>
-    <p class="profile-follow-text">
-        Followers {{ user.followers.count }}  | Following {{ user.following.count }} | Total post {{ user.posts.count }} 
-    </p>
-
-    {% if request.user != user and request.user.is_authenticated %}
-    <!--Follow button-->
-    <button class="btn btn-secondary" id="follow-button" data-userid="{{ user.id }}">
-        {% if is_following %}
-            Unfollow
-        {% else %}
-            Follow
-        {% endif %}
-    </button>
-{% endif %}
-</div>
-    <hr>
-    
-    
-
-    <!-- New post form-->
-{% if request.user == user %}
-    
-    <form id="new_post_form">
-    <div class="form-group">
-        <label for="post-content">New Post</label>
-        <textarea class="form-control" id="post-content" rows="3" placeholder="What's on your mind?"></textarea>
-    </div>
-    <button type="submit" class="btn btn-secondary">Post</button>
-    </form>
-
-       
-{% endif %}
-    <br>
-<h4 style="font-family: 'Courier New', Courier, monospace; color: antiquewhite;" >Posts by {{ user.username }} </h4>
-<hr class="my-2" >
-     
-    <div id="posts-container" class="mt-4">
-        <!-- Posts will be dynamically inserted here -->
-        {% for post in posts %}
-        <div class="post">
-            <div class="post-header">
-                        <a href="{% url 'profile' post.user.username %}"> <strong>{{ post.user.username|title }}</strong> </a>
-                        <span class="text-muted float-end" style="font-size: small;"> 
-                            {% if request.user == post.user %}
-                            <a class="post_edit_button" href="#" data-postid="{{ post.id }}">Edit</a> 
-                            {% endif %}
-                            {{ post.timestamp }}</span>
-                    </div>
-                    <hr class="my-2 hr">
-                    <div class="post-content">
-                        {{ post.content }}
-                    </div>
-                    <div class="post-actions">
-                        {% if request.user.is_authenticated %}
-                        <a class="like_button text-muted " data-postid="{{ post.id }}">Like</a> 
-                        {% endif %}
-                        <span class="text-muted " id="like_count_{{ post.id }}"> {{ post.like_count }} likes</span>
-                    </div>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Left Column: Settings and Info Cards -->
+        <div class="flex flex-col w-full md:w-1/4 gap-8">
+            <!-- Left Navigation Sidebar -->
+            <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
+                <h2 class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Settings</h2>
+                <nav>
+                    <ul>
+                        <li><a href="#personal-info" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] active-link" data-section="personal-info">Personal Info</a></li>
+                        <li><a href="#password-change" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="password-change">Password Change</a></li>
+                    </ul>
+                </nav>
             </div>
-        {% empty %}
-            <p>No posts available.</p>
-        {% endfor %}
+
+            <!-- Info Card -->
+            <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
+                <h2 class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Info</h2>
+                <nav>
+                    <ul>
+                        <li><a href="#about-us" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="about-us">About Us</a></li>
+                        <li><a href="#policy" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="policy">Policy</a></li>
+                        <li><a href="#privacy-policy" class="block p-2 rounded-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)]" data-section="privacy-policy">Privacy Policy</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Logout Button -->
+            <div class="shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
+                <form action="{% url 'account_logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Content Area -->
+        <div class="flex-1 shadow-lg rounded-lg p-6 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)]">
+            {% if messages %}
+                <ul class="mb-4 space-y-2">
+                    {% for message in messages %}
+                        <li class="p-3 rounded text-sm text-red-400 {% if message.tags %}bg-{{ message.tags }}-500/20 text-{{ message.tags }}-400{% endif %}">
+                            {{ message }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <!-- Personal Info Section -->
+            <div id="personal-info" class="content-section active-section space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">User Information</h2>
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Username</label>
+                        <input type="text" id="username" name="username" value="{{ request.user.username }}" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">First Name</label>
+                            <input type="text" id="first_name" name="first_name" value="{{ request.user.first_name|default_if_none:'' }}" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" value="{{ request.user.last_name|default_if_none:'' }}" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="college" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">College</label>
+                        <input type="text" id="college" name="college" value="{{ request.user.college|default_if_none:'' }}" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Email</label>
+                        <input type="email" id="email" name="email" value="{{ request.user.email }}" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" readonly>
+                    </div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Update Profile</button>
+                </form>
+            </div>
+
+            <!-- Password Change Section -->
+            <div id="password-change" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Password Change</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">Click the button below to change your password.</p>
+                <a href="{% url 'account_change_password' %}" class="inline-block bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">Change Password</a>
+            </div>
+
+            <!-- About Us Section -->
+            <div id="about-us" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">About Us</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">This is a placeholder for information about the application and its purpose.</p>
+            </div>
+
+            <!-- Policy Section -->
+            <div id="policy" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Policy</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">This is a placeholder for the application's policy details.</p>
+            </div>
+
+            <!-- Privacy Policy Section -->
+            <div id="privacy-policy" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Privacy Policy</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">This is a placeholder for the application's privacy policy details.</p>
+            </div>
+        </div>
+
+            <!-- About Us Section -->
+            <div id="about-us" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">About Us</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Information about the application and its purpose.</p>
+            </div>
+
+            <!-- Policy Section -->
+            <div id="policy" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Policy</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">This section will contain the application's policy details.</p>
+            </div>
+
+            <!-- Privacy Policy Section -->
+            <div id="privacy-policy" class="content-section hidden space-y-6">
+                <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4">Privacy Policy</h2>
+                <p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">This section will contain the application's privacy policy details.</p>
+            </div>
+        </div>
     </div>
+</div>
 
-    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('nav ul li a');
+        const contentSections = document.querySelectorAll('.content-section');
 
-<!-- Pagination Buttons -->
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-        {% if posts.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-        {% endif %}
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
 
-        <li class="page-item disabled">
-            <a class="page-link" href="#">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</a>
-        </li>
+                // Remove active class from all links and hide all sections
+                document.querySelectorAll('nav ul li a').forEach(nav => nav.classList.remove('active-link'));
+                contentSections.forEach(section => section.classList.add('hidden'));
 
-        {% if posts.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
-            </li>
-        {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
+                // Add active class to clicked link
+                this.classList.add('active-link');
 
-    
-     
+                // Show corresponding content section
+                const targetSectionId = this.dataset.section;
+                document.getElementById(targetSectionId).classList.remove('hidden');
+            });
+        });
+
+        // Initial active state for Personal Info
+        document.querySelector('a[data-section="personal-info"]').classList.add('active-link');
+    });
+</script>
+
+<style>
+    .active-link {
+        background-color: var(--color-gray-bg-light);
+        color: var(--color-text-light);
+    }
+    .dark .active-link {
+        background-color: var(--color-gray-bg-dark);
+        color: var(--color-text-dark);
+    }
+</style>
 {% endblock %}

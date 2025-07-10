@@ -20,6 +20,7 @@ class UserProfile(AbstractUser):
     avatar = models.URLField(blank=True, null=True)
     xp = models.PositiveIntegerField(default=0)
     streak = models.PositiveIntegerField(default=0)
+    college = models.CharField(max_length=20, blank=True, null=True)
 
     
     # Cached progress (updated via signals)

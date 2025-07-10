@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Connect Your Google Account" %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+<body class="bg-[#121212] flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <h2 class="text-xl font-bold text-white mb-6 text-center">{% trans "Connect Your Google Account" %}</h2>
+
+        <p class="text-center text-gray-400 mb-4">{% blocktrans with provider.name as provider_name %}You are about to sign in using your {{ provider_name }} account.{% endblocktrans %}</p>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <button type="submit" class="w-full bg-[#121212] text-white p-3 rounded-xl font-semibold hover:bg-gray-800 transition duration-200">{% trans "Continue" %}</button>
+        </form>
+    </div>
+</body>
+</html>

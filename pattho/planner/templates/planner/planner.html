@@ -1,5 +1,7 @@
 {% extends "core/layout.html" %}
 
+{% load time_filters %}
+
 {% block title %}Planner{% endblock %}
 
 {% block body %}
@@ -15,7 +17,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-6">
                     <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4">
                         <p class="text-sm text-gray-400 mb-1">Daily Study Goal</p>
-                        <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes }} minutes</p>
+                        <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes|minutes_to_hours_minutes }}</p>
                     </div>
                     <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4">
                         <p class="text-sm text-gray-400 mb-1">Start Date</p>
@@ -30,8 +32,8 @@
                 <h2 class="text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Daily Breakdown</h2>
                 <div class="space-y-4">
                     {% for date, chapters in user_routine.plan_data.items %}
-                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg">
-                            <div class="p-4 border-b border-gray-700 bg-[#2E3338]">
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg overflow-hidden">
+                            <div class="p-4 border-b border-gray-700 bg-[#2E3338] text-center">
                                 <h3 class="font-semibold text-white">{{ date }}</h3>
                             </div>
                             <div class="divide-y divide-gray-700">
@@ -48,7 +50,7 @@
                                             {% for topic in chapter.topics %}
                                                 <li class="flex justify-between items-center text-sm">
                                                     <span class="text-gray-300">{{ topic.topic_title }}</span>
-                                                    <span class="text-gray-400">{{ topic.allocated_minutes }} mins</span>
+                                                    <span class="text-gray-400">{{ topic.allocated_minutes|minutes_to_hours_minutes }}</span>
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -82,8 +84,8 @@
             <form method="post" class="space-y-6">
                 {% csrf_token %}
                 <div>
-                    <label for="daily_minutes" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many minutes do you want to study each day?</label>
-                    <input type="number" id="daily_minutes" name="daily_minutes" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <label for="daily_hours" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many hours do you want to study each day?</label>
+                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" placeholder="Daily study hour">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>

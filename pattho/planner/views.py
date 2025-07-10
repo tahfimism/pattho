@@ -28,12 +28,6 @@ def update_planner(request):
     return redirect('planner')
 
 def generate_study_plan(user, selected_chapters, start_date, total_days, daily_minutes, user_stream):
-    print(f"DEBUG: generate_study_plan called with:")
-    print(f"  start_date: {start_date}, type: {type(start_date)}")
-    print(f"  total_days: {total_days}, type: {type(total_days)}")
-    print(f"  daily_minutes: {daily_minutes}, type: {type(daily_minutes)}")
-    print(f"  user_stream: {user_stream}, type: {type(user_stream)}")
-    print(f"  selected_chapters count: {len(selected_chapters)}")
     total_available_minutes = total_days * daily_minutes
 
     topics = []
@@ -49,13 +43,10 @@ def generate_study_plan(user, selected_chapters, start_date, total_days, daily_m
                     'weight': weight
                 })
 
-    print(f"DEBUG: Topics list after processing: {topics}")
     if not topics:
-        print("DEBUG: No topics found, returning empty plan.")
         return {}
 
     total_weight = sum(t['weight'] for t in topics)
-    print(f"DEBUG: Total weight of topics: {total_weight}")
     for t in topics:
         t['allocated_minutes'] = total_available_minutes * (t['weight'] / total_weight)
 
@@ -63,10 +54,8 @@ def generate_study_plan(user, selected_chapters, start_date, total_days, daily_m
         (start_date + datetime.timedelta(days=i)).strftime('%Y-%m-%d'): [] 
         for i in range(total_days) 
     }
-    print(f"DEBUG: Initial plan_data keys: {plan_data.keys()}")
 
     remaining_time_per_day = {i: float(daily_minutes) for i in range(total_days)}
-    print(f"DEBUG: Initial remaining_time_per_day: {remaining_time_per_day}")
 
     topic_queue = list(topics) # Create a mutable copy
 
@@ -102,9 +91,7 @@ def generate_study_plan(user, selected_chapters, start_date, total_days, daily_m
         
         # Convert daily_chapters dict to list for plan_data
         plan_data[current_date_str] = list(daily_chapters.values())
-        print(f"DEBUG: Day {day_index} ({current_date_str}) plan: {plan_data[current_date_str]}")
 
-    print(f"DEBUG: Final plan_data: {plan_data}")
     return plan_data
 
 @login_required
@@ -114,8 +101,9 @@ def planner_view(request):
     except StudyRoutine.DoesNotExist:
         user_routine = None
 
-    if request.method == 'POST' and 'daily_minutes' in request.POST:
-        daily_minutes = int(request.POST.get('daily_minutes'))
+    if request.method == 'POST' and 'daily_hours' in request.POST:
+        daily_hours = float(request.POST.get('daily_hours'))
+        daily_minutes = int(daily_hours * 60)
         start_date_str = request.POST.get('start_date')
         end_date_str = request.POST.get('end_date')
         chapter_ids = request.POST.getlist('chapters')

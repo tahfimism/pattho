@@ -21,12 +21,4 @@ class StudyRoutine(models.Model):
         return f"{self.user.username}'s Study Plan"
 
 
-class PlannedTask(models.Model):
-    routine = models.ForeignKey(StudyRoutine, on_delete=models.CASCADE, related_name='tasks')
-    date = models.DateField()
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    allocated_minutes = models.PositiveIntegerField()
-    completed = models.BooleanField(default=False)
 
-    class Meta:
-        ordering = ['date']

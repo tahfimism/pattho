@@ -8,7 +8,7 @@ from .models import (
     Subject, Chapter, Topic
 )
 
-from planner.models import PlannedTask
+
 from users.models import UserProfile
 
 

@@ -176,3 +176,19 @@ input[type="checkbox"]:checked::after {
     visibility: visible;
     opacity: 1;
 }
+
+/* New Tooltip Styles */
+.group .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    pointer-events: none;
+    position: absolute;
+    z-index: 10;
+}
+
+.group:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}

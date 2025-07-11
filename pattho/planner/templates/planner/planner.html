@@ -81,10 +81,17 @@
                     {% endif %}
                 </div>
 
-                <div class="mt-6">
+                <div class="mt-6 flex items-center">
                     <button type="submit" id="update-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hidden">
                         Update Planner
                     </button>
+                    <div id="update-tooltip" class="relative ml-2 group hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        <div class="absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-sm rounded-lg py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none tooltip">
+                            This will update your planner based on the chapters you have marked as completed.
+                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -238,6 +245,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         const checkboxes = document.querySelectorAll('.chapter-checkbox');
         const updateButton = document.getElementById('update-button');
+        const updateTooltip = document.getElementById('update-tooltip');
         const createPlanButton = document.getElementById('create-plan-btn');
         const chapterCheckboxes = document.querySelectorAll('input[name="chapters"]');
 
@@ -245,8 +253,10 @@
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             if (anyChecked) {
                 updateButton.classList.remove('hidden');
+                updateTooltip.classList.remove('hidden');
             } else {
                 updateButton.classList.add('hidden');
+                updateTooltip.classList.add('hidden');
             }
         }
 

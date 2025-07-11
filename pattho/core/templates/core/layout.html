@@ -68,12 +68,18 @@
                     <li class="mb-2">
                         <a href="{% url 'activities' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
-                            To-do & Pomodoro
+                            To-do
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'pomodoro' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                            <i data-lucide="timer" class="w-5 h-5 mr-3"></i>
+                            Pomodoro
                         </a>
                     </li>
                     
                     <li class="mb-2">
-                        <a href="#" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                        <a href="{% url 'leaderboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="trophy" class="w-5 h-5 mr-3"></i>
                             Leaderboard 
                         </a>

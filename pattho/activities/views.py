@@ -12,6 +12,10 @@ def todo_list(request):
     return render(request, 'activities/todo.html', {'todos': todos})
 
 @login_required
+def pomodoro_timer(request):
+    return render(request, 'activities/pomodoro.html')
+
+@login_required
 @require_POST
 def add_todo(request):
     title = request.POST.get('title')

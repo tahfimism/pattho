@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.todo_list, name='activities'),
+    path('pomodoro/', views.pomodoro_timer, name='pomodoro'),
     path('todo/add/', views.add_todo, name='add_todo'),
     path('api/todo/toggle/<int:todo_id>/', views.toggle_todo, name='toggle_todo'),
     path('api/task-summary/', views.get_task_summary, name='api_task_summary'),

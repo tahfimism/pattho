@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOTS</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      overflow: hidden;
+    }
+
+    #container {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const ROWS = 100;
+    const COLS = 300;
+    const NUM_PARTICLES = ROWS * COLS;
+    const THICKNESS = Math.pow(80, 2);
+    const SPACING = 3;
+    const MARGIN = 100;
+    const COLOR = 220;
+    const DRAG = 0.95;
+    const EASE = 0.25;
+
+    let container, canvas, ctx;
+    let list = [];
+    let mouseActive = false;
+    let mx = 0, my = 0;
+    let tog = true;
+    let w, h;
+
+    const particle = {
+      vx: 0,
+      vy: 0,
+      x: 0,
+      y: 0
+    };
+
+    function init() {
+      container = document.getElementById('container');
+      canvas = document.createElement('canvas');
+      ctx = canvas.getContext('2d');
+      w = canvas.width = COLS * SPACING + MARGIN * 2;
+      h = canvas.height = ROWS * SPACING + MARGIN * 2;
+      container.style.marginLeft = Math.round(w * -0.5) + 'px';
+      container.style.marginTop = Math.round(h * -0.5) + 'px';
+
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        let p = Object.create(particle);
+        p.x = p.ox = MARGIN + SPACING * (i % COLS);
+        p.y = p.oy = MARGIN + SPACING * Math.floor(i / COLS);
+        list[i] = p;
+      }
+
+      container.addEventListener('mousemove', function(e) {
+        const bounds = container.getBoundingClientRect();
+        mx = e.clientX - bounds.left;
+        my = e.clientY - bounds.top;
+        mouseActive = true;
+      });
+
+      container.appendChild(canvas);
+      requestAnimationFrame(step);
+    }
+
+    function step() {
+      if (tog = !tog) {
+        if (!mouseActive) {
+          const t = +new Date() * 0.001;
+          mx = w * 0.5 + (Math.cos(t * 2.1) * Math.cos(t * 0.9) * w * 0.45);
+          my = h * 0.5 + (Math.sin(t * 3.2) * Math.tan(Math.sin(t * 0.8)) * h * 0.45);
+        }
+
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+          const p = list[i];
+          const dx = mx - p.x;
+          const dy = my - p.y;
+          const d = dx * dx + dy * dy;
+          const f = -THICKNESS / d;
+
+          if (d < THICKNESS) {
+            const t = Math.atan2(dy, dx);
+            p.vx += f * Math.cos(t);
+            p.vy += f * Math.sin(t);
+          }
+
+          p.x += (p.vx *= DRAG) + (p.ox - p.x) * EASE;
+          p.y += (p.vy *= DRAG) + (p.oy - p.y) * EASE;
+        }
+      } else {
+        const imageData = ctx.createImageData(w, h);
+        const data = imageData.data;
+
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+          const p = list[i];
+          const n = (~~p.x + (~~p.y * w)) * 4;
+          data[n] = data[n + 1] = data[n + 2] = COLOR;
+          data[n + 3] = 255;
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    init();
+  </script>
+</body>
+</html>

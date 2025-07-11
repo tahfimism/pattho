@@ -45,7 +45,7 @@
                                         <span class="text-lg font-medium text-gray-400">{{ chapter.total_allocated_minutes|minutes_to_hours_minutes }}</span>
                                     </div>
                                 </div>
-                                <div class="divide-y divide-gray-700 hidden"> {# This div will be toggled #}
+                                <div class="divide-y divide-gray-700 max-h-0 overflow-hidden transition-all duration-300 ease-in-out"> {# This div will be toggled #}
                                     <div class="p-4 bg-[#191919]">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center">
@@ -223,15 +223,15 @@
             if (card !== clickedCard) {
                 const content = card.querySelector('.divide-y');
                 const icon = card.querySelector('svg');
-                if (!content.classList.contains('hidden')) {
-                    content.classList.add('hidden');
+                if (content.classList.contains('expanded')) {
+                    content.classList.remove('expanded');
                     icon.classList.remove('rotate-90');
                 }
             }
         });
 
         // Toggle the clicked card
-        clickedContent.classList.toggle('hidden');
+        clickedContent.classList.toggle('expanded');
         clickedIcon.classList.toggle('rotate-90');
     }
 

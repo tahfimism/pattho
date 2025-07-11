@@ -21,25 +21,25 @@
     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
 
     <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6">
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#d6ffdf] mb-1">Total Chapters</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ total_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#6EE7B7] mb-1">Completed Chapters</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ completed_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">In Progress</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ in_progress_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
+        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">Not Started</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ not_started_chapters }}
@@ -50,7 +50,7 @@
     {% for subject in subjects %}
     <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
         <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center cursor-pointer collapse-toggle" data-target="#subject-{{ forloop.counter }}">
-            <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ subject.name }}</h2>
+            <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] font-noto-bengali">{{ subject.name }}</h2>
             <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] collapse-icon"></i>
         </div>
         <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)] collapse-content hidden">
@@ -58,7 +58,7 @@
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:gap-x-8">
                     <div class="flex-grow mb-4 md:mb-0 w-full md:w-1/2">
-                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">{{ chapter.title }}</p>
+                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2 font-noto-bengali">{{ chapter.title }}</p>
                         <div class="mt-2">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Exam Readiness</span>

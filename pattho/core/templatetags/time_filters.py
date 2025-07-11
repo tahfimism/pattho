@@ -9,10 +9,10 @@ def minutes_to_hours_minutes(total_minutes):
     hours = total_minutes // 60
     minutes = total_minutes % 60
     if hours > 0 and minutes > 0:
-        return f"{hours} hours {minutes} minutes"
+        return f"{hours} hrs {minutes} mins"
     elif hours > 0:
-        return f"{hours} hours"
+        return f"{hours} hrs"
     elif minutes > 0:
-        return f"{minutes} minutes"
+        return f"{minutes} mins"
     else:
         return "0 minutes"

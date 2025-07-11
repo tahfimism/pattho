@@ -116,16 +116,16 @@
                 {% csrf_token %}
                 <div>
                     <label for="daily_hours" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many hours do you want to study each day?</label>
-                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" min="0.5" placeholder="Daily study hour">
+                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" min="0.5" placeholder="Daily study hour">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="start_date" class="block text-sm font-medium text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">When do you want to start?</label>
-                        <input type="date" id="start_date" name="start_date" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <input type="date" id="start_date" name="start_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
                     <div>
                         <label for="end_date" class="block text-sm font-medium text-[var(--color-text-light)] dark:text-[var(--color-gray-text-dark)]">When do you want to finish?</label>
-                        <input type="date" id="end_date" name="end_date" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <input type="date" id="end_date" name="end_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
                 </div>
                 <div>
@@ -157,6 +157,53 @@
             </form>
         </div>
     {% endif %}
+
+<style>
+    /* Custom styles for datepicker to match page theme */
+    input[type="date"] {
+        position: relative;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    input[type="date"]::before {
+        content: '';
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.5em;
+        height: 1.5em;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        pointer-events: none; /* so it doesn't block clicks on the input */
+    }
+
+    .dark input[type="date"]::before {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2394a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+    }
+
+    /* Ensure placeholder text color matches theme */
+    input::placeholder {
+        color: var(--color-gray-text-light);
+        opacity: 1; /* Override browser defaults */
+    }
+    .dark input::placeholder {
+        color: var(--color-gray-text-dark);
+    }
+</style>
 
 <script>
     function toggleTopics(element) {

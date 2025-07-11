@@ -27,23 +27,14 @@
 .particle {
   position: absolute;
   border-radius: 50%;
-  animation: particle-animation infinite;
 }
-
-/* Example particle styles (randomized manually once) */
-@keyframes particle-animation {
-  100% {
-    transform: translate3d(var(--x-move), var(--y-move), var(--z-move));
-  }
-}
-
 
 </style>
 
 
 </head>
 
-<body class="bg-[#121212] min-h-screen p-4 text-white">
+<body class="bg-[#121212] min-h-screen text-white">
 
     <div id="particle-container">
 </div>
@@ -58,45 +49,101 @@
     document.addEventListener('DOMContentLoaded', () => {
         const particleContainer = document.getElementById('particle-container');
         const numberOfParticles = 600; // Total number of particles
+        const particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        // Mouse tracking
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Function to generate a new random target for a particle
+        function setNewTarget(particle) {
+            particle.targetX = Math.random() * window.innerWidth;
+            particle.targetY = Math.random() * window.innerHeight;
+            particle.speed = (Math.random() * 0.2) + 0.08; // Random speed for drift (slower)
+        }
 
         for (let i = 0; i < numberOfParticles; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
             particleContainer.appendChild(particle);
 
-            const size = Math.floor(Math.random() * 5) + 3; // Size between 3px and 7px
-                        // Generate hue between 30 and 330 to avoid red/pink (0-30 and 330-360)
-            const hue = Math.random() * 300 + 30; 
+            const size = Math.floor(Math.random() * 3) + 3; // Size between 3px and 7px
+            const hue = Math.random() * 300 + 30; // Generate hue between 30 and 330 to avoid red/pink
             const saturation = Math.floor(Math.random() * 30) + 20; // Saturation between 20% and 50%
             const lightness = Math.floor(Math.random() * 30) + 60; // Lightness between 60% and 90%
-            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Random HSL color
-            const delay = Math.random() * -10; // Random animation delay
-            const duration = Math.random() * 30 + 30; // Random duration between 30s and 60s
+            const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
-            // Random start positions for initial placement
-            const xStart = Math.random() * 100; // 0 to 100 for vw
-            const yStart = Math.random() * 100; // 0 to 100 for vh
-            const zStart = Math.random() * 100; // Z-index for perspective
-
-            // Random end positions for animation (relative to start)
-            const xEnd = Math.random() * 100; // 0 to 100 for vw
-            const yEnd = Math.random() * 100; // 0 to 100 for vh
-            const zEnd = Math.random() * 100; // Z-index for perspective
-
-            particle.style.left = `${xStart}vw`;
-            particle.style.top = `${yStart}vh`;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
             particle.style.backgroundColor = color;
             particle.style.opacity = Math.random() * 0.5 + 0.2; // Opacity between 0.2 and 0.7
-            particle.style.animationDelay = `${delay}s`;
-            particle.style.animationDuration = `${duration}s`;
 
-            // Set CSS variables for the animation (these will be relative translations)
-            particle.style.setProperty('--x-move', `${xEnd - xStart}vw`);
-            particle.style.setProperty('--y-move', `${yEnd - yStart}vh`);
-            particle.style.setProperty('--z-move', `${zEnd - zStart}px`);
+            // Initial random position
+            particle.x = Math.random() * window.innerWidth;
+            particle.y = Math.random() * window.innerHeight;
+            particle.vx = 0; // Initial velocity
+            particle.vy = 0;
+
+            setNewTarget(particle); // Set initial target
+
+            particles.push(particle);
         }
+
+        function animateParticles() {
+            particles.forEach(particle => {
+                // Random drift movement
+                const dxTarget = particle.targetX - particle.x;
+                const dyTarget = particle.targetY - particle.y;
+                const distTarget = Math.sqrt(dxTarget * dxTarget + dyTarget * dyTarget);
+
+                if (distTarget < 5) { // If close to target, set a new one
+                    setNewTarget(particle);
+                }
+
+                // Apply force towards target
+                particle.vx += (dxTarget / distTarget) * particle.speed * 0.1;
+                particle.vy += (dyTarget / distTarget) * particle.speed * 0.1;
+
+                // Cursor repulsion
+                const dxMouse = particle.x - mouseX;
+                const dyMouse = particle.y - mouseY;
+                const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+                const repulsionRadius = 100;
+                const repulsionStrength = 5;
+
+                if (distMouse < repulsionRadius) {
+                    const force = repulsionStrength * (1 - distMouse / repulsionRadius);
+                    particle.vx += (dxMouse / distMouse) * force;
+                    particle.vy += (dyMouse / distMouse) * force;
+                }
+
+                // Apply velocity
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+
+                // Damping
+                particle.vx *= 0.95;
+                particle.vy *= 0.95;
+
+                // Boundary checks (keep particles within viewport)
+                if (particle.x < 0) particle.x = 0;
+                if (particle.x > window.innerWidth) particle.x = window.innerWidth;
+                if (particle.y < 0) particle.y = 0;
+                if (particle.y > window.innerHeight) particle.y = window.innerHeight;
+
+                // Update DOM position
+                particle.style.left = `${particle.x}px`;
+                particle.style.top = `${particle.y}px`;
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles(); // Start the animation loop
     });
 </script>
 
@@ -106,8 +153,8 @@
         <p class="text-lg mb-8">Your personalized study planner and tracker.</p>
 
         <div class="space-y-4">
-            <a href="#" class="block w-full bg-blue-600 text-white p-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-200">Login</a>
-            <a href="#" class="block w-full bg-gray-700 text-white p-3 rounded-xl font-semibold hover:bg-gray-600 transition duration-200">Register</a>
+            <a href="{% url 'login' %}" class="block w-full bg-blue-600 text-white p-3 rounded-xl font-semibold hover:bg-blue-700 transition duration-200">Login</a>
+            <a href="{% url 'register' %}" class="block w-full bg-gray-700 text-white p-3 rounded-xl font-semibold hover:bg-gray-600 transition duration-200">Register</a>
         </div>
     </div>
 </div>

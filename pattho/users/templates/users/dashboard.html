@@ -53,7 +53,7 @@
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] font-noto-bengali">{{ subject.name }}</h2>
             <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] collapse-icon"></i>
         </div>
-        <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)] collapse-content hidden">
+        <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)] collapse-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             {% for chapter in subject.chapters.all %}
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:gap-x-8">
@@ -99,6 +99,12 @@
     {% endfor %}
 </div>
 
+<style>
+    .collapse-content.expanded {
+        max-height: 1000px; /* Adjust as needed, should be larger than max possible height */
+    }
+</style>
+
 {% block extra_js_vars %}
 <script>
     window.updateProgressUrl = "{% url 'update_progress' %}";
@@ -119,8 +125,8 @@
                 const allIcons = document.querySelectorAll('.collapse-icon');
 
                 allContents.forEach(content => {
-                    if (content.id !== targetContent.id && !content.classList.contains('hidden')) {
-                        content.classList.add('hidden');
+                    if (content.id !== targetContent.id && content.classList.contains('expanded')) {
+                        content.classList.remove('expanded');
                     }
                 });
 
@@ -130,12 +136,12 @@
                     }
                 });
 
-                if (targetContent.classList.contains('hidden')) {
-                    targetContent.classList.remove('hidden');
-                    icon.setAttribute('data-lucide', 'chevron-up');
-                } else {
-                    targetContent.classList.add('hidden');
+                if (targetContent.classList.contains('expanded')) {
+                    targetContent.classList.remove('expanded');
                     icon.setAttribute('data-lucide', 'chevron-down');
+                } else {
+                    targetContent.classList.add('expanded');
+                    icon.setAttribute('data-lucide', 'chevron-up');
                 }
                 lucide.createIcons();
             });

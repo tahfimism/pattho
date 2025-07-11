@@ -5,7 +5,7 @@
 {% block title %}Planner{% endblock %}
 
 {% block body %}
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     {% if user_routine %}
         <form action="{% url 'update_planner' %}" method="post">
             {% csrf_token %}
@@ -35,13 +35,14 @@
                 <div class="space-y-4">
                     {% if chapter_wise_plan %}
                         {% for chapter in chapter_wise_plan %}
-                            <div class="border border-gray-800 bg-gray-800/30 rounded-lg overflow-hidden">
+                            <div class="border border-gray-800 bg-gray-800/30 rounded-lg overflow-hidden chapter-card">
                                 <div class="p-4 border-b border-gray-700 bg-[#2E3338]">
                                     <div class="flex items-center justify-between cursor-pointer" onclick="toggleTopics(this)">
-                                        <h3 class="font-semibold text-white">{{ chapter.chapter_title }}</h3>
                                         <div class="flex items-center">
-                                            <svg class="w-6 h-6 text-white transform transition-transform ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                            <svg class="w-4 h-4 text-gray-400 transform transition-transform mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                            <h3 class="font-semibold text-white">{{ chapter.chapter_title }}</h3>
                                         </div>
+                                        <span class="text-lg font-medium text-gray-400">{{ chapter.total_allocated_minutes|minutes_to_hours_minutes }}</span>
                                     </div>
                                 </div>
                                 <div class="divide-y divide-gray-700 hidden"> {# This div will be toggled #}
@@ -53,22 +54,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% for topic in chapter.topics %}
-                                        <div class="p-4 bg-[#191919] border-t border-gray-700">
-                                            <div class="flex items-center justify-between">
-                                                <h4 class="text-lg text-white">{{ topic.topic_title }}</h4>
-                                                <span class="text-gray-400">{{ topic.total_allocated_minutes|minutes_to_hours_minutes }}</span>
-                                            </div>
-                                            <ul class="mt-2 space-y-1 text-base text-gray-400">
-                                                {% for planned_date in topic.planned_dates %}
-                                                    <li class="flex justify-between items-center py-1 px-2 bg-gray-700/30 rounded">
-                                                        <span>{{ planned_date.date }}</span>
-                                                        <span class="font-medium text-gray-300">{{ planned_date.allocated_minutes|minutes_to_hours_minutes }}</span>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    {% endfor %}
+                                    <div class="p-4 bg-[#191919] border-t border-gray-700">
+                                        <h4 class="text-lg text-white">Planned Dates:</h4>
+                                        <ul class="mt-2 space-y-1 text-base text-gray-400">
+                                            {% for planned_date in chapter.planned_dates %}
+                                                <li class="flex justify-between items-center py-1 px-2 bg-gray-700/30 rounded">
+                                                    <span>{{ planned_date.date }}</span>
+                                                    <span class="font-medium text-gray-300">{{ planned_date.allocated_minutes|minutes_to_hours_minutes }}</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="p-4 bg-[#191919] border-t border-gray-700">
+                                        <h4 class="text-lg text-white">Topics:</h4>
+                                        <ul class="mt-2 space-y-1 text-base text-gray-400">
+                                            {% for topic_title in chapter.topics %}
+                                                <li>{{ topic_title }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -84,10 +88,10 @@
                 </div>
             </div>
         </form>
-        <div class="mt-6">
+        <div class="mt-6 flex justify-end pr-6">
             <form action="{% url 'delete_planner' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                <button type="submit" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                     Delete Planner
                 </button>
             </form>
@@ -98,11 +102,21 @@
             <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
                 Tell us your goals and we will generate a personalized plan for you.
             </p>
+            {% if messages %}
+                <div class="mb-4">
+                    {% for message in messages %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error!</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <form method="post" class="space-y-6 p-6 border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] rounded-lg bg-[var(--color-card-bg-light)] dark:bg-[#151515]">
                 {% csrf_token %}
                 <div>
                     <label for="daily_hours" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many hours do you want to study each day?</label>
-                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" placeholder="Daily study hour">
+                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full bg-gray-800/50 border-gray-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" min="0.5" placeholder="Daily study hour">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -136,7 +150,7 @@
                     </div>
                 </div>
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" id="create-plan-btn" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Create Plan
                     </button>
                 </div>
@@ -146,10 +160,25 @@
 
 <script>
     function toggleTopics(element) {
-        const content = element.parentElement.nextElementSibling; // The div containing topics
-        const icon = element.querySelector('svg');
-        content.classList.toggle('hidden');
-        icon.classList.toggle('rotate-180');
+        const clickedCard = element.closest('.chapter-card');
+        const clickedContent = clickedCard.querySelector('.divide-y');
+        const clickedIcon = clickedCard.querySelector('svg');
+
+        // Collapse all other expanded cards
+        document.querySelectorAll('.chapter-card').forEach(card => {
+            if (card !== clickedCard) {
+                const content = card.querySelector('.divide-y');
+                const icon = card.querySelector('svg');
+                if (!content.classList.contains('hidden')) {
+                    content.classList.add('hidden');
+                    icon.classList.remove('rotate-90');
+                }
+            }
+        });
+
+        // Toggle the clicked card
+        clickedContent.classList.toggle('hidden');
+        clickedIcon.classList.toggle('rotate-90');
     }
 
     function toggleChapters(element) {
@@ -162,6 +191,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         const checkboxes = document.querySelectorAll('.chapter-checkbox');
         const updateButton = document.getElementById('update-button');
+        const createPlanButton = document.getElementById('create-plan-btn');
+        const chapterCheckboxes = document.querySelectorAll('input[name="chapters"]');
 
         function toggleUpdateButtonVisibility() {
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
@@ -172,14 +203,35 @@
             }
         }
 
+        function validateChapterSelection() {
+            const anyChapterChecked = Array.from(chapterCheckboxes).some(checkbox => checkbox.checked);
+            createPlanButton.disabled = !anyChapterChecked;
+            if (anyChapterChecked) {
+                createPlanButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                createPlanButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 toggleUpdateButtonVisibility();
             });
         });
 
+        chapterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', validateChapterSelection);
+        });
+
+        document.getElementById('start_date').addEventListener('change', function() {
+            document.getElementById('end_date').min = this.value;
+        });
+
+        document.getElementById('start_date').min = new Date().toISOString().split('T')[0];
+
         // Initial check on page load
         toggleUpdateButtonVisibility();
+        validateChapterSelection();
     });
 </script>
 {% endblock %}

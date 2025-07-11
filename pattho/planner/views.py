@@ -4,6 +4,7 @@ from .models import StudyRoutine
 from syllabus.models import Subject, Chapter, Topic
 from users.models import UserProfile
 import datetime
+from django.contrib import messages
 
 @login_required
 def delete_planner(request):
@@ -95,16 +96,8 @@ def generate_study_plan(user, chapters_to_plan, start_date, total_days, daily_mi
     
     # Allocate minutes to each chapter based on its weight
     for chapter_data in chapters:
-        chapter_data['allocated_minutes'] = total_available_minutes * (chapter_data['weight'] / total_chapters_weight)
-        
-        # Now, distribute chapter's allocated minutes among its topics
-        total_topic_percentage = sum(topic.time_percent for topic in chapter_data['topics'])
-        if total_topic_percentage == 0: # Avoid division by zero if no topics or percentages are 0
-            for topic in chapter_data['topics']:
-                topic.allocated_minutes = 0
-        else:
-            for topic in chapter_data['topics']:
-                topic.allocated_minutes = (chapter_data['allocated_minutes'] * (topic.time_percent / total_topic_percentage))
+        chapter_data['total_allocated_minutes'] = total_available_minutes * (chapter_data['weight'] / total_chapters_weight)
+        chapter_data['remaining_allocated_minutes'] = chapter_data['total_allocated_minutes']
 
     plan_data = { 
         (start_date + datetime.timedelta(days=i)).strftime('%Y-%m-%d'): [] 
@@ -113,62 +106,40 @@ def generate_study_plan(user, chapters_to_plan, start_date, total_days, daily_mi
 
     remaining_time_per_day = {i: float(daily_minutes) for i in range(total_days)}
 
-    # Flatten all topics from all chapters into a single queue for daily assignment
-    all_topics_queue = []
-    for chapter_data in chapters:
-        for topic in chapter_data['topics']:
-            if topic.allocated_minutes > 0:
-                all_topics_queue.append({
-                    'topic': topic,
-                    'chapter': chapter_data['chapter'],
-                    'allocated_minutes': topic.allocated_minutes,
-                    'completed': False # Initialize completion status
-                })
-    
-    # Sort topics by their original chapter's weight or some other criteria if needed
-    # For now, just use the order they were added (chapter by chapter, then topic by topic)
-    
-    topic_queue = list(all_topics_queue) # Create a mutable copy
+    chapter_queue = list(chapters) # Create a mutable copy of chapters for daily assignment
 
     for day_index in range(total_days):
         current_date_str = (start_date + datetime.timedelta(days=day_index)).strftime('%Y-%m-%d')
-        daily_chapters_data = {} # Use a dictionary to aggregate topics by chapter for the current day
+        daily_chapters_data = {} # Use a dictionary to aggregate chapters for the current day
         
         # Iterate through a copy of the queue to avoid issues with modification during iteration
-        for t in list(topic_queue):
+        for c in list(chapter_queue):
             if remaining_time_per_day[day_index] <= 0: break
 
-            time_to_assign = min(t['allocated_minutes'], remaining_time_per_day[day_index])
+            time_to_assign = min(c['remaining_allocated_minutes'], remaining_time_per_day[day_index])
 
             if time_to_assign > 0:
-                chapter_title = t['chapter'].title
-                topic_title = t['topic'].title
+                chapter_title = c['chapter'].title
 
                 if chapter_title not in daily_chapters_data:
                     daily_chapters_data[chapter_title] = {
                         'chapter_title': chapter_title,
                         'completed': False, # This will be updated by update_planner
-                        'topics': {} # Use a dictionary for topics to easily update allocated_minutes
+                        'allocated_minutes_today': 0,
+                        'topics': [t.title for t in c['topics']] # Just list topic titles
                     }
                 
-                if topic_title not in daily_chapters_data[chapter_title]['topics']:
-                    daily_chapters_data[chapter_title]['topics'][topic_title] = {
-                        'topic_title': topic_title,
-                        'allocated_minutes': 0
-                    }
+                daily_chapters_data[chapter_title]['allocated_minutes_today'] += round(time_to_assign)
                 
-                daily_chapters_data[chapter_title]['topics'][topic_title]['allocated_minutes'] += round(time_to_assign)
-                
-                t['allocated_minutes'] -= time_to_assign
+                c['remaining_allocated_minutes'] -= time_to_assign
                 remaining_time_per_day[day_index] -= time_to_assign
 
-                if t['allocated_minutes'] <= 0:
-                    topic_queue.remove(t) # Remove fully allocated topic
+                if c['remaining_allocated_minutes'] <= 0:
+                    chapter_queue.remove(c) # Remove fully allocated chapter
         
         # Convert the nested dictionaries to lists for the final plan_data structure
         final_daily_chapters = []
         for chapter_title, chapter_content in daily_chapters_data.items():
-            chapter_content['topics'] = list(chapter_content['topics'].values())
             final_daily_chapters.append(chapter_content)
             
         plan_data[current_date_str] = final_daily_chapters
@@ -183,33 +154,32 @@ def get_chapter_wise_plan(plan_data):
             if chapter_title not in chapter_wise_plan:
                 chapter_wise_plan[chapter_title] = {
                     'chapter_title': chapter_title,
-                    'topics': {},
-                    'completed': chapter_data['completed'] # Initial completion status from first encounter
+                    'topics': [],
+                    'completed': chapter_data['completed'], # Initial completion status from first encounter
+                    'total_allocated_minutes': 0 # Initialize total allocated minutes for the chapter
                 }
             
             # Update chapter completion status if any daily entry marks it as complete
             if chapter_data['completed']:
                 chapter_wise_plan[chapter_title]['completed'] = True
 
-            for topic_data in chapter_data['topics']:
-                topic_title = topic_data['topic_title']
+            for topic_title in chapter_data['topics']:
                 if topic_title not in chapter_wise_plan[chapter_title]['topics']:
-                    chapter_wise_plan[chapter_title]['topics'][topic_title] = {
-                        'topic_title': topic_title,
-                        'planned_dates': [],
-                        'total_allocated_minutes': 0,
-                        'completed': topic_data.get('completed', False) # Use completion status from plan_data, default to False
-                    }
-                
-                chapter_wise_plan[chapter_title]['topics'][topic_title]['planned_dates'].append({
-                    'date': date_str,
-                    'allocated_minutes': topic_data['allocated_minutes']
-                })
-                chapter_wise_plan[chapter_title]['topics'][topic_title]['total_allocated_minutes'] += topic_data['allocated_minutes']
+                    chapter_wise_plan[chapter_title]['topics'].append(topic_title)
+            
+            # Aggregate allocated minutes and planned dates at the chapter level
+            if 'planned_dates' not in chapter_wise_plan[chapter_title]:
+                chapter_wise_plan[chapter_title]['planned_dates'] = []
+            chapter_wise_plan[chapter_title]['planned_dates'].append({
+                'date': date_str,
+                'allocated_minutes': chapter_data['allocated_minutes_today']
+            })
+            chapter_wise_plan[chapter_title]['total_allocated_minutes'] += chapter_data['allocated_minutes_today']
     
     # Convert topics dictionary to a list for easier iteration in template
-    for chapter_title, chapter_data in chapter_wise_plan.items():
-        chapter_wise_plan[chapter_title]['topics'] = list(chapter_data['topics'].values())
+    # The 'topics' are already a list of strings, no need for .values()
+    # for chapter_title, chapter_data in chapter_wise_plan.items():
+    #     chapter_wise_plan[chapter_title]['topics'] = list(chapter_data['topics'].values())
         
 
     return list(chapter_wise_plan.values())
@@ -222,18 +192,41 @@ def planner_view(request):
         user_routine = None
 
     chapter_wise_plan = None
+    today_chapters = []
     if user_routine and user_routine.plan_data:
         chapter_wise_plan = get_chapter_wise_plan(user_routine.plan_data)
+        today_date_str = datetime.date.today().strftime('%Y-%m-%d')
+        today_chapters = user_routine.plan_data.get(today_date_str, [])
 
     if request.method == 'POST' and 'daily_hours' in request.POST:
-        daily_hours = float(request.POST.get('daily_hours'))
+        try:
+            daily_hours = float(request.POST.get('daily_hours'))
+            if daily_hours < 0.5:
+                messages.error(request, "Daily study hours must be at least 0.5.")
+                return redirect('planner')
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid input for daily study hours.")
+            return redirect('planner')
+
         daily_minutes = int(daily_hours * 60)
         start_date_str = request.POST.get('start_date')
         end_date_str = request.POST.get('end_date')
         chapter_ids = request.POST.getlist('chapters')
 
+        if not chapter_ids:
+            messages.error(request, "You must select at least one chapter to study.")
+            return redirect('planner')
+
         start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d').date()
+
+        if start_date < datetime.date.today():
+            messages.error(request, "Start date cannot be in the past.")
+            return redirect('planner')
+
+        if end_date < start_date:
+            messages.error(request, "End date cannot be before the start date.")
+            return redirect('planner')
 
         total_days = (end_date - start_date).days + 1
 
@@ -267,5 +260,6 @@ def planner_view(request):
         'user_routine': user_routine,
         'subjects': subjects,
         'chapter_wise_plan': chapter_wise_plan,
+        'today_chapters': today_chapters,
     }
     return render(request, 'planner/planner.html', context)

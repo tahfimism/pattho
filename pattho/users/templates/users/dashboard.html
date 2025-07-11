@@ -57,7 +57,7 @@
             {% for chapter in subject.chapters.all %}
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:gap-x-8">
-                    <div class="flex-grow mb-4 md:mb-0 w-full md:w-1/2">
+                    <div class="flex-grow mb-4 md:mb-0 w-full md:w-2/5">
                         <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2 font-noto-bengali">{{ chapter.title }}</p>
                         <div class="mt-2">
                             <div class="flex justify-between items-center mb-1">
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 w-full md:w-1/2 checkbox-group">
+                    <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 w-full md:w-3/5 checkbox-group">
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="Class/Concept Read">
                             <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
                             <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Class/Concept</span>

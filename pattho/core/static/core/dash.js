@@ -65,7 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const progressBar = chapterRow.querySelector('.progress-bar');
         const progressText = chapterRow.querySelector('.progress-text');
 
-        if (progressBar) progressBar.style.width = newProgress + '%';
+        if (progressBar) {
+            progressBar.style.width = newProgress + '%';
+            progressBar.classList.add('progress-bar-glow');
+            setTimeout(() => {
+                progressBar.classList.remove('progress-bar-glow');
+            }, 500); // Match the transition duration
+        }
         if (progressText) progressText.textContent = newProgress + '%';
     }
 
@@ -106,7 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.log(`Syncing Chapter ${chapterId} to server progress: ${serverProgress}%`);
                         const progressBar = chapterRow.querySelector('.progress-bar');
                         const progressText = chapterRow.querySelector('.progress-text');
-                        if (progressBar) progressBar.style.width = serverProgress + '%';
+                        if (progressBar) {
+                            progressBar.style.width = serverProgress + '%';
+                            progressBar.classList.add('progress-bar-glow');
+                            setTimeout(() => {
+                                progressBar.classList.remove('progress-bar-glow');
+                            }, 500);
+                        }
                         if (progressText) progressText.textContent = serverProgress + '%';
                     }
                 }

@@ -6,8 +6,8 @@
 </div>
 <ul class="space-y-3 mb-6" id="subject-progress-list">
     {% for subject in subjects_progress %}
-    <li data-subject-name="{{ subject.name }}">
-        <div class="flex justify-between items-center text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+    <li data-subject-name="{{ subject.name }}" class="group">
+        <div class="flex justify-between items-center text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] group-hover:text-white">
             <span>{{ subject.name }}</span>
             <span class="subject-progress-percentage">{{ subject.overall_progress|default:0 }}%</span>
         </div>

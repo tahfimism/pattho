@@ -19,25 +19,25 @@
     </div>
 
     <div class="grid grid-cols-[repeat(2,minmax(170px,1fr))] md:grid-cols-[repeat(4,minmax(170px,1fr))] gap-4 mb-6">
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#d6ffdf] mb-1">Total Chapters</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ total_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#6EE7B7] mb-1">Completed Chapters</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ completed_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">In Progress</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ in_progress_chapters }}
             </p>
         </div>
-        <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">Not Started</p>
             <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ not_started_chapters }}
@@ -48,7 +48,7 @@
     <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
 
     {% for subject in subjects %}
-    <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
+    <div class="hover:border hover:border-zinc-400 border border-gray-700 rounded-lg bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
         <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center cursor-pointer collapse-toggle" data-target="#subject-{{ forloop.counter }}">
             <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] font-noto-bengali">{{ subject.name }}</h2>
             <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] collapse-icon"></i>

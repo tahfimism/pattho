@@ -27,6 +27,7 @@
 .particle {
   position: absolute;
   border-radius: 50%;
+  box-shadow: 0 0 20px #0a684c, 0 0 40px #18a077, 0 0 80px #0ea182af;
 }
 
 </style>
@@ -48,7 +49,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const particleContainer = document.getElementById('particle-container');
-        const numberOfParticles = 600; // Total number of particles
+        const numberOfParticles = 500; // Total number of particles
         const particles = [];
         let mouseX = 0;
         let mouseY = 0;
@@ -63,7 +64,7 @@
         function setNewTarget(particle) {
             particle.targetX = Math.random() * window.innerWidth;
             particle.targetY = Math.random() * window.innerHeight;
-            particle.speed = (Math.random() * 0.2) + 0.08; // Random speed for drift (slower)
+            particle.speed = (Math.random() * 0.2) + 0.5; // Random speed for drift (slower)
         }
 
         for (let i = 0; i < numberOfParticles; i++) {
@@ -135,9 +136,8 @@
                 if (particle.y < 0) particle.y = 0;
                 if (particle.y > window.innerHeight) particle.y = window.innerHeight;
 
-                // Update DOM position
-                particle.style.left = `${particle.x}px`;
-                particle.style.top = `${particle.y}px`;
+                // Update DOM position using transform for better performance
+                particle.style.transform = `translate(${particle.x}px, ${particle.y}px)`;
             });
 
             requestAnimationFrame(animateParticles);

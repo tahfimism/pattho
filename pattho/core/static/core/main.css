@@ -58,14 +58,18 @@
         --shadow-dark-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
-    body {
-        font-family: 'Inter', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background-color: var(--color-bg-light);
-        color: var(--color-text-light);
-        
-    }
+    *, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-light);
+    
+}
 
     .font-noto-bengali {
         font-family: 'Noto Sans Bengali', sans-serif;
@@ -133,8 +137,6 @@ input[type="checkbox"] {
     appearance: none; /* Remove default browser styling */
     -webkit-appearance: none; /* For Safari/Chrome */
     -moz-appearance: none; /* For Firefox */
-    width: 1.25em; /* Adjust size as needed */
-    height: 1.25em; /* Adjust size as needed */
     border: 2px solid #919090; /* Increased border stroke */
     border-radius: 4px; /* Slightly rounded edges */
     background-color: #1f1e1e; /* Default background */
@@ -250,4 +252,9 @@ background: linear-gradient(43deg, rgba(16, 23, 23, 1) 0%, rgba(35, 46, 46, 1) 6
 .progress-bar:hover,
 .progress-bar-glow {
     box-shadow: 0 0 8px 2px rgba(20, 237, 185, 0.4); /* Subtle Teal glow */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }

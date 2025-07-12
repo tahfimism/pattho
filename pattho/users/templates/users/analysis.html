@@ -119,7 +119,7 @@
 
     <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
         <h2 class="text-xl font-semibold mb-4">Subject wise progress breakdown</h2>
-        <div id="subjectBreakdownCharts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div id="subjectBreakdownCharts" class="flex flex-wrap justify-center gap-4">
             <!-- Charts will be dynamically added here -->
         </div>
     </div>
@@ -293,27 +293,23 @@
     function createSubjectBarChart(canvasId, subjectName, data) {
         const ctx = document.getElementById(canvasId).getContext('2d');
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
-                labels: ['Class/Concept', 'Theory', 'Note', 'CQ', 'MCQ'],
+                labels: ['Class', 'Theory', 'Note', 'CQ', 'MCQ'],
                 datasets: [{
                     label: 'Progress (%)',
                     data: [data.p_book, data.p_theory, data.p_note, data.p_cq, data.p_mcq],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(75, 192, 192, 1)'
                 }]
             },
             options: {
@@ -334,7 +330,8 @@
                         beginAtZero: true,
                         max: 100,
                         ticks: {
-                            color: 'white'
+                            color: 'white',
+                            stepSize: 20
                         },
                         grid: {
                             color: '#5e5959'
@@ -413,7 +410,7 @@
                     for (const subjectName in subjectBreakdown) {
                         const chartData = subjectBreakdown[subjectName];
                         const chartDiv = document.createElement('div');
-                        chartDiv.className = 'bg-gray-800 rounded-lg p-4';
+                                                chartDiv.className = 'bg-transparent rounded-lg p-4 h-80 m-2 min-w-[180px]';
                         chartDiv.innerHTML = `<canvas id="subjectBarChart_${subjectName.replace(/\s/g, '_')}"></canvas>`;
                         container.appendChild(chartDiv);
                         createSubjectBarChart(`subjectBarChart_${subjectName.replace(/\s/g, '_')}`, subjectName, chartData);

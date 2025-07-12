@@ -60,9 +60,15 @@
                         </a>
                     </li>
                     <li class="mb-2">
+                        <a href="{% url 'analysis' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5 mr-3"></i>
+                            Analysis
+                        </a>
+                    </li>
+                    <li class="mb-2">
                         <a href="{% url 'planner' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
-                            Study Planner
+                            Planner
                         </a>
                     </li>
                     <li class="mb-2">
@@ -87,7 +93,7 @@
                     <li class="mb-2">
                         <a href="{% url 'profile' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] transition-colors duration-200 font-medium">
                             <i data-lucide="user" class="w-5 h-5 mr-3"></i>
-                            Profile / Settings
+                            Profile
                         </a>
                     </li>
                 </ul>
@@ -100,14 +106,16 @@
                 <i data-lucide="flame" class="w-4 h-4 mr-2 text-[var(--color-accent-light)]"></i>
                 <span>Streak: {{ request.user.streak|default:0 }} Days</span>
             </div>
-            <div class="flex items-center pt-4 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
-                <img src="{{ request.user.avatar|default:'https://placehold.co/40x40/a78bfa/ffffff?text=U' }}" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
-                <div>
-                    <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ request.user.first_name }} {{ request.user.last_name }}</p>
-                    <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">{{ request.user.get_stream_display }} {{ request.user.hscyear }}</p>
+            <a href="{% url 'profile' %}" class="block pt-4 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+                <div class="flex items-center">
+                    <img src="{{ request.user.avatar|default:'https://placehold.co/40x40/205454/ffffff?font=oswald&text=Pattho' }}" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
+                    <div>
+                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+                        <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">{{ request.user.get_stream_display }} {{ request.user.hscyear|stringformat:"s" }}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </a>
+        </div> 
     </aside>
 
     <!-- Main Content and Right Sidebar Wrapper -->

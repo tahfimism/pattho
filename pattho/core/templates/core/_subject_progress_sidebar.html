@@ -12,7 +12,7 @@
             <span class="subject-progress-percentage">{{ subject.overall_progress|default:0 }}%</span>
         </div>
         <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2 mt-1 dark:bg-[var(--color-gray-bg-dark)]">
-            <div class="bg-[var(--color-primary-light)] h-2 rounded-full subject-progress-bar" style="width: {{ subject.overall_progress|default:0 }}%"></div>
+            <div class="bg-[#E78A09] h-2 rounded-full subject-progress-bar" style="width: {{ subject.overall_progress|default:0 }}%"></div>
         </div>
     </li>
     {% empty %}

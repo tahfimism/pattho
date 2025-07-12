@@ -20,8 +20,8 @@
         /* Primary Color (Deep Teal - for main accents, buttons, active states) */
         --color-primary-light: #008080; /* Deep Teal for light mode primary */
         --color-primary-dark: #6EE7B7; /* Brighter Green/Teal for dark mode primary */
-        --color-primary-hover-light: #006666; /* Darker teal for light mode hover */
-        --color-primary-hover-dark: #A7F3D0; /* Lighter green/teal for dark mode hover */
+        --color-primary-hover-light: #2D3D40; /* Darker teal for light mode hover */
+        --color-primary-hover-dark: #2D3D40; /* Lighter green/teal for dark mode hover */
 
         /* Secondary Color (from req.txt) */
         --color-secondary-light: #a6c7b8; /* Light mode secondary */

@@ -116,6 +116,13 @@
             </div>
         </div>
     </div>
+
+    <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
+        <h2 class="text-xl font-semibold mb-4">Subject wise progress breakdown</h2>
+        <div id="subjectBreakdownCharts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Charts will be dynamically added here -->
+        </div>
+    </div>
 </div>
 {% endblock %}
 
@@ -140,7 +147,6 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, centerX, centerY - 10);
-
             ctx.font = '16px sans-serif'; // Normal font weight
             ctx.fillStyle = 'rgba(100, 100, 100, 1)'; // Normal color
             ctx.fillText('done', centerX, centerY + 20);
@@ -284,6 +290,69 @@
         });
     }
 
+    function createSubjectBarChart(canvasId, subjectName, data) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Class/Concept', 'Theory', 'Note', 'CQ', 'MCQ'],
+                datasets: [{
+                    label: 'Progress (%)',
+                    data: [data.p_book, data.p_theory, data.p_note, data.p_cq, data.p_mcq],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: subjectName,
+                        color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: '#5e5959'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: '#5e5959'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const overallAverageProgress = {{ overall_average_progress }};
         const pTheoryAvg = {{ p_theory_avg }};
@@ -333,6 +402,29 @@
             ['Theory', 'Class/Concept', 'Note', 'CQ', 'MCQ'],
             [pTheoryAvg, pClassConceptAvg, pNoteAvg, pCqAvg, pMcqAvg]
         );
+
+        // Fetch and render Subject wise progress breakdown charts
+        fetch('/user/api/subject_breakdown_progress/')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const subjectBreakdown = data.subject_breakdown;
+                    const container = document.getElementById('subjectBreakdownCharts');
+                    for (const subjectName in subjectBreakdown) {
+                        const chartData = subjectBreakdown[subjectName];
+                        const chartDiv = document.createElement('div');
+                        chartDiv.className = 'bg-gray-800 rounded-lg p-4';
+                        chartDiv.innerHTML = `<canvas id="subjectBarChart_${subjectName.replace(/\s/g, '_')}"></canvas>`;
+                        container.appendChild(chartDiv);
+                        createSubjectBarChart(`subjectBarChart_${subjectName.replace(/\s/g, '_')}`, subjectName, chartData);
+                    }
+                } else {
+                    console.error('Error fetching subject breakdown data:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Network error fetching subject breakdown data:', error);
+            });
     });
 </script>
 {% endblock %}

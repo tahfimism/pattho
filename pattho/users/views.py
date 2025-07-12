@@ -4,7 +4,7 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Avg, Q
+from django.db.models import Avg, Q, Sum, Case, When, IntegerField
 from .models import UserProfile, UserProgress
 from syllabus.models import Subject, Chapter
 from django.utils import timezone
@@ -208,3 +208,45 @@ def update_streak(request):
         user.save(update_fields=['streak', 'last_login_date'])
         return JsonResponse({'success': True, 'streak': user.streak})
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+@login_required
+def get_subject_breakdown_progress(request):
+    user = request.user
+    subjects = Subject.objects.all()
+    
+    subject_breakdown = {}
+    for subject in subjects:
+        total_chapters_in_subject = subject.chapter_count
+        
+        if total_chapters_in_subject == 0:
+            subject_breakdown[subject.name] = {
+                'p_book': 0.0,
+                'p_note': 0.0,
+                'p_mcq': 0.0,
+                'p_cq': 0.0,
+                'p_theory': 0.0,
+            }
+            continue
+
+        # Aggregate sums for the five fields for the current user and subject
+        # We use Sum and cast booleans to integers (0 or 1)
+        aggregates = UserProgress.objects.filter(
+            user=user, 
+            chapter__subject=subject
+        ).aggregate(
+            sum_p_book=Sum(Case(When(p_book=True, then=1), default=0, output_field=IntegerField())),
+            sum_p_note=Sum(Case(When(p_note=True, then=1), default=0, output_field=IntegerField())),
+            sum_p_mcq=Sum(Case(When(p_mcq=True, then=1), default=0, output_field=IntegerField())),
+            sum_p_cq=Sum(Case(When(p_cq=True, then=1), default=0, output_field=IntegerField())),
+            sum_p_theory=Sum(Case(When(p_theory=True, then=1), default=0, output_field=IntegerField())),
+        )
+        
+        subject_breakdown[subject.name] = {
+            'p_book': round(((aggregates['sum_p_book'] or 0) / total_chapters_in_subject) * 100, 2),
+            'p_note': round(((aggregates['sum_p_note'] or 0) / total_chapters_in_subject) * 100, 2),
+            'p_mcq': round(((aggregates['sum_p_mcq'] or 0) / total_chapters_in_subject) * 100, 2),
+            'p_cq': round(((aggregates['sum_p_cq'] or 0) / total_chapters_in_subject) * 100, 2),
+            'p_theory': round(((aggregates['sum_p_theory'] or 0) / total_chapters_in_subject) * 100, 2),
+        }
+    
+    return JsonResponse({'success': True, 'subject_breakdown': subject_breakdown})

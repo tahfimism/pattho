@@ -213,3 +213,31 @@ background: linear-gradient(43deg, rgba(16, 23, 23, 1) 0%, rgba(35, 46, 46, 1) 6
 
 
 }
+
+
+
+.spark-container {
+      position: absolute;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .spark {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, rgb(203, 248, 0), #21e995, transparent);
+      border-radius: 50%;
+      animation: burst 0.8s ease-out forwards;
+    }
+
+    @keyframes burst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) scale(1.5);
+      }
+    }

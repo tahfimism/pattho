@@ -154,4 +154,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Lucide icons
     lucide.createIcons();
     console.log("Lucide icons initialized.");
+
+    // Streak update logic
+    if (window.isAuthenticated === 'true') {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(window.updateStreakUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Streak updated:', data.streak);
+                // Optionally update streak display in UI here if needed
+            } else {
+                console.error('Failed to update streak:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error updating streak:', error);
+        });
+    }
 });

@@ -29,6 +29,7 @@ class UserProfile(AbstractUser):
     streak = models.PositiveIntegerField(default=0)
     college = models.CharField(max_length=100, blank=True, null=True)
     hscyear = models.PositiveIntegerField(blank=True, null=True, choices=HSC_YEAR_CHOICES)
+    last_login_date = models.DateField(auto_now=True, null=True, blank=True)
 
 
     

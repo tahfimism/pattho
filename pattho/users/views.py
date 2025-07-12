@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Avg, Q
 from .models import UserProfile, UserProgress
 from syllabus.models import Subject, Chapter
+from django.utils import timezone
+from datetime import timedelta
 
 # Helper function to calculate subject progress
 def _calculate_subject_progress(user):
@@ -184,3 +186,25 @@ def analysis(request):
         'noted_chapters_count': noted_chapters_count,
         'pending_chapters_count': pending_chapters_count,
     })
+
+@login_required
+@csrf_exempt
+def update_streak(request):
+    if request.method == 'POST':
+        user = request.user
+        today = timezone.now().date()
+
+        if user.last_login_date:
+            days_since_last_login = (today - user.last_login_date).days
+
+            if days_since_last_login == 1:
+                user.streak += 1
+            elif days_since_last_login > 1:
+                user.streak = 0
+        else:
+            user.streak = 1
+        
+        user.last_login_date = today
+        user.save(update_fields=['streak', 'last_login_date'])
+        return JsonResponse({'success': True, 'streak': user.streak})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)

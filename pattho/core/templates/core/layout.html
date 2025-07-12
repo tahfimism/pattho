@@ -157,7 +157,14 @@
         lucide.createIcons();
     </script>
 
-    {% block extra_js_vars %}{% endblock %}
+    {% block extra_js_vars %}
+<script>
+    window.updateProgressUrl = "{% url 'update_progress' %}";
+    window.apiSubjectProgressUrl = "{% url 'api_subject_progress' %}";
+    window.updateStreakUrl = "{% url 'users:update_streak' %}";
+    window.isAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
+</script>
+{% endblock %}
 
     <script src="{% static 'core/dash.js' %}"></script>
 

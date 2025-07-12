@@ -7,10 +7,10 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
     <div class="flex flex-col gap-6">
         <!-- Pomodoro Timer Section -->
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6 flex flex-col items-center justify-center">
-            <div class="flex justify-between items-center w-full mb-6">
-                                <div class="flex items-center gap-2">
-                    <h2 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Pomodoro</h2>
+        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6 flex flex-col justify-between min-h-[36rem]">
+            <div class="flex justify-between items-center w-full">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-3xl ml-5 font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Pomodoro</h2>
                     <div class="relative group">
                         <i data-lucide="help-circle" class="w-5 h-5 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] cursor-pointer"></i>
                         <div class="absolute top-full mt-2 w-64 bg-[var(--color-card-bg-dark)] text-white text-sm rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
@@ -26,11 +26,19 @@
                 </div>
             </div>
 
-            <div class="relative flex flex-col items-center justify-center mb-8">
-                <div class="text-7xl font-normal font-['Courier_Prime'] text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
-                <p class="text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]" id="timer-label">Focus Time</p>
+            <!-- Vertically Centered Timer Content -->
+            <div class="flex-grow flex flex-col items-center justify-center">
+                <div class="relative flex flex-col items-center justify-center">
+                    <div class="text-7xl font-normal font-['Courier_Prime'] text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)]" id="timer-display">25:00</div>
+                    <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-1.5 dark:bg-[var(--color-gray-bg-dark)] mt-4">
+                        <div id="pomodoro-progress" class="bg-[var(--color-primary-light)] h-1.5 rounded-full" style="width: 0%;"></div>
+                    </div>
+                    <p class="text-md text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-2" id="timer-label">Focus Time</p>
+                </div>
             </div>
-            <div class="flex space-x-4 mb-4">
+
+            <!-- Buttons at the bottom -->
+            <div class="flex justify-center space-x-4 mb-6">
                 <button id="start-timer" class="bg-[var(--color-success-light)] hover:bg-[var(--color-success-dark)] text-white py-2 px-4 rounded-lg transition-colors duration-200 shadow-md flex items-center">
                     <i data-lucide="play" class="w-4 h-4 mr-2"></i> Start
                 </button>
@@ -50,6 +58,7 @@
     console.log("Pomodoro script loaded!");
     const timerDisplay = document.getElementById('timer-display');
     const timerLabel = document.getElementById('timer-label');
+    const progressBar = document.getElementById('pomodoro-progress');
     const startButton = document.getElementById('start-timer');
     const pauseButton = document.getElementById('pause-timer');
     const resetButton = document.getElementById('reset-timer');
@@ -71,6 +80,10 @@
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
         timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        const totalDuration = currentMode === 'focus' ? FOCUS_TIME : (currentMode === 'short-break' ? SHORT_BREAK : LONG_BREAK);
+        const progressPercentage = ((totalDuration - timeLeft) / totalDuration) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
     }
 
     function setMode(mode) {
@@ -146,7 +159,7 @@
             setMode('focus');
         }
         updateDisplay(); // Ensure display is updated for the new mode
-    }
+        progressBar.style.width = '0%';
 
     function playAlarmSound() {
         alarmSound.currentTime = 0;

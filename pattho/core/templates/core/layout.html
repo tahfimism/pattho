@@ -123,7 +123,7 @@
         <!-- Content Area: Main Content + Right Sidebar -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Main Content Area - This is where your Django content will be injected -->
-            <main class="p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-bg-dark)] shadow-lg min-h-[300px] min-w-[688px]">
+            <main class="p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-bg-dark)] shadow-lg min-h-[300px]">
                 {% block body %}
                 This is the main content area. Your Django views will render content here.
                 {% endblock %}
@@ -161,7 +161,7 @@
 <script>
     window.updateProgressUrl = "{% url 'update_progress' %}";
     window.apiSubjectProgressUrl = "{% url 'api_subject_progress' %}";
-    window.updateStreakUrl = "{% url 'users:update_streak' %}";
+    window.updateStreakUrl = "{% url 'update_streak' %}";
     window.isAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
 </script>
 {% endblock %}

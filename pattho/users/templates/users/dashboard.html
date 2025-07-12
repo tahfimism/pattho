@@ -177,8 +177,8 @@
       cb.addEventListener('change', () => {
         if (cb.checked) {
           const rect = cb.getBoundingClientRect();
-          const x = rect.left + rect.width / 2;
-          const y = rect.top + rect.height / 2;
+          const x = rect.left + window.scrollX + rect.width / 2;
+          const y = rect.top + window.scrollY + rect.height / 2;
           createSparkExplosion(x, y);
         }
       });

@@ -37,7 +37,7 @@
         <button id="hamburger-menu-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
-        <h1 class="text-2xl font-bold text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] flex-grow text-center" id="logo-name-mobile">পাঠ্য</h1>
+        <img src="{% static 'core/logo_trans.png' %}" alt="Pattho Logo" class="h-10 w-auto mx-auto" id="logo-name-mobile">
         <button id="mobile-right-sidebar-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
             <i data-lucide="chart-no-axes-combined" class="w-6 h-6"></i>
         </button>
@@ -47,7 +47,7 @@
     <aside id="left-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-40 md:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out md:pt-0 pt-16">
         <!-- Logo/Name for Desktop (always visible when sidebar is open) -->
         <div class="pl-14 mb-3 hidden md:block pt-8">
-            <img src="{% static 'core/logo_trans.png' %}" alt="Pattho Logo" class="h-11 w-auto">
+            <img src="{% static 'core/logo_trans.png' %}" alt="Pattho Logo" class="h-16 w-auto">
         </div>
         <div class="p-6 flex-grow sidebar-scroll overflow-y-auto">
             <!-- Navigation Links -->

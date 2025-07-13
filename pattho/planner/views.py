@@ -269,10 +269,19 @@ def planner_view(request):
 
     chapter_wise_plan = None
     today_chapters = []
+    planner_complete = False # Initialize the flag
+
     if user_routine and user_routine.plan_data:
         chapter_wise_plan = get_chapter_wise_plan(user_routine.plan_data)
         today_date_str = datetime.date.today().strftime('%Y-%m-%d')
         today_chapters = user_routine.plan_data.get(today_date_str, [])
+        
+        # Check if the plan is empty after update/initial load
+        if not user_routine.plan_data: # If plan_data is empty, it means all chapters are completed
+            planner_complete = True
+
+    elif user_routine and not user_routine.plan_data: # Case where routine exists but plan_data is already empty
+        planner_complete = True
 
     if request.method == 'POST' and 'daily_hours' in request.POST:
         try:
@@ -337,5 +346,6 @@ def planner_view(request):
         'subjects': subjects,
         'chapter_wise_plan': chapter_wise_plan,
         'today_chapters': today_chapters,
+        'planner_complete': planner_complete, # Pass the new flag to the template
     }
     return render(request, 'planner/planner.html', context)

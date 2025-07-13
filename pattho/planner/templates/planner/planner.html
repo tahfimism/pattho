@@ -7,108 +7,123 @@
 {% block body %}
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     {% if user_routine %}
-        <form action="{% url 'update_planner' %}" method="post">
-            {% csrf_token %}
-            <div class="shadow-lg rounded-lg p-6">
-                <div class="pattho-underline-wrapper">
-                    <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
-                    <div class="pattho-underline-box"></div>
-                </div>
-                <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
-                    Here is your personalized study plan.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-6">
-                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
+        {% if not planner_complete %}
+            <form action="{% url 'update_planner' %}" method="post">
+                {% csrf_token %}
+                <div class="shadow-lg rounded-lg p-6">
+                    <div class="pattho-underline-wrapper">
+                        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
+                        <div class="pattho-underline-box"></div>
+                    </div>
+                    <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
+                        Here is your personalized study plan.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-6">
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
 ">
-                        <p class="text-sm text-gray-400 mb-1">Daily Study Goal</p>
-                        <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes|minutes_to_hours_minutes }}</p>
-                    </div>
-                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
+                            <p class="text-sm text-gray-400 mb-1">Daily Study Goal</p>
+                            <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes|minutes_to_hours_minutes }}</p>
+                        </div>
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
 ">
-                        <p class="text-sm text-gray-400 mb-1">Start Date</p>
-                        <p class="text-xl font-bold text-white">{{ user_routine.start_date }}</p>
+                            <p class="text-sm text-gray-400 mb-1">Start Date</p>
+                            <p class="text-xl font-bold text-white">{{ user_routine.start_date }}</p>
+                        </div>
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)]">
+                            <p class="text-sm text-gray-400 mb-1">End Date</p>
+                            <p class="text-xl font-bold text-white">{{ user_routine.end_date }}</p>
+                        </div>
                     </div>
-                    <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)]">
-                        <p class="text-sm text-gray-400 mb-1">End Date</p>
-                        <p class="text-xl font-bold text-white">{{ user_routine.end_date }}</p>
-                    </div>
-                </div>
 
-                <div class="pattho-underline-wrapper">
-                    <h2 class="pattho-underline text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
-                    <div class="pattho-underline-box"></div>
-                </div>
-                <div class="space-y-4">
-                    {% if chapter_wise_plan %}
-                        {% for chapter in chapter_wise_plan %}
-                            <div class="border border-gray-800 bg-gray-800/30 rounded-lg overflow-hidden chapter-card">
-                                <div class="p-4 border-b border-gray-700 bg-[#2E3338]">
-                                    <div class="flex items-center justify-between cursor-pointer" onclick="toggleTopics(this)">
-                                        <div class="flex items-center">
-                                            <svg class="w-4 h-4 text-gray-400 transform transition-transform mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                            <h3 class="font-semibold text-white">{{ chapter.chapter_title }}</h3>
-                                        </div>
-                                        <span class="text-lg font-medium text-gray-400">{{ chapter.total_allocated_minutes|minutes_to_hours_minutes }}</span>
-                                    </div>
-                                </div>
-                                <div class="divide-y divide-gray-700 max-h-0 overflow-hidden transition-all duration-300 ease-in-out"> {# This div will be toggled #}
-                                    <div class="p-4 bg-[#191919]">
-                                        <div class="flex items-center justify-between">
+                    <div class="pattho-underline-wrapper">
+                        <h2 class="pattho-underline text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
+                        <div class="pattho-underline-box"></div>
+                    </div>
+                    <div class="space-y-4">
+                        {% if chapter_wise_plan %}
+                            {% for chapter in chapter_wise_plan %}
+                                <div class="border border-gray-800 bg-gray-800/30 rounded-lg overflow-hidden chapter-card">
+                                    <div class="p-4 border-b border-gray-700 bg-[#2E3338]">
+                                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleTopics(this)">
                                             <div class="flex items-center">
-                                                <input type="checkbox" name="completed_chapters" value="{{ chapter.chapter_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 chapter-checkbox mr-2" {% if chapter.completed %}checked{% endif %}>
-                                                <h4 class="text-lg text-[#6EE7B7]">Mark Chapter as Completed</h4>
+                                                <svg class="w-4 h-4 text-gray-400 transform transition-transform mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                                <h3 class="font-semibold text-white">{{ chapter.chapter_title }}</h3>
+                                            </div>
+                                            <span class="text-lg font-medium text-gray-400">{{ chapter.total_allocated_minutes|minutes_to_hours_minutes }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="divide-y divide-gray-700 max-h-0 overflow-hidden transition-all duration-300 ease-in-out"> {# This div will be toggled #}
+                                        <div class="p-4 bg-[#191919]">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center">
+                                                    <input type="checkbox" name="completed_chapters" value="{{ chapter.chapter_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 chapter-checkbox mr-2" {% if chapter.completed %}checked{% endif %}>
+                                                    <h4 class="text-lg text-[#6EE7B7]">Mark Chapter as Completed</h4>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="p-4 bg-[#191919] border-t border-gray-700">
-                                        <h4 class="text-lg text-white">Planned Dates:</h4>
-                                        <ul class="mt-2 space-y-1 text-base text-gray-400">
-                                            {% for planned_date in chapter.planned_dates %}
-                                                <li class="flex justify-between items-center py-1 px-2 bg-gray-700/30 rounded">
-                                                    <span>{{ planned_date.date }}</span>
-                                                    <span class="font-medium text-gray-300">{{ planned_date.allocated_minutes|minutes_to_hours_minutes }}</span>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="p-4 bg-[#191919] border-t border-gray-700">
-                                        <h4 class="text-lg text-white">Topics:</h4>
-                                        <ul class="mt-2 space-y-1 text-base text-gray-400">
-                                            {% for topic_title in chapter.topics %}
-                                                <li>{{ topic_title }}</li>
-                                            {% endfor %}
-                                        </ul>
+                                        <div class="p-4 bg-[#191919] border-t border-gray-700">
+                                            <h4 class="text-lg text-white">Planned Dates:</h4>
+                                            <ul class="mt-2 space-y-1 text-base text-gray-400">
+                                                {% for planned_date in chapter.planned_dates %}
+                                                    <li class="flex justify-between items-center py-1 px-2 bg-gray-700/30 rounded">
+                                                        <span>{{ planned_date.date }}</span>
+                                                        <span class="font-medium text-gray-300">{{ planned_date.allocated_minutes|minutes_to_hours_minutes }}</span>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="p-4 bg-[#191919] border-t border-gray-700">
+                                            <h4 class="text-lg text-white">Topics:</h4>
+                                            <ul class="mt-2 space-y-1 text-base text-gray-400">
+                                                {% for topic_title in chapter.topics %}
+                                                    <li>{{ topic_title }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center text-gray-400">No study plan generated yet. Please create one above.</p>
-                    {% endif %}
-                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-center text-gray-400">No study plan generated yet. Please create one above.</p>
+                        {% endif %}
+                    </div>
 
-                <div class="mt-6 flex items-center">
-                    <button type="submit" id="update-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hidden">
-                        Update Planner
-                    </button>
-                    <div id="update-tooltip" class="relative ml-2 group hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                        <div class="absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-sm rounded-lg py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none tooltip">
-                            This will update your planner based on the chapters you have marked as completed.
-                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800"></div>
+                    <div class="mt-6 flex items-center">
+                        <button type="submit" id="update-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hidden">
+                            Update Planner
+                        </button>
+                        <div id="update-tooltip" class="relative ml-2 group hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            <div class="absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-sm rounded-lg py-2 px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none tooltip">
+                                This will update your planner based on the chapters you have marked as completed.
+                                <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-800"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
-        <div class="mt-6 flex justify-end pr-6">
-            <form action="{% url 'delete_planner' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                    Delete Planner
-                </button>
             </form>
-        </div>
+            <div class="mt-6 flex justify-end pr-6">
+                <form action="{% url 'delete_planner' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Delete Planner
+                    </button>
+                </form>
+            </div>
+        {% else %}
+            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-8 text-center">
+                <h2 class="text-3xl font-bold text-[var(--color-success-light)] mb-4">Congratulations!</h2>
+                <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
+                    You've completed your current study plan. Great job!
+                </p>
+                <form action="{% url 'delete_planner' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">
+                        Create New Planner
+                    </button>
+                </form>
+            </div>
+        {% endif %}
     {% else %}
         <div class="shadow-lg rounded-lg p-6">
             <div class="pattho-underline-wrapper">

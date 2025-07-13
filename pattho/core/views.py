@@ -35,6 +35,17 @@ def complete_profile_view(request):
 
 @login_required
 def profile_view(request):
+    """
+    Handles the user profile view and updates. Allows users to update their username,
+    first name, last name, and college. Displays success or error messages.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse: Renders the 'core/profile.html' template with user data
+                      or redirects to the profile page after an update.
+    """
     if request.method == 'POST':
         user_profile = request.user
         user_profile.username = request.POST.get('username', user_profile.username)

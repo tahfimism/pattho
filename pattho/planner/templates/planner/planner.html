@@ -10,7 +10,10 @@
         <form action="{% url 'update_planner' %}" method="post">
             {% csrf_token %}
             <div class="shadow-lg rounded-lg p-6">
-                <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
+                <div class="pattho-underline-wrapper">
+                    <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
+                    <div class="pattho-underline-box"></div>
+                </div>
                 <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
                     Here is your personalized study plan.
                 </p>
@@ -31,7 +34,10 @@
                     </div>
                 </div>
 
-                <h2 class="text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
+                <div class="pattho-underline-wrapper">
+                    <h2 class="pattho-underline text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
+                    <div class="pattho-underline-box"></div>
+                </div>
                 <div class="space-y-4">
                     {% if chapter_wise_plan %}
                         {% for chapter in chapter_wise_plan %}
@@ -105,7 +111,10 @@
         </div>
     {% else %}
         <div class="shadow-lg rounded-lg p-6">
-            <h1 class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Create Your Study Plan</h1>
+            <div class="pattho-underline-wrapper">
+                <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Create Your Study Plan</h1>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
                 Tell us your goals and we will generate a personalized plan for you.
             </p>

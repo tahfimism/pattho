@@ -1,10 +1,16 @@
 {% extends "core/layout.html" %}
 {% block body %}
-<div class="p-4">
-    <h1 class="text-2xl font-bold mb-6">Analysis</h1>
+<div class="lg:px-6 py-4 md:p-0">
+    <div class="pattho-underline-wrapper">
+        <h1 class="pattho-underline text-2xl font-bold mb-6">Analysis</h1>
+        <div class="pattho-underline-box"></div>
+    </div>
 
     <div class="bg-[#191919] border border-gray-800 rounded-lg p-6 w-full">
-        <h2 class="text-xl font-semibold mb-4">Overall Progress</h2>
+        <div class="pattho-underline-wrapper">
+            <h2 class="pattho-underline text-xl font-semibold mb-4 lg:mx-4 lg:my-2">Overall Progress</h2>
+            <div class="pattho-underline-box"></div>
+        </div>
         <div class="relative flex justify-center items-center mt-8 mx-auto max-w-sm h-auto">
             <canvas id="overallProgressChart" class="w-full h-full"></canvas>
         </div>
@@ -12,61 +18,79 @@
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 lg:gap-4 mb-6 mt-6">
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#6EE7B7] mb-1">Top Subject</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
-                {% if top_subject %}{{ top_subject.name }}{% else %}N/A{% endif %}
-            </p>
+            <div class="pattho-underline-wrapper">
+                <p class="pattho-underline text-lg md:text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
+                    {% if top_subject %}{{ top_subject.name }}{% else %}N/A{% endif %}
+                </p>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-1">
                 {% if top_subject %}{{ top_subject.overall_progress }}%{% endif %}
             </p>
         </div>
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#eb8686] mb-1">Least Covered</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
-                {% if least_covered_subject %}{{ least_covered_subject.name }}{% else %}N/A{% endif %}
-            </p>
+            <div class="pattho-underline-wrapper">
+                <p class="pattho-underline text-lg md:text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
+                    {% if least_covered_subject %}{{ least_covered_subject.name }}{% else %}N/A{% endif %}
+                </p>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-1">
                 {% if least_covered_subject %}{{ least_covered_subject.overall_progress }}%{% endif %}
             </p>
         </div>
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#6EE7B7] mb-1">Strongest Study Type</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
-                {% if strongest_study_type %}{{ strongest_study_type.0 }}{% else %}N/A{% endif %}
-            </p>
+            <div class="pattho-underline-wrapper">
+                <p class="pattho-underline text-lg md:text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
+                    {% if strongest_study_type %}{{ strongest_study_type.0 }}{% else %}N/A{% endif %}
+                </p>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-1">
                 {% if strongest_study_type %}{{ strongest_study_type.1 }}%{% endif %}
             </p>
         </div>
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#eb8686] mb-1">Needs Focus In</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
-                {% if needs_focus_study_type %}{{ needs_focus_study_type.0 }}{% else %}N/A{% endif %}
-            </p>
+            <div class="pattho-underline-wrapper">
+                <p class="pattho-underline text-lg md:text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] break-words">
+                    {% if needs_focus_study_type %}{{ needs_focus_study_type.0 }}{% else %}N/A{% endif %}
+                </p>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mt-1">
                 {% if needs_focus_study_type %}{{ needs_focus_study_type.1 }}%{% endif %}
             </p>
         </div>
     </div>
     <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
-        <h2 class="text-xl font-semibold mb-4">Field-wise Progress (Radar Chart)</h2>
+        <div class="pattho-underline-wrapper">
+            <h2 class="pattho-underline text-xl font-semibold mb-4 lg:mx-4 lg:my-2">Field-wise Progress</h2>
+            <div class="pattho-underline-box"></div>
+        </div>
         <div class="relative flex justify-center items-center mt-8 mx-auto max-w-lg h-auto">
             <canvas id="fieldRadarChart" class="w-full h-full"></canvas>
         </div>
     </div>
     <div class="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2 lg:gap-4 mb-6 mt-6">
         <div class="border border-gray-800 col-span-full md:col-span-2 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center flex flex-col items-center justify-center">
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-1">Note Analysis</p>
+            <div class="pattho-underline-wrapper">
+                <p class="pattho-underline text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-1">Note Analysis</p>
+                <div class="pattho-underline-box"></div>
+            </div>
             <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Notes are your saviour in the last moment</p>
         </div>
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#6EE7B7] mb-1">Noted Chapters</p>
-            <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-2xl md:text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ noted_chapters_count }}
             </p>
         </div>
         <div class="border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
             <p class="text-sm text-[#eb8686] mb-1">Pending</p>
-            <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-2xl md:text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
                 {{ pending_chapters_count }}
             </p>
         </div>
@@ -74,7 +98,10 @@
     
 
     <div class="border border-gray-800 bg-[#191919] shadow-md rounded-lg p-6 w-full mt-6">
-        <h2 class="text-xl font-semibold mb-4">Subject wise progress breakdown</h2>
+        <div class="pattho-underline-wrapper">
+            <h2 class="pattho-underline text-xl font-semibold mb-4 lg:mx-4 lg:my-2">Subject-wise breakdown</h2>
+            <div class="pattho-underline-box"></div>
+        </div>
         <div id="subjectBreakdownCharts" class="flex flex-wrap justify-center gap-4">
             <!-- Charts will be dynamically added here -->
         </div>
@@ -97,15 +124,17 @@
             ctx.save();
             const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
             const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-            
-            ctx.font = '30px sans-serif'; // Normal font weight
+
+            const isMobile = window.innerWidth < 768; // Check if screen is mobile size
+
+            ctx.font = `${isMobile ? '24px' : '30px'} sans-serif`; // Responsive font size
             ctx.fillStyle = '#6EE7B7'; // Normal color
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(text, centerX, centerY - 10);
-            ctx.font = '16px sans-serif'; // Normal font weight
+            ctx.fillText(text, centerX, centerY - (isMobile ? 5 : 10)); // Adjust vertical position
+            ctx.font = `${isMobile ? '12px' : '16px'} sans-serif`; // Responsive font size for 'done'
             ctx.fillStyle = 'rgba(100, 100, 100, 1)'; // Normal color
-            ctx.fillText('done', centerX, centerY + 20);
+            ctx.fillText('done', centerX, centerY + (isMobile ? 10 : 20)); // Adjust vertical position
             ctx.restore();
         }
     };

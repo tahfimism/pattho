@@ -20,11 +20,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
 
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
-        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-
-
+    
 
 
     <link rel="stylesheet" href="{% static 'core/main.css' %}">
@@ -136,7 +132,10 @@
 
                 <div class="border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] pb-6 mb-6"></div>
 
-                <h3 class="text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4 mt-6">Incomplete Tasks</h3>
+                <div class="pattho-underline-wrapper">
+                    <h3 class="pattho-underline text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4 mt-6">Incomplete Tasks</h3>
+                    <div class="pattho-underline-box"></div>
+                </div>
                 <ul id="incomplete-tasks-list" class="space-y-2">
                     <!-- Tasks will be loaded here by JavaScript -->
                     <li class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Loading tasks...</li>
@@ -296,5 +295,89 @@
             }
         });
     </script>
+
+
+<!--Underline animation-->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+  <script>
+    gsap.registerPlugin(DrawSVGPlugin);
+
+    const svgVariants = [
+      `<svg viewBox="0 0 310 40"><path d="M5 21C26 16 49 12 71 15C85 17 97 22 110 25C116 26 123 26 129 23C136 20 143 15 150 14C157 12 162 15 168 17C182 22 195 23 209 22C225 20 240 18 255 18C272 19 288 19 305 18" stroke="currentColor" stroke-width="10" stroke-linecap="round" fill="none"/></svg>`,
+      `<svg viewBox="0 0 310 40"><path d="M5 30C50 27 100 21 150 17C152 16 165 15 164 16C161 20 157 24 154 27C153 28 148 33 151 34C154 36 163 33 165 32C179 28 191 24 205 20C232 12 259 6 289 5C295 5 300 5 305 6" stroke="currentColor" stroke-width="10" stroke-linecap="round" fill="none"/></svg>`
+    ];
+
+    function decorateSVG(svgEl) {
+      svgEl.setAttribute('preserveAspectRatio', 'none');
+      svgEl.querySelectorAll('path').forEach(path => {
+        path.setAttribute('stroke', 'currentColor');
+      });
+    }
+
+    function initUnderlineHover() {
+      let nextIndex = null;
+      document.querySelectorAll('.pattho-underline-wrapper').forEach(wrapper => {
+        const text = wrapper.querySelector('.pattho-underline');
+        const box = wrapper.querySelector('.pattho-underline-box');
+        if (!text || !box) return;
+
+        let enterTween = null;
+        let leaveTween = null;
+
+        text.addEventListener('mouseenter', () => {
+          if (enterTween?.isActive()) return;
+          leaveTween?.kill();
+
+          if (nextIndex === null) nextIndex = Math.floor(Math.random() * svgVariants.length);
+          box.innerHTML = svgVariants[nextIndex];
+
+          const svg = box.querySelector('svg');
+          if (svg) {
+            decorateSVG(svg);
+            const path = svg.querySelector('path');
+            if (path) {
+              gsap.set(path, { drawSVG: '0%' });
+              enterTween = gsap.to(path, {
+                duration: 0.4,
+                drawSVG: '100%',
+                ease: 'power2.inOut',
+                onComplete: () => { enterTween = null; }
+              });
+            }
+          }
+
+          nextIndex = (nextIndex + 1) % svgVariants.length;
+        });
+
+        text.addEventListener('mouseleave', () => {
+          const path = box.querySelector('path');
+          if (!path) return;
+
+          const playOut = () => {
+            if (leaveTween?.isActive()) return;
+            leaveTween = gsap.to(path, {
+              duration: 0.4,
+              drawSVG: '100% 100%',
+              ease: 'power2.inOut',
+              onComplete: () => {
+                leaveTween = null;
+                box.innerHTML = '';
+              }
+            });
+          };
+
+          if (enterTween?.isActive()) {
+            enterTween.eventCallback('onComplete', playOut);
+          } else {
+            playOut();
+          }
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initUnderlineHover);
+  </script>
+
 </body>
 </html>

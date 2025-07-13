@@ -258,3 +258,35 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+
+.pattho-underline-wrapper {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.4em;
+}
+
+.pattho-underline {
+    position: relative;
+    display: inline-block;
+    color: inherit;
+    z-index: 1;
+    margin: 0;
+}
+
+.pattho-underline-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.7em;
+    pointer-events: none;
+    color: #50e5cc;
+    z-index: 0;
+}
+
+.pattho-underline-box svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}

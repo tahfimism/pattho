@@ -33,6 +33,16 @@ def _calculate_subject_progress(user):
 
 @login_required
 def dashboard(request):
+    """
+    Renders the user's dashboard, displaying overall progress, chapter-wise progress,
+    and statistics related to completed, in-progress, and not-started chapters.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse: Renders the 'users/dashboard.html' template with context data.
+    """
     user = request.user
     subjects = Subject.objects.all().prefetch_related('chapters')
     user_progress = UserProgress.objects.filter(user=user).values('chapter_id', 'p_book', 'p_note', 'p_mcq', 'p_cq', 'p_theory', 'overall_progress')
@@ -64,6 +74,18 @@ def dashboard(request):
 @require_POST
 @csrf_exempt
 def update_progress(request):
+    """
+    Updates the user's progress for specific chapters based on the provided JSON data.
+    This view requires a POST request and is CSRF-exempt for API usage.
+
+    Args:
+        request: HttpRequest object containing JSON data with chapter progress changes.
+
+    Returns:
+        JsonResponse: 
+            - {'success': True, 'new_progress': {chapter_id: overall_progress}} on success.
+            - {'success': False, 'error': message} on failure (e.g., invalid JSON, no changes, server error).
+    """
     try:
         data = json.loads(request.body)
         changes = data.get('changes')
@@ -190,6 +212,20 @@ def analysis(request):
 @login_required
 @csrf_exempt
 def update_streak(request):
+    """
+    Updates the user's streak based on their last login date.
+    If the user logs in on consecutive days, the streak increases.
+    If there's a gap of more than one day, the streak resets to 0.
+    If it's the first login, the streak starts at 1.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        JsonResponse: 
+            - {'success': True, 'streak': user.streak} on successful update.
+            - {'success': False, 'error': message} if the request method is not POST.
+    """
     if request.method == 'POST':
         user = request.user
         today = timezone.now().date()

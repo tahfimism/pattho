@@ -8,16 +8,45 @@ import json
 
 @login_required
 def todo_list(request):
+    """
+    Renders the To-Do list page for the logged-in user.
+    Displays all To-Do items, ordered by completion status and creation date.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse: Renders the 'activities/todo.html' template with the user's To-Do items.
+    """
     todos = ToDoItem.objects.filter(user=request.user).order_by('completed', '-date')
     return render(request, 'activities/todo.html', {'todos': todos})
 
 @login_required
 def pomodoro_timer(request):
+    """
+    Renders the Pomodoro timer page.
+
+    Args:
+        request: HttpRequest object.
+
+    Returns:
+        HttpResponse: Renders the 'activities/pomodoro.html' template.
+    """
     return render(request, 'activities/pomodoro.html')
 
 @login_required
 @require_POST
 def add_todo(request):
+    """
+    Adds a new To-Do item for the logged-in user.
+    Requires a POST request with a 'title' parameter.
+
+    Args:
+        request: HttpRequest object containing the To-Do item title.
+
+    Returns:
+        HttpResponseRedirect: Redirects to the 'activities' page.
+    """
     title = request.POST.get('title')
     if title:
         ToDoItem.objects.create(user=request.user, title=title)

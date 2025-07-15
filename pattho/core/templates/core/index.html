@@ -15,7 +15,6 @@
     overflow: hidden;
   }
 
-
 #particle-container {
   position: absolute;
   top: 0;
@@ -31,6 +30,12 @@
   box-shadow: 0 0 20px #0a684c, 0 0 40px #18a077, 0 0 80px #0ea182af;
 }
 
+/* Hide particles on screens smaller than 768px (typical mobile breakpoint) */
+@media (max-width: 767px) {
+  #particle-container {
+    display: none;
+  }
+}
 </style>
 
 

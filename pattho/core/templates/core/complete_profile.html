@@ -22,6 +22,14 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-4">
+                    <label for="first_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">First Name</label>
+                    <input type="text" id="first_name" name="first_name" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="last_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
                     <label for="hscyear" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">HSC Year</label>
                     <select id="hscyear" name="hscyear" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
                         <option value="" disabled selected>  </option>

@@ -15,21 +15,28 @@ def _calculate_subject_progress(user):
     """
     Calculates the overall progress for each subject for a given user.
     """
-    subjects_progress = Subject.objects.annotate(
-        overall_progress=Avg(
-            'chapters__progress__overall_progress',
-            filter=Q(chapters__progress__user=user)
-        )
-    ).values('name', 'overall_progress')
+    subjects = Subject.objects.all()
+    subjects_progress = []
 
-    formatted_progress = []
-    for subject in subjects_progress:
-        progress_value = subject['overall_progress'] if subject['overall_progress'] is not None else 0
-        formatted_progress.append({
-            'name': subject['name'],
-            'overall_progress': round(progress_value, 2)
+    for subject in subjects:
+        user_progress_for_subject = UserProgress.objects.filter(
+            user=user, 
+            chapter__subject=subject
+        )
+        
+        total_progress = sum(up.overall_progress for up in user_progress_for_subject)
+        
+        if subject.chapter_count > 0:
+            average_progress = total_progress / subject.chapter_count
+        else:
+            average_progress = 0
+
+        subjects_progress.append({
+            'name': subject.name,
+            'overall_progress': round(average_progress, 2)
         })
-    return formatted_progress
+
+    return subjects_progress
 
 @login_required
 def dashboard(request):
@@ -135,21 +142,27 @@ def analysis(request):
     
     overall_average_progress = (total_progress / subject_count) if subject_count > 0 else 0
 
-    # Calculate average progress for p_theory, p_book, p_note, p_cq, p_mcq
-    user_progress_averages = UserProgress.objects.filter(user=request.user).aggregate(
-        avg_p_theory=Avg('p_theory'),
-        avg_p_book=Avg('p_book'),
-        avg_p_note=Avg('p_note'),
-        avg_p_cq=Avg('p_cq'),
-        avg_p_mcq=Avg('p_mcq'),
-    )
+    # --- Radar Chart Calculations ---
+    # Get the total number of chapters in the syllabus
+    total_chapters = Chapter.objects.count()
 
-    # Convert averages to percentages and handle None if no progress entries exist
-    p_theory_avg = round(user_progress_averages['avg_p_theory'] * 100, 2) if user_progress_averages['avg_p_theory'] is not None else 0
-    p_book_avg = round(user_progress_averages['avg_p_book'] * 100, 2) if user_progress_averages['avg_p_book'] is not None else 0
-    p_note_avg = round(user_progress_averages['avg_p_note'] * 100, 2) if user_progress_averages['avg_p_note'] is not None else 0
-    p_cq_avg = round(user_progress_averages['avg_p_cq'] * 100, 2) if user_progress_averages['avg_p_cq'] is not None else 0
-    p_mcq_avg = round(user_progress_averages['avg_p_mcq'] * 100, 2) if user_progress_averages['avg_p_mcq'] is not None else 0
+    if total_chapters > 0:
+        # Count how many chapters have each study type marked as complete
+        p_theory_count = UserProgress.objects.filter(user=request.user, p_theory=True).count()
+        p_book_count = UserProgress.objects.filter(user=request.user, p_book=True).count()
+        p_note_count = UserProgress.objects.filter(user=request.user, p_note=True).count()
+        p_cq_count = UserProgress.objects.filter(user=request.user, p_cq=True).count()
+        p_mcq_count = UserProgress.objects.filter(user=request.user, p_mcq=True).count()
+
+        # Calculate the percentage completion for each study type over all chapters
+        p_theory_avg = round((p_theory_count / total_chapters) * 100, 2)
+        p_book_avg = round((p_book_count / total_chapters) * 100, 2)
+        p_note_avg = round((p_note_count / total_chapters) * 100, 2)
+        p_cq_avg = round((p_cq_count / total_chapters) * 100, 2)
+        p_mcq_avg = round((p_mcq_count / total_chapters) * 100, 2)
+    else:
+        # If there are no chapters, all averages are 0
+        p_theory_avg = p_book_avg = p_note_avg = p_cq_avg = p_mcq_avg = 0
 
     # --- New calculations for the 4 cards ---
 

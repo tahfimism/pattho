@@ -25,6 +25,8 @@ def complete_profile_view(request):
 
     if request.method == 'POST':
         user_profile = request.user
+        user_profile.first_name = request.POST.get('first_name')
+        user_profile.last_name = request.POST.get('last_name')
         user_profile.hscyear = request.POST.get('hscyear')
         user_profile.college = request.POST.get('college')
         user_profile.save()
@@ -127,6 +129,7 @@ def register(request):
             return render(request, "core/register.html", {
                 "message": "Username already taken."
             })
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:

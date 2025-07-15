@@ -18,21 +18,29 @@ def subject_progress_sidebar(context):
     if not user.is_authenticated:
         return {'subjects_progress': []}
 
-    # This is an efficient query that calculates the average progress for each subject
-    # by looking at the progress of its chapters for the current user.
-    subjects_progress = Subject.objects.annotate(
-        overall_progress=Avg(
-            'chapters__progress__overall_progress',
-            filter=Q(chapters__progress__user=user)
-        )
-    ).values('name', 'overall_progress')
+    subjects = Subject.objects.all()
+    subjects_progress = []
 
-    # The result of the query will have overall_progress as None for subjects
-    # where the user has made no progress. We'll default this to 0.
-    for subject in subjects_progress:
-        if subject['overall_progress'] is None:
-            subject['overall_progress'] = 0
+    for subject in subjects:
+        # Get all progress entries for the current user and subject
+        user_progress_for_subject = UserProgress.objects.filter(
+            user=user, 
+            chapter__subject=subject
+        )
+        
+        # Sum the progress for all chapters within that subject
+        total_progress = sum(up.overall_progress for up in user_progress_for_subject)
+        
+        # Avoid division by zero if a subject has no chapters
+        if subject.chapter_count > 0:
+            # Calculate the average progress across all chapters for the subject
+            average_progress = total_progress / subject.chapter_count
         else:
-            subject['overall_progress'] = round(subject['overall_progress'], 2)
+            average_progress = 0
+
+        subjects_progress.append({
+            'name': subject.name,
+            'overall_progress': round(average_progress, 2)
+        })
 
     return {'subjects_progress': subjects_progress}

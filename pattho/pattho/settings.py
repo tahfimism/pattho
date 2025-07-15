@@ -165,3 +165,21 @@ ACCOUNT_LOGIN_METHODS = ['email']
 ACCOUNT_LOGIN_METHODS = ['email']
 ACCOUNT_EMAIL_VERIFICATION = 'none' # Or 'mandatory' for email verification
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '131138227229-mlrokfuqflb6e2befj33phdq13e2h7fr.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+

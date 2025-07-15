@@ -26,21 +26,21 @@
     <link rel="stylesheet" href="{% static 'core/main.css' %}">
 
 </head>
-<body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen">
+<body class="bg-[var(--color-bg-dark)] text-[var(--color-text-dark)] flex min-h-screen">
 
     <!-- Mobile Header (always visible on mobile, hidden on desktop) -->
-    <div id="mobile-header" class="md:hidden bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
-        <button id="hamburger-menu-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+    <div id="mobile-header" class="md:hidden bg-[var(--color-card-bg-dark)] shadow-lg p-4 flex items-center justify-between fixed top-0 left-0 right-0 z-50">
+        <button id="hamburger-menu-btn" class="p-2 rounded-full text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
             <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
         <img src="{% static 'core/logo_trans.png' %}" alt="Pattho Logo" class="h-10 w-auto mx-auto" id="logo-name-mobile">
-        <button id="mobile-right-sidebar-btn" class="p-2 rounded-full text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+        <button id="mobile-right-sidebar-btn" class="p-2 rounded-full text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
             <i data-lucide="chart-no-axes-combined" class="w-6 h-6"></i>
         </button>
     </div>
 
     <!-- Left Sidebar (fixed on desktop, slides in/out on mobile) -->
-    <aside id="left-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-40 md:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out md:pt-0 pt-16 overflow-x-hidden">
+    <aside id="left-sidebar" class="bg-[var(--color-card-bg-dark)] shadow-xl flex flex-col justify-between w-64 flex-shrink-0 h-screen fixed top-0 left-0 z-40 md:translate-x-0 -translate-x-full transition-transform duration-300 ease-in-out md:pt-0 pt-16 overflow-x-hidden">
         <!-- Logo/Name for Desktop (always visible when sidebar is open) -->
         <div class="pl-14 mb-3 hidden md:block pt-8">
             <img src="{% static 'core/logo_trans.png' %}" alt="Pattho Logo" class="h-16 w-auto">
@@ -50,44 +50,44 @@
             <nav>
                 <ul>
                     <li class="mb-2">
-                        <a href="{% url 'dashboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'dashboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{% url 'analysis' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'analysis' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="bar-chart-2" class="w-5 h-5 mr-3"></i>
                             Analysis
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{% url 'planner' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'planner' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="calendar-check" class="w-5 h-5 mr-3"></i>
                             Planner
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{% url 'activities' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'activities' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="list-todo" class="w-5 h-5 mr-3"></i>
                             To-do
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{% url 'pomodoro' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'pomodoro' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="timer" class="w-5 h-5 mr-3"></i>
                             Pomodoro
                         </a>
                     </li>
                     
                     <li class="mb-2">
-                        <a href="{% url 'leaderboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'leaderboard' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="trophy" class="w-5 h-5 mr-3"></i>
                             Leaderboard 
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{% url 'profile' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-light)] dark:hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-text-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
+                        <a href="{% url 'profile' %}" class="flex items-center p-3 rounded-xl text-[var(--color-text-dark)] hover:bg-[var(--color-primary-hover-dark)] hover:text-[var(--color-primary-dark)] hover:border hover:border-gray-300 transition-colors duration-200 font-medium">
                             <i data-lucide="user" class="w-5 h-5 mr-3"></i>
                             Profile
                         </a>
@@ -98,16 +98,16 @@
 
         <!-- User Streak, Avatar -->
         <div class="p-6">
-            <div class="flex items-center mb-4 text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+            <div class="flex items-center mb-4 text-sm font-medium text-[var(--color-gray-text-dark)]">
                 <i data-lucide="flame" class="w-4 h-4 mr-2 text-[var(--color-accent-light)]"></i>
                 <span>Streak: {{ request.user.streak|default:0 }} Days</span>
             </div>
-            <a href="{% url 'profile' %}" class="block pt-4 border-t border-[var(--color-border-light)] dark:border-[var(--color-border-dark)]">
+            <a href="{% url 'profile' %}" class="block pt-4 border-t border-[var(--color-border-dark)]">
                 <div class="flex items-center">
-                    <img src="{{ request.user.avatar|default:'https://placehold.co/40x40/205454/ffffff?font=oswald&text=Pattho' }}" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-light)] dark:border-[var(--color-primary-dark)]">
+                    <img src="{{ request.user.avatar|default:'https://placehold.co/40x40/205454/ffffff?font=oswald&text=Pattho' }}" alt="User Avatar" class="w-10 h-10 rounded-full mr-3 border-2 border-[var(--color-primary-dark)]">
                     <div>
-                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">{{ request.user.first_name }} {{ request.user.last_name }}</p>
-                        <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">{{ request.user.get_stream_display }} {{ request.user.hscyear|stringformat:"s" }}</p>
+                        <p class="font-semibold text-[var(--color-text-dark)]">{{ request.user.first_name }} {{ request.user.last_name }}</p>
+                        <p class="text-sm text-[var(--color-gray-text-dark)]">{{ request.user.get_stream_display }} {{ request.user.hscyear|stringformat:"s" }}</p>
                     </div>
                 </div>
             </a>
@@ -119,7 +119,7 @@
         <!-- Content Area: Main Content + Right Sidebar -->
         <div class="flex flex-1 overflow-hidden">
             <!-- Main Content Area - This is where your Django content will be injected -->
-            <main class="p-4 md:p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-light)] dark:bg-[var(--color-bg-dark)] shadow-lg min-h-[300px] min-w-0">
+            <main class="p-4 md:p-6 flex-1 overflow-y-auto bg-[var(--color-card-bg-dark)] shadow-lg min-h-[300px] min-w-0">
                 {% block body %}
                 This is the main content area. Your Django views will render content here.
                 {% endblock %}
@@ -127,18 +127,18 @@
 
             <!-- Right Sidebar -->
             {% block right_sidebar %}
-            <aside id="right-sidebar" class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40 pt-20 md:pt-11">
+            <aside id="right-sidebar" class="bg-[var(--color-card-bg-dark)] shadow-xl w-72 flex-shrink-0 p-6 overflow-y-auto sidebar-scroll fixed top-0 right-0 h-full transform translate-x-full md:translate-x-0 md:block transition-transform duration-300 ease-in-out z-40 pt-20 md:pt-11">
                 {% subject_progress_sidebar %}
 
-                <div class="border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] pb-6 mb-6"></div>
+                <div class="border-b border-[var(--color-border-dark)] pb-6 mb-6"></div>
 
                 <div class="pattho-underline-wrapper">
-                    <h3 class="pattho-underline text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-4 mt-6">Incomplete Tasks</h3>
+                    <h3 class="pattho-underline text-lg font-semibold text-[var(--color-text-dark)] mb-4 mt-6">Incomplete Tasks</h3>
                     <div class="pattho-underline-box"></div>
                 </div>
                 <ul id="incomplete-tasks-list" class="space-y-2">
                     <!-- Tasks will be loaded here by JavaScript -->
-                    <li class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Loading tasks...</li>
+                    <li class="text-[var(--color-gray-text-dark)]">Loading tasks...</li>
                 </ul>
             </aside>
             {% endblock right_sidebar %}
@@ -160,7 +160,7 @@
 <script>
     window.updateProgressUrl = "{% url 'update_progress' %}";
     window.apiSubjectProgressUrl = "{% url 'api_subject_progress' %}";
-    window.updateStreakUrl = "{% url 'update_streak' %}";
+    window.updateStreakUrl = "{% url 'update_streak' %};
     window.isAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
 </script>
 {% endblock %}
@@ -190,7 +190,7 @@
                         if (data.incomplete_tasks && data.incomplete_tasks.length > 0) {
                             data.incomplete_tasks.forEach(task => {
                                 const listItem = document.createElement('li');
-                                listItem.className = 'flex items-center space-x-2 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]';
+                                listItem.className = 'flex items-center space-x-2 text-[var(--color-text-dark)]';
                                 const iconSpan = document.createElement('span');
                                 iconSpan.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-commit-horizontal"><path d="M12 3v18"/><path d="M3 12h18"/><circle cx="12" cy="12" r="3"/></svg>';
                                 const taskTitleSpan = document.createElement('span');
@@ -201,7 +201,7 @@
                             });
                         } else {
                             const listItem = document.createElement('li');
-                            listItem.className = 'text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]';
+                            listItem.className = 'text-[var(--color-gray-text-dark)]';
                             listItem.textContent = 'No incomplete tasks!';
                             incompleteTasksList.appendChild(listItem);
                         }

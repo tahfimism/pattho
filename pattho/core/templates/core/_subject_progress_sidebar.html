@@ -1,24 +1,24 @@
 <div class="flex justify-between items-center mb-4">
     <div class="pattho-underline-wrapper">
-        <h3 class="pattho-underline text-lg font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">Overall Progress</h3>
+        <h3 class="pattho-underline text-lg font-semibold text-[var(--color-text-dark)]">Overall Progress</h3>
         <div class="pattho-underline-box"></div>
     </div>
-    <button id="refresh-progress-btn" class="p-1 rounded-full text-[var(--color-gray-text-light)] hover:bg-[var(--color-gray-bg-light)] dark:hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
-        <i data-lucide="refresh-cw" class="w-4 h-4 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]"></i>
+    <button id="refresh-progress-btn" class="p-1 rounded-full text-[var(--color-gray-text-dark)] hover:bg-[var(--color-gray-bg-dark)] transition-colors duration-200">
+        <i data-lucide="refresh-cw" class="w-4 h-4 text-[var(--color-gray-text-dark)]"></i>
     </button>
 </div>
 <ul class="space-y-3 mb-6" id="subject-progress-list">
     {% for subject in subjects_progress %}
     <li data-subject-name="{{ subject.name }}" class="group">
-        <div class="flex justify-between items-center text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] group-hover:text-white">
+        <div class="flex justify-between items-center text-[var(--color-gray-text-dark)] group-hover:text-white">
             <span>{{ subject.name }}</span>
             <span class="subject-progress-percentage">{{ subject.overall_progress|default:0 }}%</span>
         </div>
-        <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-2 mt-1 dark:bg-[var(--color-gray-bg-dark)]">
+        <div class="w-full bg-[var(--color-gray-bg-dark)] rounded-full h-2 mt-1">
             <div class="bg-[#E78A09] h-2 rounded-full subject-progress-bar" style="width: {{ subject.overall_progress|default:0 }}%"></div>
         </div>
     </li>
     {% empty %}
-    <li><p class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">No subjects found or no progress yet.</p></li>
+    <li><p class="text-[var(--color-gray-text-dark)]">No subjects found or no progress yet.</p></li>
     {% endfor %}
 </ul>

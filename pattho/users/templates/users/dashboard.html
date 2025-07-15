@@ -2,18 +2,18 @@
 
 {% block body %}
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden p-8 welcome-block min-h-48 flex flex-col justify-between">
+    <div class="bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden p-8 welcome-block min-h-48 flex flex-col justify-between">
         <div >
             <div class="pattho-underline-wrapper">
-            <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">
+            <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-dark)] mb-2">
                 Welcome back, {{ request.user.username }}!
             </h1> 
             <div class="pattho-underline-box"></div> </div>
-            <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
+            <p class="text-lg text-[var(--color-gray-text-dark)] mb-4">
                 Ready to conquer your HSC preparation today?
             </p>
         </div>
-        <div class="flex items-center text-md font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+        <div class="flex items-center text-md font-medium text-[var(--color-gray-text-dark)]">
             <i data-lucide="flame" class="w-5 h-5 mr-2 text-[var(--color-accent-light)]"></i>
             <span>{{ request.user.streak }} days streak</span>
             
@@ -21,55 +21,55 @@
     </div>
 
     <div class="grid grid-cols-[repeat(2,minmax(120px,1fr))] md:grid-cols-[repeat(4,minmax(170px,1fr))] gap-2 lg:gap-4 mb-6">
-        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#d6ffdf] mb-1">Total Chapters</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-xl font-bold text-[var(--color-text-dark)]">
                 {{ total_chapters }}
             </p>
         </div>
-        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#6EE7B7] mb-1">Completed</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-xl font-bold text-[var(--color-text-dark)]">
                 {{ completed_chapters }}
             </p>
         </div>
-        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">In Progress</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-xl font-bold text-[var(--color-text-dark)]">
                 {{ in_progress_chapters }}
             </p>
         </div>
-        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] ">
+        <div class="hover:border hover:border-gray-500 border border-gray-800 bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] ">
             <p class="text-sm text-[#eb8686] mb-1">Not Started</p>
-            <p class="text-xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
+            <p class="text-xl font-bold text-[var(--color-text-dark)]">
                 {{ not_started_chapters }}
             </p>
         </div>
     </div>
 
     <div class="pattho-underline-wrapper">
-        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Dashboard</h1>
+        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-dark)] mb-6">Dashboard</h1>
         <div class="pattho-underline-box"></div>
     </div>
 
     {% for subject in subjects %}
-    <div class="hover:border hover:border-zinc-400 border border-gray-700 rounded-lg bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
-        <div class="p-5 border-b border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] flex justify-between items-center cursor-pointer collapse-toggle" data-target="#subject-{{ forloop.counter }}">
-            <h2 class="text-xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] font-noto-bengali">{{ subject.name }}</h2>
-            <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] collapse-icon"></i>
+    <div class="hover:border hover:border-zinc-400 border border-gray-700 rounded-lg bg-[var(--color-card-bg-dark)] shadow-lg mb-6 overflow-hidden">
+        <div class="p-5 border-b border-[var(--color-border-dark)] flex justify-between items-center cursor-pointer collapse-toggle" data-target="#subject-{{ forloop.counter }}">
+            <h2 class="text-xl font-semibold text-[var(--color-text-dark)] font-noto-bengali">{{ subject.name }}</h2>
+            <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-gray-text-dark)] collapse-icon"></i>
         </div>
-        <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)] collapse-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+        <div id="subject-{{ forloop.counter }}" class="divide-y divide-[var(--color-border-dark)] collapse-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
             {% for chapter in subject.chapters.all %}
             <div class="p-5 chapter-row" data-chapter-id="{{ chapter.id }}">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:gap-x-8">
                     <div class="flex-grow mb-4 md:mb-0 w-full md:w-2/5">
-                        <p class="font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2 font-noto-bengali">{{ chapter.title }}</p>
+                        <p class="font-semibold text-[var(--color-text-dark)] mb-2 font-noto-bengali">{{ chapter.title }}</p>
                         <div class="mt-2">
                             <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Exam Readiness</span>
-                                <span class="text-sm font-medium text-[var(--color-primary-light)] dark:text-[var(--color-primary-dark)] progress-text">{{ chapter.user_progress.overall_progress|default:0 }}%</span>
+                                <span class="text-sm font-medium text-[var(--color-gray-text-dark)]">Exam Readiness</span>
+                                <span class="text-sm font-medium text-[var(--color-primary-dark)] progress-text">{{ chapter.user_progress.overall_progress|default:0 }}%</span>
                             </div>
-                            <div class="w-full bg-[var(--color-gray-bg-light)] rounded-full h-1.5 dark:bg-[var(--color-gray-bg-dark)]">
+                            <div class="w-full bg-[var(--color-gray-bg-dark)] rounded-full h-1.5">
                                 <div class="bg-[var(--color-primary-light)] h-1.5 rounded-full progress-bar" style="width: {{ chapter.user_progress.overall_progress|default:0 }}%;"></div>
                             </div>
                         </div>
@@ -77,23 +77,23 @@
                     <div class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 w-full md:w-3/5 checkbox-group">
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="Class/Concept Read">
                             <input type="checkbox" data-field="p_book" {% if chapter.user_progress.p_book %}checked{% endif %} class="glitter-check h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Class/Concept</span>
+                            <span class="text-sm text-[var(--color-gray-text-dark)]">Class/Concept</span>
                         </label>
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="Note Taken">
                             <input type="checkbox" data-field="p_note" {% if chapter.user_progress.p_note %}checked{% endif %} class="glitter-check h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Note</span>
+                            <span class="text-sm text-[var(--color-gray-text-dark)]">Note</span>
                         </label>
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="MCQ Practice">
                             <input type="checkbox" data-field="p_mcq" {% if chapter.user_progress.p_mcq %}checked{% endif %} class="glitter-check h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">MCQ</span>
+                            <span class="text-sm text-[var(--color-gray-text-dark)]">MCQ</span>
                         </label>
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="CQ Practice">
                             <input type="checkbox" data-field="p_cq" {% if chapter.user_progress.p_cq %}checked{% endif %} class="glitter-check h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">CQ</span>
+                            <span class="text-sm text-[var(--color-gray-text-dark)]">CQ</span>
                         </label>
                         <label class="flex items-center cursor-pointer mr-4 mb-2" title="Theory Complete">
                             <input type="checkbox" data-field="p_theory" {% if chapter.user_progress.p_theory %}checked{% endif %} class="glitter-check h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] mr-1">
-                            <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Theory</span>
+                            <span class="text-sm text-[var(--color-gray-text-dark)]">Theory</span>
                         </label>
                     </div>
                 </div>

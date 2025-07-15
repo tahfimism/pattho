@@ -14,23 +14,23 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="{% static 'core/main.css' %}">
 </head>
-<body class="bg-[var(--color-bg-light)] text-[var(--color-text-light)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-dark)] flex min-h-screen items-center justify-center">
+<body class="bg-[var(--color-bg-dark)] text-[var(--color-text-dark)] flex min-h-screen items-center justify-center">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="max-w-md mx-auto p-8"> {# Removed bg, shadow, rounded classes #}
-            <h2 class="text-2xl font-bold text-center text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-6">Complete Your Profile</h2>
-            <p class="text-center text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">Please provide the following information to continue.</p>
+            <h2 class="text-2xl font-bold text-center text-[var(--color-text-dark)] mb-6">Complete Your Profile</h2>
+            <p class="text-center text-[var(--color-gray-text-dark)] mb-6">Please provide the following information to continue.</p>
             <form method="post">
                 {% csrf_token %}
                 <div class="mb-4">
-                    <label for="first_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">First Name</label>
+                    <label for="first_name" class="block text-sm font-medium text-[var(--color-gray-text-dark)]">First Name</label>
                     <input type="text" id="first_name" name="first_name" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" required>
                 </div>
                 <div class="mb-4">
-                    <label for="last_name" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Last Name</label>
+                    <label for="last_name" class="block text-sm font-medium text-[var(--color-gray-text-dark)]">Last Name</label>
                     <input type="text" id="last_name" name="last_name" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" required>
                 </div>
                 <div class="mb-4">
-                    <label for="hscyear" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">HSC Year</label>
+                    <label for="hscyear" class="block text-sm font-medium text-[var(--color-gray-text-dark)]">HSC Year</label>
                     <select id="hscyear" name="hscyear" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500">
                         <option value="" disabled selected>  </option>
                         {% for year_value, year_display in request.user.HSC_YEAR_CHOICES %}
@@ -39,7 +39,7 @@
                     </select>
                 </div>
                 <div class="mb-6">
-                    <label for="college" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">College</label>
+                    <label for="college" class="block text-sm font-medium text-[var(--color-gray-text-dark)]">College</label>
                     <input type="text" id="college" name="college" class="mt-1 block w-full p-3 rounded-xl bg-gray-800/50 text-white border border-gray-700 focus:outline-none focus:border-blue-500" required>
                 </div>
                 <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save and Continue</button>

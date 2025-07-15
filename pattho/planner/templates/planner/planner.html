@@ -12,31 +12,31 @@
                 {% csrf_token %}
                 <div class="shadow-lg rounded-lg p-6">
                     <div class="pattho-underline-wrapper">
-                        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
+                        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-dark)] mb-2">Your Study Plan</h1>
                         <div class="pattho-underline-box"></div>
                     </div>
-                    <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-4">
+                    <p class="text-lg text-[var(--color-gray-text-dark)] mb-4">
                         Here is your personalized study plan.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mb-6">
-                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-dark)] 
 ">
                             <p class="text-sm text-gray-400 mb-1">Daily Study Goal</p>
                             <p class="text-xl font-bold text-white">{{ user_routine.daily_minutes|minutes_to_hours_minutes }}</p>
                         </div>
-                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] 
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-dark)] 
 ">
                             <p class="text-sm text-gray-400 mb-1">Start Date</p>
                             <p class="text-xl font-bold text-white">{{ user_routine.start_date }}</p>
                         </div>
-                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)]">
+                        <div class="border border-gray-800 bg-gray-800/30 rounded-lg p-4 transition-colors duration-300 hover:bg-[var(--color-bg-dark)]">
                             <p class="text-sm text-gray-400 mb-1">End Date</p>
                             <p class="text-xl font-bold text-white">{{ user_routine.end_date }}</p>
                         </div>
                     </div>
 
                     <div class="pattho-underline-wrapper">
-                        <h2 class="pattho-underline text-2xl font-semibold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
+                        <h2 class="pattho-underline text-2xl font-semibold text-[var(--color-text-dark)] mt-8 mb-4">Chapter Breakdown</h2>
                         <div class="pattho-underline-box"></div>
                     </div>
                     <div class="space-y-4">
@@ -55,10 +55,8 @@
                                     <div class="divide-y divide-gray-700 max-h-0 overflow-hidden transition-all duration-300 ease-in-out"> {# This div will be toggled #}
                                         <div class="p-4 bg-[#191919]">
                                             <div class="flex items-center justify-between">
-                                                <div class="flex items-center">
-                                                    <input type="checkbox" name="completed_chapters" value="{{ chapter.chapter_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 chapter-checkbox mr-2" {% if chapter.completed %}checked{% endif %}>
-                                                    <h4 class="text-lg text-[#6EE7B7]">Mark Chapter as Completed</h4>
-                                                </div>
+                                                <input type="checkbox" name="completed_chapters" value="{{ chapter.chapter_title }}" class="w-5 h-5 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500 chapter-checkbox mr-2" {% if chapter.completed %}checked{% endif %}>
+                                                <h4 class="text-lg text-[#6EE7B7]">Mark Chapter as Completed</h4>
                                             </div>
                                         </div>
                                         <div class="p-4 bg-[#191919] border-t border-gray-700">
@@ -111,14 +109,14 @@
                 </form>
             </div>
         {% else %}
-            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-8 text-center">
+            <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-8 text-center">
                 <h2 class="text-3xl font-bold text-[var(--color-success-light)] mb-4">Congratulations!</h2>
-                <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
+                <p class="text-lg text-[var(--color-gray-text-dark)] mb-6">
                     You've completed your current study plan. Great job!
                 </p>
                 <form action="{% url 'delete_planner' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-dark)] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">
+                    <button type="submit" class="bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary-dark)] text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200">
                         Create New Planner
                     </button>
                 </form>
@@ -127,10 +125,10 @@
     {% else %}
         <div class="shadow-lg rounded-lg p-6">
             <div class="pattho-underline-wrapper">
-                <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] mb-2">Create Your Study Plan</h1>
+                <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-dark)] mb-2">Create Your Study Plan</h1>
                 <div class="pattho-underline-box"></div>
             </div>
-            <p class="text-lg text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] mb-6">
+            <p class="text-lg text-[var(--color-gray-text-dark)] mb-6">
                 Tell us your goals and we will generate a personalized plan for you.
             </p>
             {% if messages %}
@@ -143,24 +141,24 @@
                     {% endfor %}
                 </div>
             {% endif %}
-            <form method="post" class="space-y-6 p-6 border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] rounded-lg bg-[var(--color-card-bg-light)] dark:bg-[#151515]">
+            <form method="post" class="space-y-6 p-6 border border-[var(--color-border-dark)] rounded-lg bg-[#151515]">
                 {% csrf_token %}
                 <div>
-                    <label for="daily_hours" class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">How many hours do you want to study each day?</label>
-                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" min="0.5" placeholder="Daily study hour">
+                    <label for="daily_hours" class="block text-sm font-medium text-[var(--color-gray-text-dark)]">How many hours do you want to study each day?</label>
+                    <input type="number" id="daily_hours" name="daily_hours" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-dark)] bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" step="0.5" min="0.5" placeholder="Daily study hour">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="start_date" class="block text-sm font-medium text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">When do you want to start?</label>
-                        <input type="date" id="start_date" name="start_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <label for="start_date" class="block text-sm font-medium text-[var(--color-text-dark)]">When do you want to start?</label>
+                        <input type="date" id="start_date" name="start_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-dark)] bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
                     <div>
-                        <label for="end_date" class="block text-sm font-medium text-[var(--color-text-light)] dark:text-[var(--color-gray-text-dark)]">When do you want to finish?</label>
-                        <input type="date" id="end_date" name="end_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <label for="end_date" class="block text-sm font-medium text-[var(--color-text-dark)]">When do you want to finish?</label>
+                        <input type="date" id="end_date" name="end_date" required class="mt-1 block w-full rounded-md shadow-sm py-3 px-4 text-[var(--color-text-dark)] bg-[var(--color-gray-bg-dark)] border border-[var(--color-border-dark)] focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Select Chapters to Study</label>
+                    <label class="block text-sm font-medium text-[var(--color-gray-text-dark)]">Select Chapters to Study</label>
                     <div class="mt-2 space-y-2">
                         {% for subject in subjects %}
                             <div class="border border-gray-700 rounded-md">
@@ -215,24 +213,17 @@
         transform: translateY(-50%);
         width: 1.5em;
         height: 1.5em;
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2394a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
         pointer-events: none; /* so it doesn't block clicks on the input */
     }
 
-    .dark input[type="date"]::before {
-        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2394a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
-    }
-
     /* Ensure placeholder text color matches theme */
     input::placeholder {
-        color: var(--color-gray-text-light);
-        opacity: 1; /* Override browser defaults */
-    }
-    .dark input::placeholder {
         color: var(--color-gray-text-dark);
+        opacity: 1; /* Override browser defaults */
     }
 </style>
 

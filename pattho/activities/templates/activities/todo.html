@@ -8,71 +8,71 @@
 
         <!-- Task Summary Metrics Row -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Total Tasks</p>
-                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="total-tasks">0</p>
+            <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] cursor-pointer">
+                <p class="text-sm text-[var(--color-gray-text-dark)]">Total Tasks</p>
+                <p class="text-3xl font-bold text-[var(--color-text-dark)]" id="total-tasks">0</p>
             </div>
-            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Completed</p>
-                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="completed-tasks">0</p>
+            <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] cursor-pointer">
+                <p class="text-sm text-[var(--color-gray-text-dark)]">Completed</p>
+                <p class="text-3xl font-bold text-[var(--color-text-dark)]" id="completed-tasks">0</p>
             </div>
-            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Due Today</p>
-                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="due-today-tasks">0</p>
+            <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] cursor-pointer">
+                <p class="text-sm text-[var(--color-gray-text-dark)]">Due Today</p>
+                <p class="text-3xl font-bold text-[var(--color-text-dark)]" id="due-today-tasks">0</p>
             </div>
-            <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-light)] dark:hover:bg-[var(--color-bg-dark)] cursor-pointer">
-                <p class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">Overdue</p>
-                <p class="text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]" id="overdue-tasks">0</p>
+            <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-4 text-center transition-colors duration-300 hover:bg-[var(--color-bg-dark)] cursor-pointer">
+                <p class="text-sm text-[var(--color-gray-text-dark)]">Overdue</p>
+                <p class="text-3xl font-bold text-[var(--color-text-dark)]" id="overdue-tasks">0</p>
             </div>
         </div>
         <!-- To-Do List Section -->
-        <div class="bg-[var(--color-card-bg-light)] dark:bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6">
+        <div class="bg-[var(--color-card-bg-dark)] shadow-lg rounded-lg p-6">
             <div class="flex flex-col md:flex-row flex-wrap justify-between items-start md:items-center mb-4 md:gap-x-4">
                 <div class="mb-6 flex-shrink-0">
                     <div class="pattho-underline-wrapper">
-                        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">My To-Do List</h1>
+                        <h1 class="pattho-underline text-3xl font-bold text-[var(--color-text-dark)]">My To-Do List</h1>
                         <div class="pattho-underline-box"></div>
                     </div>
                     
                 </div>
                 <form action="{% url 'add_todo' %}" method="post" class="flex flex-col md:flex-row items-center w-full">
                     {% csrf_token %}
-                    <input type="text" name="title" placeholder="Add a new to-do item" class="p-3 rounded-lg border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent flex-grow w-full mb-2 md:mb-0">
-                    <button type="submit" class="bg-[var(--color-primary-light)] hover:bg-[var(--color-primary-hover-light)] dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md w-full">
+                    <input type="text" name="title" placeholder="Add a new to-do item" class="p-3 rounded-lg border border-[var(--color-border-dark)] bg-[var(--color-gray-bg-dark)] text-[var(--color-text-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)] focus:border-transparent flex-grow w-full mb-2 md:mb-0">
+                    <button type="submit" class="bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary-hover-dark)] text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 shadow-md w-full">
             
                         Add Task
                     </button>
                 </form>
             </div>
 
-            <div class="divide-y divide-[var(--color-border-light)] dark:divide-[var(--color-border-dark)]">
+            <div class="divide-y divide-[var(--color-border-dark)]">
                 {% for todo in todos %}
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 {% if todo.completed %}opacity-60{% endif %}">
                     <div class="flex items-center mb-2 md:mb-0">
                         <form action="{% url 'toggle_todo' todo.id %}" method="post" class="flex items-center toggle-todo-form" data-todo-id="{{ todo.id }}">
                             {% csrf_token %}
                             <input type="checkbox" {% if todo.completed %}checked{% endif %} class="h-5 w-5 rounded border-[var(--color-border-light)] text-[var(--color-success-light)] focus:ring-[var(--color-success-light)] cursor-pointer todo-checkbox">
-                            <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]{% endif %} todo-title-display">
+                            <span class="ml-3 text-lg {% if todo.completed %}line-through text-[var(--color-gray-text-dark)]{% else %}text-[var(--color-text-dark)]{% endif %} todo-title-display">
                                 {{ todo.title }}
                             </span>
-                            <input type="text" value="{{ todo.title }}" class="hidden ml-3 p-1 rounded border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] bg-[var(--color-gray-bg-light)] dark:bg-[var(--color-gray-bg-dark)] text-[var(--color-text-light)] dark:text-[var(--color-text-dark)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-light)] todo-title-input">
+                            <input type="text" value="{{ todo.title }}" class="hidden ml-3 p-1 rounded border border-[var(--color-border-dark)] bg-[var(--color-gray-bg-dark)] text-[var(--color-text-dark)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-light)] todo-title-input">
                         </form>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <span class="text-sm text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">
+                        <span class="text-sm text-[var(--color-gray-text-dark)]">
                             {{ todo.date|date:"M d, Y" }}
                         </span>
-                        <button class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-primary-dark)] transition-colors duration-200 edit-todo-btn" data-todo-id="{{ todo.id }}">
+                        <button class="text-[var(--color-gray-text-dark)] hover:text-[var(--color-primary-light)] dark:hover:text-[var(--color-primary-dark)] transition-colors duration-200 edit-todo-btn" data-todo-id="{{ todo.id }}">
                             <i data-lucide="edit" class="w-4 h-4 edit-icon"></i>
                             <i data-lucide="save" class="w-4 h-4 save-icon hidden"></i>
                         </button>
-                        <button class="text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)] hover:text-[var(--color-error-light)] dark:hover:text-[var(--color-error-dark)] transition-colors duration-200 delete-todo-btn" data-todo-id="{{ todo.id }}">
+                        <button class="text-[var(--color-gray-text-dark)] hover:text-[var(--color-error-dark)] transition-colors duration-200 delete-todo-btn" data-todo-id="{{ todo.id }}">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
                 {% empty %}
-                <p class="p-4 text-[var(--color-gray-text-light)] dark:text-[var(--color-gray-text-dark)]">No to-do items yet. Add one above!</p>
+                <p class="p-4 text-[var(--color-gray-text-dark)]">No to-do items yet. Add one above!</p>
                 {% endfor %}
             </div>
         </div>
@@ -136,15 +136,15 @@
                 if (data.success) {
                     // Update UI based on completion status
                     if (data.completed) {
-                        span.classList.add('line-through', 'text-[var(--color-gray-text-light)]', 'dark:text-[var(--color-gray-text-dark)]');
-                        span.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+                        span.classList.add('line-through', 'text-[var(--color-gray-text-dark)]');
+                        span.classList.remove('text-[var(--color-text-dark)]');
                         listItem.classList.add('opacity-60');
                         // Move to bottom
                         const parentDiv = listItem.parentNode;
                         parentDiv.appendChild(listItem);
                     } else {
-                        span.classList.remove('line-through', 'text-[var(--color-gray-text-light)]', 'dark:text-[var(--color-gray-text-dark)]');
-                        span.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+                        span.classList.remove('line-through', 'text-[var(--color-gray-text-dark)]');
+                        span.classList.add('text-[var(--color-text-dark)]');
                         listItem.classList.remove('opacity-60');
                         // Move back to sorted position (simple re-append for now, full sort is complex client-side)
                         const parentDiv = listItem.parentNode;

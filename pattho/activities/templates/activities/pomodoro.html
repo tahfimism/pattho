@@ -96,8 +96,8 @@
 
         workTab.classList.remove('bg-[var(--color-gray-bg-dark)]', 'text-white');
         breakTab.classList.remove('bg-[var(--color-gray-bg-dark)]', 'text-white');
-        workTab.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
-        breakTab.classList.add('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+        workTab.classList.add('text-[var(--color-text-dark)]');
+        breakTab.classList.add('text-[var(--color-text-dark)]');
 
         // Manage hover effects for toggle buttons
         workTab.classList.remove('hover:bg-opacity-80');
@@ -107,19 +107,19 @@
             timeLeft = FOCUS_TIME;
             timerLabel.textContent = 'Focus Time';
             workTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
-            workTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            workTab.classList.remove('text-[var(--color-text-dark)]');
             breakTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive break tab
         } else if (mode === 'short-break') {
             timeLeft = SHORT_BREAK;
             timerLabel.textContent = 'Short Break';
             breakTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
-            breakTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            breakTab.classList.remove('text-[var(--color-text-dark)]');
             workTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive work tab
         } else if (mode === 'long-break') {
             timeLeft = LONG_BREAK;
             timerLabel.textContent = 'Long Break';
             breakTab.classList.add('bg-[var(--color-gray-bg-dark)]', 'text-white');
-            breakTab.classList.remove('text-[var(--color-text-light)]', 'dark:text-[var(--color-text-dark)]');
+            breakTab.classList.remove('text-[var(--color-text-dark)]');
             workTab.classList.add('hover:bg-opacity-80'); // Add hover to inactive work tab
         }
         updateDisplay();

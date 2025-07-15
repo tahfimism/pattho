@@ -161,25 +161,10 @@ LOGIN_URL = '/' # Redirect to home page for unauthenticated users
 LOGIN_REDIRECT_URL = '/'  # Redirect to home page after login
 ACCOUNT_LOGOUT_REDIRECT_URL = '/' # Redirect to home page after logout
 
-ACCOUNT_LOGIN_METHODS = ['email']
-ACCOUNT_LOGIN_METHODS = ['email']
-ACCOUNT_EMAIL_VERIFICATION = 'none' # Or 'mandatory' for email verification
+ACCOUNT_LOGIN_METHODS = ['username', 'email']
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '131138227229-mlrokfuqflb6e2befj33phdq13e2h7fr.apps.googleusercontent.com',
-            'secret': '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',
-            'key': ''
-        },
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+
 
 
